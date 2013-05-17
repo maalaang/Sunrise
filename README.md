@@ -2,6 +2,7 @@ maalaang-WebRTC
 ===============
 
 Open Video Conference Solution based on HTML5 WebRTC
+
 Copyright [2013] [WebRTC Group, Maalaang Labs]
 
 Licensed under the Apache License, Version 2.0 (the "License");
