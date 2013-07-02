@@ -6,7 +6,8 @@
     <body>
         <h2>Aliens Abducted Me - Report an Abduction</h2>
         <?php
-        $name = $_POST['firstname'] . ' ' . $_POST['lastname'];
+        $first_name = $_POST['firstname'];
+        $lat_name = $_POST['lastname'];
         $when_it_happened = $_POST['whenithappened'];
         $how_long = $_POST['howlong'];
         $how_many = $_POST['howmany'];
@@ -16,15 +17,18 @@
         $email = $_POST['email'];
         $other = $_POST['other'];
 
-        $to = 'husky@maalaang.com';
-        $subject = 'Aliens Abducted Me - Abduction Report';
-        $msg = "$name was abducted $when_it_happened and was gone for $how_long.\n" .
-            "Number of aliens: $how_many\n" .
-            "Alien description: $alien_description\n" .
-            "What they did: $what_they_did\n" .
-            "Fang spotted: $fang_spotted\n" .
-            "Other comments: $other";
-        mail($to, $subject, $msg, 'From:' . $email);
+        $abc = mysqli_connect('data.aliensabductedme.com', 'Husky', 'aliensrool', 'aliendatabase')
+            or die('Error connecting to MySQL server.');
+
+        $query = "INSERT INTO aliens_abduction (first_name, last_name, when_it_happen, how_long, " .
+            "how_many, alien_description, what_they_did, fang, spotted, other, email) " .
+            "VALUES ('$first_name', '$lat_name', '$when_it_happend', $how_long', '$how_many', " .
+            "'$alien_description', '$what_they_did', '$fang_spotted', '$other', '$email')";
+
+        $result = mysqli_query($dbc, $query)
+            or die('Error querying database.');
+
+        mysqli_close($dbc);
 
         echo 'Thanks for submitting the form.<br />';
         echo 'You were abducted ' . $when_it_happened;
@@ -38,4 +42,3 @@
         ?>
     </body>
 </html>
-
