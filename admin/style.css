@@ -1,0 +1,5 @@
+form label {
+    diaplay: inline-block;
+    width: 225px;
+    font-weight: bold;
+}
