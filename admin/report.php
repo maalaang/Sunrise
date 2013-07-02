@@ -15,14 +15,15 @@
         $fang_spotted = $_POST['fangspotted'];
         $email = $_POST['email'];
         $other = $_POST['other'];
-        $to = 'owen@aliensabductedme.com';
+
+        $to = 'husky@maalaang.com';
         $subject = 'Aliens Abducted Me - Abduction Report';
         $msg = "$name was abducted $when_it_happened and was gone for $how_long.\n" .
-        "Number of aliens: $how_many\n" .
-        "Alien description: $alien_description\n" .
-        "What they did: $what_they_did\n" .
-        "Fang spotted: $fang_spotted\n" .
-        "Other comments: $other";
+            "Number of aliens: $how_many\n" .
+            "Alien description: $alien_description\n" .
+            "What they did: $what_they_did\n" .
+            "Fang spotted: $fang_spotted\n" .
+            "Other comments: $other";
         mail($to, $subject, $msg, 'From:' . $email);
 
         echo 'Thanks for submitting the form.<br />';
