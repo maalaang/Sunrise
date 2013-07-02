@@ -15,7 +15,6 @@
         $fang_spotted = $_POST['fangspotted'];
         $email = $_POST['email'];
         $other = $_POST['other'];
-
         $to = 'owen@aliensabductedme.com';
         $subject = 'Aliens Abducted Me - Abduction Report';
         $msg = "$name was abducted $when_it_happened and was gone for $how_long.\n" .
