@@ -17,8 +17,8 @@
         $email = $_POST['email'];
         $other = $_POST['other'];
 
-        $abc = mysqli_connect('data.aliensabductedme.com', 'Husky', 'aliensrool', 'aliendatabase')
-            or die('Error connecting to MySQL server.');
+        $abc = mysqli_connect('192.168.0.112', 'root', '7414', 'aliendatabase')
+           or die('Error connecting to MySQL server.');
 
         $query = "INSERT INTO aliens_abduction (first_name, last_name, when_it_happen, how_long, " .
             "how_many, alien_description, what_they_did, fang, spotted, other, email) " .
