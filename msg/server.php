@@ -44,6 +44,6 @@ $server = new \Wrench\Server('ws://172.27.254.4:8888/', array(
 //     )
 ));
 
-//$server->registerApplication('echo', new \Wrench\Application\EchoApplication());
-$server->registerApplication('echo', new \Wrench\Application\ServerTimeApplication());
+$server->registerApplication('echo', new \Wrench\Application\EchoApplication());
+//$server->registerApplication('echo', new \Wrench\Application\ServerTimeApplication());
 $server->run();
