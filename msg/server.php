@@ -15,7 +15,7 @@ require(__DIR__ . '/../lib/SplClassLoader.php');
 $classLoader = new SplClassLoader('Wrench', __DIR__ . '/../lib');
 $classLoader->register();
 
-$server = new \Wrench\Server('ws://172.27.254.4:8888/', array(
+$server = new \Wrench\Server('ws://172.27.254.4:8889/', array(
 //        'allowed_origins'            => array(
 //        'dev.maalaang.com', 172.27.
 //    ),

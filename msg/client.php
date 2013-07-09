@@ -12,7 +12,7 @@ html,body{font:normal 0.9em arial,helvetica;}
 var socket;
 
 function init(){
-    var host = "ws://dev.maalaang.com:8888/echo";
+    var host = "ws://dev.maalaang.com:8889/echo";
     try{
         socket = new WebSocket(host);
         log('WebSocket - status '+socket.readyState);
