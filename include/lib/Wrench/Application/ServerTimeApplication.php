@@ -37,10 +37,21 @@ class ServerTimeApplication extends Application
 
     public function onData($data, $client)
     {
-        foreach ($this->clients as $sendto) {
-            if ($client !== $sendto) {
-                $sendto->send($data);
+        foreach ($this->clients as $key => $sendto) {
+            try {
+                if ($sendto !== $client) {
+                    $sendto->send($data);
+                }
+            } catch (Exception $e) {
+                $client->log('Data send failed: ' . $e, 'err');
             }
+        }
+    }
+
+    public function onDisconnect($client)
+    {
+        if (($key = array_search($client, $this->clients)) !== false) {
+            unset($this->clients[$key]);
         }
     }
 }

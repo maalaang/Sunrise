@@ -10,9 +10,9 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require(__DIR__ . '/../lib/SplClassLoader.php');
+require(__DIR__ . '/../include/lib/SplClassLoader.php');
 
-$classLoader = new SplClassLoader('Wrench', __DIR__ . '/../lib');
+$classLoader = new SplClassLoader('Wrench', __DIR__ . '/../include/lib');
 $classLoader->register();
 
 $server = new \Wrench\Server('ws://172.27.254.4:8889/', array(

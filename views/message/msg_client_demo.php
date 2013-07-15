@@ -1,4 +1,4 @@
-t<html>
+<html>
 <head>
 <title>Sunrise - WebSocket Client Test</title>
 
