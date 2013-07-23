@@ -1,4 +1,4 @@
-maalaang-WebRTC
+Sunrise
 ===============
 
 Open Video Conference Solution based on HTML5 WebRTC
