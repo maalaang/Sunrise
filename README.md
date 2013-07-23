@@ -1,9 +1,9 @@
-Sunrise
+maalaang-WebRTC
 ===============
 
 Open Video Conference Solution based on HTML5 WebRTC
 
-Copyright [2013] [NGC Group, Maalaang Labs]
+Copyright [2013] [WebRTC Group, Maalaang Labs]
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
