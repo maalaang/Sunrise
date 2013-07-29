@@ -1,93 +1,56 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
-        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/default.css">
-    </head>
-    <body>
-        <script type="text/javascript">
-            var localVideo;
-            var miniVideo;
-            var remoteVideo;
-            var localVideoCnt = 0;
-            var localStream;
+<head>
+    <title>WebRTC Reference App</title>
 
-            function initialize() {
-                console.log("initialize");
-                localVideo = document.getElementById('localVideo');
-                doGetUserMedia();
-            }
+    <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
 
-            function doGetUserMedia() {
-                var constraints = {"audio": true, "video": {"mandatory": {}, "optional": []}}; 
-                try {
-                    getUserMedia(constraints, onUserMediaSuccess, onUserMediaError);
-                    console.log("Requested access to local media with mediaConstraints:\n  \"" + JSON.stringify(constraints) + "\"");
-                } catch (e) {
-                    alert("getUserMedia() failed. Is this a WebRTC capable browser?");
-                    console.log("getUserMedia failed with exception: " + e.message);
-                }
-            }
+    <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+    <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
+    <script src="<?= $GLOBALS['sr_root'] ?>/js/main.js"></script>
 
-            function onUserMediaSuccess(stream) {
-                console.log("User has granted access to local media.");
+    <link rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/main.css">
+</head>
 
-                attachMediaStream(localVideo, stream);
-                localVideo.style.opacity = 1;
-                localStream = stream;
+<body>
+<script type="text/javascript">
+var sessionToken = '<?= $context['session']->generate_token() ?>';
+var sessionId = '<?= $context['session']->id ?>';
+var participantId = '<?= $context['participant']->id ?>';
+var roomLink = '<?= $context['room_link'] ?>';
+var initiator = <?= $context['initiator'] ?>;
+var pcConfig = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
+var pcConstraints = {"optional": [{"DtlsSrtpKeyAgreement": true}]};
+var offerConstraints = {"optional": [], "mandatory": {}};
+var mediaConstraints = {"audio": true, "video": {"mandatory": {}, "optional": []}};
+var stereo = false;
+var roomName = '<?= $context['session']->name ?>';
+var userName = '<?= $context['participant']->name ?>';
+var userId = '<?= $context['participant']->user_id ?>';
+var isRegisteredUser = 0;
 
-//                if (initiator) maybeStart();
-            }
+setTimeout(initialize, 1);
 
-            function onUserMediaError(error) {
-                console.log("Failed to get access to local media. Error code was " + error.code);
-                alert("Failed to get access to local media. Error code was " + error.code + ".");
-            }
+</script>
 
-            function doAddLocalVideo() {
-                if (localStream == null) {
-                    console.log("Local stream has not been initialized.");
-                    return;
-                }
+<div id="container" ondblclick="enterFullScreen()"> 
+  <div id="card">
+    <div id="local">
+      <video id="localVideo" autoplay="autoplay" muted="true"/>
+    </div>
+    <div id="remote">
+      <video id="remoteVideo" autoplay="autoplay">
+      </video>
+      <div id="mini">
+        <video id="miniVideo" autoplay="autoplay" muted="true"/>
+      </div>
+    </div>
+  </div>
+</div>
 
-                localVideoCnt++;
-                
-                var subVideo = $('#subVideo');
-                var html = subVideo.html();
+</body>
 
-                html += '<video id="localVideo' + localVideoCnt + '" class="subVideo" autoplay="autoplay" muted="true"/>';
-                subVideo.html(html);
+<!--footer id="footer">
+</footer-->
 
-                var addedVideo = document.getElementById('localVideo' + localVideoCnt);
-
-                attachMediaStream(addedVideo, localStream);
-                addedVideo.style.opacity = 1;
-            }
-
-            $(document).ready(function() {
-                initialize();
-            });
-
-        </script>
-        <div>
-            <p>maalaang-WebRTC (in development)</p>
-        </div>
-        <div id="leftPanel">
-            <div>
-                <span>Add Screen: </span><input type="button" value="Add" onclick="doAddLocalVideo();" />
-            </div>
-        </div>
-        <div id="mainPanel">
-            <div id="card">
-                <div id="mainVideo">
-                    <video id="localVideo" autoplay="autoplay" muted="true"/>
-                </div>
-                <div id="subVideo">
-                </div>
-            </div>
-            <div id="footer">
-            </div>
-        </div>
-    </body>
 </html>

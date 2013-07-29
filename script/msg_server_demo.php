@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 
 require(__DIR__ . '/../include/lib/SplClassLoader.php');
 
-$classLoader = new SplClassLoader('Wrench', __DIR__ . '/../include/lib');
+$classLoader = new SplClassLoader('Wrench', __DIR__ . '/../message');
 $classLoader->register();
 
 $server = new \Wrench\Server('ws://172.27.254.4:8889/', array(

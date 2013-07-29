@@ -8,7 +8,7 @@ html,body {
 }
 #log {
     width:500px;
-    height:800px;
+    height:600px;
     border:1px solid gray;
     overflow:auto;
 }

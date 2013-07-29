@@ -84,6 +84,18 @@ class Connection extends Configurable
     protected $payloadHandler;
 
     /**
+     * The ID of the session that this connection joined in. Added for Sunrise.
+     * @var int
+     */
+    protected $sessionId;
+
+    /**
+     * Participant ID for Sunrise Session. Added for Sunrise.
+     * @var int
+     */
+    protected $participantId;
+
+    /**
      * Constructor
      *
      * @param Server $server
@@ -496,4 +508,35 @@ class Connection extends Configurable
     {
         return (isset($this->application)) ? $this->application : false;
     }
+
+    /**
+     * Set the participant ID
+     */
+    public function setParticipantId($participantId) {
+        $this->participantId = $participantId;
+    }
+
+    /**
+     * Get the participant ID
+     *
+     * $return int
+     */
+    public function getParticipantId() {
+        return $this->participantId;
+    }
+
+    /**
+     * Set the session ID
+     */
+    public function setSessionId($sessionId) {
+        $this->sessionId = $sessionId;
+    }
+
+    /**
+     * Get the session ID
+     */
+    public function getSessionId() {
+        return $this->sessionId;
+    }
+
 }
