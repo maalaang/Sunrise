@@ -1,0 +1,33 @@
+<!-- Husky Studying -->
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <script>
+            var students = [];
+            students.push( { name: 'Husky', sub1: 90, sub2: 80, sub3: 70 } );
+            students.push( { name: 'Eileen', sub1: 95, sub2: 88, sub3: 77 } );
+            students.push( { name: 'Bob', sub1: 92, sub2: 83, sub3: 99 } );
+
+            for (var i in students) {
+                students[i].getSum = function () {
+                    return this.sub3 + this.sub1 + this.sub2;
+                };
+                students[i].getAverage = function () {
+                    return this.getSum() / 3;
+                };
+            }
+
+            var output = 'name\tsum\taverage\n';
+
+            for (var i in students) {
+                with (students[i]) {
+                    output += name + "\t" + getSum() + "\t" + getAverage() + "\n";
+                }
+            }
+
+            alert(output);
+        </script>
+    </body>
+</html>

@@ -1,0 +1,62 @@
+<!-- Husky Studying -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            div {
+                border: 1px Solid Black;
+                padding: 15px;
+            }
+            form label {
+                display: inline-block;
+                width: 150px;
+            }
+        </style>
+        <script>
+            function whenDivClick(e) {
+                alert('Div Click');
+            }
+            function whenBtnClick(e) {
+                var event = e || window.event;
+                event.cancelBubble = true;
+                if(event.stopPropagation) {
+                    event.stopPropagation();
+                }
+
+                var cnt = document.getElementById('cnt');
+                cnt.innerHTML = Number(cnt.innerHTML) + 1;
+            }
+            function whenSubmit(e) {
+                var pass = document.getElementById('pass').value;
+                var pass2 = document.getElementById('pass2').value;
+
+                if (pass == pass2) {
+                    alert('Success');
+                } else {
+                    alert('Check password');
+                    return false;
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div onclick="return whenDivClick(event)">
+            <h3>Counter: <span id="cnt">0</span></h3>
+            <button onclick="whenBtnClick(event)">Count</button><br /><br />
+        </div>
+        <div>
+            <form id="idpw" onsubmit="return whenSubmit(event)">
+                <label for="name">name</label>
+                <input type="text" name="name" id="name" /><br />
+
+                <label for="pass">password</label>
+                <input type="text" name="pass" id="pass" /><br />
+
+                <label for="pass2">password check</label>
+                <input type="text" name="pass2" id="pass2" /><br />
+
+                <input type="submit" value="Submit" /><br />
+            </form>
+        </div>
+    </body>
+</html>
