@@ -5,6 +5,7 @@ require_once (dirname(__FILE__) . '/../controllers/room.php');
 require_once (dirname(__FILE__) . '/../controllers/lobby.php');
 require_once (dirname(__FILE__) . '/../controllers/message.php');
 require_once (dirname(__FILE__) . '/../controllers/admin.php');
+require_once (dirname(__FILE__) . '/../controllers/user.php');
 
 /**
  * URL patterns and the associated controllers that are provided to the URL dispatcher.
@@ -14,6 +15,9 @@ $url_patterns = array (
     "#^/room/$#" => room,
     "#^/room/join/$#" => room_join,
     "#^/lobby/$#" => lobby,
+    "#^/main/$#" => main,
+    "#^/main/signup/$#" => signup,
+    "#^/main/signin/$#" => signin,
     "#^/message/demo/$#" => message_demo,
     "#^/session/open/$#" => session_open,
     "#^/session/close/$#" => session_close,
