@@ -33,11 +33,21 @@
       <div class="jumbotron">
         <h1>Welcome to Sunrise</h1>
         <p>Sunrise is an open video conference solution based on HTML5 WebRTC. You can use this software for online meeting at your company or for talking to your friends. Moreover, you may provide more enhanced customer service using video chat. Enjoy the next generation of the Web with Sunrise. It is an open source sofrware licensed under Apache License Version 2.0.</p>
-        <div class="container">
-            <span>Room Name:</span>
-            <input type="text" placeholder="ex. Sunrise Meeting" class="form-control">
-        </div>
-        <p><a class="btn btn-primary btn-large">Go to the Room!</a></p>
+        <form>
+            <fieldset>
+                <table>
+                    <tr>
+                        <td><label for="room_name">Room Name :</label></td>
+                        <td><input id="room_name" type="text" placeholder="ex.Sunrise Meeting"/></td>
+                    </tr>
+                    <tr>
+                        <td><label for="your_name">Your Name :</label></td>
+                        <td><input id="your_name" type="text" placeholder="ex.Steve Kim"/></td>
+                    </tr>
+                </table>
+                <button type="submit" class="btn btn-primary btn-large"/>Go to the Room!</button> 
+            </fieldset>
+        </form>
       </div>
 
       <div class="body-content">
@@ -67,6 +77,5 @@
 
     </div> <!-- /container -->
 
-    <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
