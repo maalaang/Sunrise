@@ -1,6 +1,7 @@
 <?php
 
 require_once (dirname(__FILE__) . '/../models/session.php');
+require_once (dirname(__FILE__) . '/../settings/config.php');
 
 /**
  * Send response with the specified view and the context.
