@@ -5,7 +5,7 @@ require_once (dirname(__FILE__) . '/../controllers/room.php');
 require_once (dirname(__FILE__) . '/../controllers/lobby.php');
 require_once (dirname(__FILE__) . '/../controllers/message.php');
 require_once (dirname(__FILE__) . '/../controllers/admin.php');
-require_once (dirname(__FILE__) . '/../controllers/user.php');
+require_once (dirname(__FILE__) . '/../controllers/main.php');
 
 /**
  * URL patterns and the associated controllers that are provided to the URL dispatcher.
