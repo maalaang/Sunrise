@@ -19,7 +19,7 @@
                 <a class="navbar-brand" href="#">Sunrise</a>
             </div>
         </div>
-        <form action="<?= $GLOBALS['sr_root_husky'] ?>/controllers/signin.php" name="signin_form" id="signin_form" method="post">
+        <form action="<?= $GLOBALS['sr_root'] ?>/controllers/signin.php" name="signin_form" id="signin_form" method="post">
             <input type="text" id="email" name="email" placeholder="Email" /><br />
             <input type="password" id="password" name="password" placeholder="Password" /><br />
             <input type="submit" value="Sign In" />
