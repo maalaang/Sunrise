@@ -6,17 +6,18 @@ require_once (dirname(__FILE__) . '/model.php');
  * Sunrise VC user.
  */
 class User extends Model {
-    /** User ID. Primary key */
-    public $id;
 
-    /** Real name. */
-    public $name;
+    /** Email address. Primary key */
+    public $email;
 
     /** Password */
     public $password;
 
-    /** Email address */
-    public $email;
+    /** First name. */
+    public $first_name;
+
+    /** Last name. */
+    public $last_name;
 
     /** Flag for having been authorized or not */
     public $is_authorized;
