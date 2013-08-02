@@ -10,6 +10,13 @@
 
     <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css" rel="stylesheet">
     <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
+    <style>
+        .jumbotron{
+            margin: 40px;
+        }
+
+
+    </style>
   </head>
 
   <body>
@@ -29,11 +36,10 @@
     </div>
 
     <div class="container">
-
       <div class="jumbotron">
         <h1>Welcome to Sunrise</h1>
         <p>Sunrise is an open video conference solution based on HTML5 WebRTC. You can use this software for online meeting at your company or for talking to your friends. Moreover, you may provide more enhanced customer service using video chat. Enjoy the next generation of the Web with Sunrise. It is an open source sofrware licensed under Apache License Version 2.0.</p>
-        <br>
+        <hr/>
         <form>
             <fieldset>
                 <table align="center">
@@ -46,14 +52,14 @@
                         <td><input id="your_name" type="text" placeholder="ex.Steve Kim"/></td>
                     </tr>
                 </table>
-                <button type="submit" class="btn btn-primary btn-large"/>Go to the Room!</button> 
+                <p style="text-align:center; margin: 10px">
+                    <button type="submit" class="btn btn-primary btn-large">Go to the Room!</button> 
+                </p>
             </fieldset>
         </form>
       </div>
 
       <div class="body-content">
-
-        <!-- Example row of columns -->
         <div class="row">
           <div class="col-lg-4">
             <h2>Custom Heading 1</h2>
@@ -68,11 +74,15 @@
             <p>Custom Message 3</p>
           </div>
         </div>
-
         <hr>
 
         <footer>
-          <p>Footer</p>
+            <div class="foot_link" style="margin:0 10px 0 0;">
+                <span><a href="#" ><ins>Privacy Policy</ins></a></span>
+                <span><a href="#" ><ins>About Sunrise</ins></a></span>
+                <span><a href="#" ><ins>Admin Page</ins></a></span>
+                <span><a href="#" class="foot_policy" style="float: right;"><ins>Privacy Policy</ins></a></span>
+            </div>
         </footer>
       </div>
 
