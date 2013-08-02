@@ -12,13 +12,13 @@ abstract class Model {
     /**
      * Add the instance to the database by inserting the data in it.
      * @param db    PDO handle
-     * $return id created after insertion
+     * $return id created after insertion or error code with '#'
      */
     public function add($db) {
         $table = $this->getTableName();
 
         $attrs = get_class_vars(get_class($this));
-//        unset($attrs['email']);
+        unset($attrs['id']);
         $attrs = array_keys($attrs);
 
         $cols = implode(',', $attrs);
@@ -35,11 +35,15 @@ abstract class Model {
             $stmt->bindParam($index++, $this->$attr);
         }
 
-        $stmt->execute();
+        try {
+            $stmt->execute();
+        } catch (PDOException $e) {
+            return '#' . $e->getCode();
+        }
 
-//        $this->email = $db->lastInsertId();
+        $this->id = $db->lastInsertId();
 
-//        return $this->email;
+        return $this->id;
     }
 
     /**
@@ -108,11 +112,30 @@ abstract class Model {
 
         $table = $called_class::getTableName();
 
-        $stmt = $db->prepare("DELETE FROM $table");
+//        $stmt = $db->prepare("DELETE FROM $table");
+        $stmt = $db->prepare("TRUNCATE $table");
 
         $stmt->execute();
 
         return $stmt->rowCount();
+    }
+
+    /**
+     * Reordering the auto increment values 'id'.
+     *
+     * @param db    PDO handle
+     * @return Null 
+     */
+    public static function reorder_id($db) {
+        $called_class = get_called_class();
+
+        $table = $called_class::getTableName();
+
+        $stmt = $db->query("ALTER TABLE $table AUTO_INCREMENT=1");
+        $stmt = $db->query("SET @CNT=0");
+        $stmt = $db->query("UPDATE $table SET $table.id=@CNT:=@CNT+1");
+
+        return Null;
     }
 
     /**
