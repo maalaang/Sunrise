@@ -26,12 +26,8 @@
 
         <div class="container">
             <div class="jumbotron">
-<<<<<<< HEAD
                 <label>Sign in</label> 
-                <form action="<?= $GLOBALS['sr_root_husky'] ?>/controllers/signin.php" name="signin_form" id="signin_form" method="post">
-=======
                 <form action="<?= $GLOBALS['sr_root'] ?>/controllers/signin.php" name="signin_form" id="signin_form" class="signin_form" method="post">
->>>>>>> e16f5d0be7baa6b739b6c7f03aede0e8938d2c3d
                     <input type="text" id="email" name="email" placeholder="Email" /><br />
                     <input type="password" id="password" name="password" placeholder="Password" /><br />
                     <input type="submit" id="submit" name="submit" value="Sign In" />
