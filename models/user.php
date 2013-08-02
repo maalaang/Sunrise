@@ -7,7 +7,10 @@ require_once (dirname(__FILE__) . '/model.php');
  */
 class User extends Model {
 
-    /** Email address. Primary key */
+    /** User ID. Primary key */
+    public $id;
+
+    /** Email address. Unique key */
     public $email;
 
     /** Password */

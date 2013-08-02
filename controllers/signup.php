@@ -12,12 +12,17 @@ $user->is_authorized = 1;
 $user->join_date = $user->getCurrentTime();
 $user->last_active_date = $user->getCurrentTime();
 
-try {
-    $db = sr_pdo();
-    $user->add($db);
+$db = sr_pdo();
 
-} catch (PDOException $e) {
+$id = $user->add($db);
 
+if(!is_numeric($id)) {
+
+    $user->reorder_id($db);
+
+    if($id == '#23000') {
+        echo 'Error 23000: The Email Adrress is Already Exist.';
+    }
 }
 
 ?>
