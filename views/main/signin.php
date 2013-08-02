@@ -8,7 +8,8 @@
 
         <title>Sunrise</title>
 
-        <link href="/workspace/whale/Sunrise/css/bootstrap.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
@@ -23,12 +24,8 @@
             });
         </script>
         <style>
-            body {
-                margin: 100px;
-            }
-            .sign_form{
-                border-width: 2px;
-                border-color: blue;
+            .jumbotron{
+                margin: 40px;
             }
         </style>
     </head>
@@ -38,14 +35,16 @@
                 <a class="navbar-brand" href="#">Sunrise</a>
             </div>
         </div>
-        <form class="sign_form" action="<?= $GLOBALS['sr_root_husky'] ?>/controllers/signin.php" name="signin_form" id="signin_form" method="post">
-            <input type="text" id="email" name="email" placeholder="Email" /><br />
-            <input type="password" id="password" name="password" placeholder="Password" /><br />
-            <input type="submit" id="submit" name="submit" value="Sign In" />
-        <form action="<?= $GLOBALS['sr_root_husky'] ?>/controllers/signin.php" name="signin_form" id="signin_form" method="post">
-            <input type="text" id="email" name="email" placeholder="Email" /><br />
-            <input type="password" id="password" name="password" placeholder="Password" /><br />
-            <input type="submit" value="Sign In" />
-        </form>
+
+        <div class="container">
+            <div class="jumbotron">
+                Sign In
+                <form action="<?= $GLOBALS['sr_root_husky'] ?>/controllers/signin.php" name="signin_form" id="signin_form" method="post">
+                    <input type="text" id="email" name="email" placeholder="Email" /><br />
+                    <input type="password" id="password" name="password" placeholder="Password" /><br />
+                    <button type="button" class="btn btn-primary">Sign In</button>
+                </form>
+            </div>
+        </div>
     </body>
 </html>
