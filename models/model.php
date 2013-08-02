@@ -18,7 +18,7 @@ abstract class Model {
         $table = $this->getTableName();
 
         $attrs = get_class_vars(get_class($this));
-        unset($attrs['id']);
+//        unset($attrs['email']);
         $attrs = array_keys($attrs);
 
         $cols = implode(',', $attrs);
@@ -37,9 +37,9 @@ abstract class Model {
 
         $stmt->execute();
 
-        $this->id = $db->lastInsertId();
+//        $this->email = $db->lastInsertId();
 
-        return $this->id;
+//        return $this->email;
     }
 
     /**
