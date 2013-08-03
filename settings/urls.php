@@ -6,6 +6,7 @@ require_once (dirname(__FILE__) . '/../controllers/lobby.php');
 require_once (dirname(__FILE__) . '/../controllers/message.php');
 require_once (dirname(__FILE__) . '/../controllers/admin.php');
 require_once (dirname(__FILE__) . '/../controllers/main.php');
+require_once (dirname(__FILE__) . '/../controllers/sns.php');
 
 /**
  * URL patterns and the associated controllers that are provided to the URL dispatcher.
@@ -25,6 +26,7 @@ $url_patterns = array (
     "#^/session/exit/$#" => session_exit,
     "#^/session/init/$#" => session_init,
     "#^/admin/session/list/$#" => admin_session_list,
+    "#^/sns/test/$#" => sns_test,
 
 );
 
