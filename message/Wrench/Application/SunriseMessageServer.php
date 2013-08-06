@@ -8,7 +8,7 @@ use Wrench\Application\NamedApplication;
 /**
  * Sunrise message server for signaling and chattting.
  */
-class SunriseSignalingApplication extends Application {
+class SunriseMessageServer extends Application {
     protected $clients = array();
     protected $config = null;
     protected $session_list = array();
