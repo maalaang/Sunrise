@@ -14,14 +14,14 @@
                 var email = document.getElementById('email').value;
                 var password = document.getElementById('password').value;
 
-                var email_pattern = /^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
-                var password_pattern = /^[a-zA-Z0-9]+$/;
+                var emailRegex = new RegExp(<?= sr_regex('email') ?>);
+                var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
 
-                if(!email_pattern.test(email)) {
+                if(!emailRegex.test(email)) {
                     alert('Check Email Form');
                     return false;
                 }
-                if(!password_pattern.test(password)) {
+                if(!passwordRegex.test(password)) {
                     alert('Check Password Form');
                     return false;
                 }

@@ -10,19 +10,19 @@
                 var password = document.getElementById('password').value;
                 var repeat_password = document.getElementById('repeat_password').value;
 
-                var name_pattern = /^[a-zA-Z]+$/;
-                var password_pattern = /^[a-zA-Z0-9]+$/;
-                var email_pattern = /^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+                var nameRegex = new RegExp(<?= sr_regex('name') ?>);
+                var emailRegex = new RegExp(<?= sr_regex('email') ?>);
+                var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
 
-                if(!name_pattern.test(first_name) || !name_pattern.test(last_name)) {
+                if(!nameRegex.test(first_name) || !nameRegex.test(last_name)) {
                     alert('Check Name Form');
                     return false;
                 }
-                if(!password_pattern.test(password)) {
+                if(!passwordRegex.test(password)) {
                     alert('Check Password Form');
                     return false;
                 }
-                if(!email_pattern.test(email)) {
+                if(!emailRegex.test(email)) {
                     alert('Check Email Form');
                     return false;
                 }
