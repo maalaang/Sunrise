@@ -29,11 +29,6 @@
                 document.signin_form.submit();
             }
         </script>
-        <style>
-            .jumbotron{
-                margin: 40px;
-            }
-        </style>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-fixed-top">
@@ -45,11 +40,21 @@
         <div class="container">
             <div class="jumbotron">
                 <label>Sign in</label> 
-                <form action="<?= $GLOBALS['sr_root'] ?>/controllers/signin.php" name="signin_form" id="signin_form" class="signin_form" method="post">
+                <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post">
                     <input type="text" id="email" name="email" placeholder="Email" /><br />
                     <input type="password" id="password" name="password" placeholder="Password" /><br />
                     <input type="button" id="button" name="button" value="Sign In" onclick="whenSubmit(event)" />
                 </form>
+                <div id="error">
+                    <?php
+                        if ($context['result'] !== 0) {
+                            echo $context['msg'];
+                        } else {
+                            // for test
+                            echo 'signin done';    
+                        }
+                    ?>
+                </div>
             </div>
         </div>
     </body>
