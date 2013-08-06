@@ -35,11 +35,7 @@ abstract class Model {
             $stmt->bindParam($index++, $this->$attr);
         }
 
-        try {
-            $stmt->execute();
-        } catch (PDOException $e) {
-            return '#' . $e->getCode();
-        }
+        $stmt->execute();
 
         $this->id = $db->lastInsertId();
 
@@ -112,7 +108,6 @@ abstract class Model {
 
         $table = $called_class::getTableName();
 
-//        $stmt = $db->prepare("DELETE FROM $table");
         $stmt = $db->prepare("TRUNCATE $table");
 
         $stmt->execute();

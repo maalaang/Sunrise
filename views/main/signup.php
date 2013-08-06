@@ -37,7 +37,7 @@
     </head>
     <body>
         <h1>Sign Up</h1>
-        <form action="<?= $GLOBALS['sr_root'] ?>/controllers/signup.php" name="signup_form" id="signup_form" method="post">
+        <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post">
             <input type="text" id="first_name" name="first_name" placeholder="First Name" />
             <input type="text" id="last_name" name="last_name" placeholder="Last Name" /><br />
             <input type="text" id="email" name="email" placeholder="Email" /><br />
@@ -45,5 +45,15 @@
             <input type="password" id="repeat_password" name="repeat_password" placeholder="Repeat Password" /><br />
             <input type="button" id="button" name="button" value="Sign Up" onclick="whenSubmit(event)" />
         </form>
+        <div id="error">
+            <?php
+                if ($context['result'] !== 0) {
+                    echo $context['msg'];
+                } else {
+                    // for test
+                    echo 'signup done';
+                }
+            ?>
+        </div>
     </body>
 </html>
