@@ -51,7 +51,7 @@
                     echo $context['msg'];
                 } else {
                     // for test
-                    echo 'signup done';
+                    echo 'Signup done';
                 }
             ?>
         </div>
