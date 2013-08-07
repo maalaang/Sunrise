@@ -38,7 +38,7 @@ function signin() {
                 if ($user == Null || $user == false) {
                     $context['result'] = 2;
                     $context['msg'] = 'Couldn\'t Find Email Address';
-                } else if ($user->password != $_POST['password']) {
+                } else if ($user->password != md5($_POST['password'])) {
                     $context['result'] = 3;
                     $context['msg'] = 'Wrong Password';
                 } else {
@@ -95,7 +95,7 @@ function signup() {
             $user->first_name = $_POST['first_name'];
             $user->last_name = $_POST['last_name'];
             $user->email = $_POST['email'];
-            $user->password = $_POST['password'];
+            $user->password = md5($_POST['password']);
             $user->is_authorized = 1;
             $user->join_date = Model::getCurrentTime();
             $user->last_active_date = Model::getCurrentTime();
