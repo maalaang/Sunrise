@@ -137,7 +137,9 @@ function signout() {
 
     if ($_SESSION['isLogged']) {
         $context['result'] = 0;
-        $context['msg'] = 'Email: ' . $_SESSION['email'] . '<br />Name: ' . $_SESSION['name'] . '<br />Successfully signed out';
+        $context['msg'] = 'Email: ' . $_SESSION['email'] .
+                    '<br />Name:' . $_SESSION['name'] .
+                    '<br />Successfully signed out';
 
         unset($_SESSION['isLogged']);
         unset($_SESSION['email']);
