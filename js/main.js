@@ -15,7 +15,7 @@ var msgQueue = [];
 // Set up audio and video regardless of what devices are present.
 var sdpConstraints = {'mandatory': {
     'OfferToReceiveAudio': true,
-        'OfferToReceiveVideo': true }};
+    'OfferToReceiveVideo': true }};
 var isVideoMuted = false;
 var isAudioMuted = false;
 
@@ -23,32 +23,34 @@ function initialize() {
     console.log('Initializing; room=' + roomName + '.');
     card = document.getElementById('card');
     localVideo = document.getElementById('localVideo');
+
     // Reset localVideo display to center.
-    localVideo.addEventListener('loadedmetadata', function(){
-            window.onresize();});
+    localVideo.addEventListener('loadedmetadata', function() {
+        window.onresize();
+    });
+
     miniVideo = document.getElementById('miniVideo');
     remoteVideo = document.getElementById('remoteVideo');
     resetStatus();
-    // NOTE: AppRTCClient.java searches & parses this line; update there when
-    // changing here.
-    openChannel();
+
+    connectMessageServer();
     maybeRequestTurn();
     doGetUserMedia();
+
     // Caller is always ready to create peerConnection.
     signalingReady = initiator;
 }
 
-function openChannel() {
-    console.log('Opening channel.');
+function connectMessageServer() {
+    console.log('Connect to Sunrise Message Server');
 
-    var host = "ws://dev.maalaang.com:8889/sunrise/message/";
     try {
-        socket = new WebSocket(host);
-        console.log('WebSocket - status '+ socket.readyState);
+        socket = new WebSocket(msgServer);
         socket.onopen    = onChannelOpened;
         socket.onmessage = onChannelMessage;
         socket.onclose   = onChannelClosed;
         socket.onerror   = onChannelError;
+
     } catch(ex) {
         console.log(ex);
     }
@@ -150,6 +152,7 @@ function createPeerConnection() {
     }
     pc.onaddstream = onRemoteStreamAdded;
     pc.onremovestream = onRemoteStreamRemoved;
+    pc.oniceconnectionstatechange = onIceConnectionStateChagne;
 }
 
 function maybeStart() {
@@ -159,8 +162,7 @@ function maybeStart() {
     console.log('channelReady: ' + channelReady);
     console.log('turnDone: ' + turnDone);
     turnDone = true;
-    if (!started && signalingReady &&
-            localStream && channelReady && turnDone) {
+    if (!started && signalingReady && localStream && channelReady && turnDone) {
         setStatus('Connecting...');
         console.log('Creating PeerConnection.');
         createPeerConnection();
@@ -241,8 +243,7 @@ function processSignalingMessage(message) {
             message.sdp = addStereo(message.sdp);
         pc.setRemoteDescription(new RTCSessionDescription(message));
     } else if (message.type === 'candidate') {
-        var candidate = new RTCIceCandidate({sdpMLineIndex: message.label,
-                candidate: message.candidate});
+        var candidate = new RTCIceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
         pc.addIceCandidate(candidate);
     } else if (message.type === 'bye') {
         onRemoteHangup();
@@ -328,8 +329,7 @@ function onUserMediaError(error) {
 }
 
 function onIceCandidate(event) {
-//    console.log('Skip onIceCandidate');
-//    return;
+    console.log('onIceCandidate()');
     if (event.candidate) {
         sendMessage({type: 'candidate',
                 label: event.candidate.sdpMLineIndex,
@@ -341,7 +341,7 @@ function onIceCandidate(event) {
 }
 
 function onRemoteStreamAdded(event) {
-    console.log('Remote stream added.');
+    console.log('onRemoteStreamAdded(): Remote stream added.');
     reattachMediaStream(miniVideo, localVideo);
     attachMediaStream(remoteVideo, event.stream);
     remoteStream = event.stream;
@@ -349,7 +349,17 @@ function onRemoteStreamAdded(event) {
 }
 
 function onRemoteStreamRemoved(event) {
-    console.log('Remote stream removed.');
+    console.log('onRemoteStreamRemoved(): Remote stream removed.');
+}
+
+function onIceConnectionStateChagne(event) {
+//    if (this.iceConnectionState == 'disconnected') {
+//    }
+    console.log('onIceConnectionStateChange()');
+    console.log('iceConnectionState = ' + this.iceConnectionState);
+//    printObject('pc', this);
+//    started = false;
+//    maybeStart();
 }
 
 function onHangup() {
@@ -368,6 +378,7 @@ function onRemoteHangup() {
 }
 
 function stop() {
+    console.log('stop()');
     started = false;
     signalingReady = false;
     isAudioMuted = false;
@@ -598,14 +609,12 @@ function removeCN(sdpLines, mLineIndex) {
     return sdpLines;
 }
 
-// Send BYE on refreshing(or leaving) a demo page
-// to ensure the room is cleaned for next session.
 window.onbeforeunload = function() {
     sendMessage({type: 'bye'});
 }
 
 // Set the video diplaying in the center of window.
-window.onresize = function(){
+window.onresize = function() {
     var aspectRatio;
     if (remoteVideo.style.opacity === '1') {
         aspectRatio = remoteVideo.videoWidth/remoteVideo.videoHeight;
@@ -626,4 +635,15 @@ window.onresize = function(){
     containerDiv.style.height = videoHeight + 'px';
     containerDiv.style.left = (innerWidth - videoWidth) / 2 + 'px';
     containerDiv.style.top = (innerHeight - videoHeight) / 2 + 'px';
-};
+}
+
+// for debuging
+function printObject(name, obj) {
+    console.log(name + '=');
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            console.log(name + '.' + key + '=' + obj[key]);
+        }
+    }
+}
+

@@ -26,33 +26,60 @@ class SunriseMessageServer extends Application {
     }
 
     public function onData($data, $client) {
-        $msg = json_decode($data);
+        try {
+            $msg = json_decode($data);
 
-        switch ($msg->type) {
-        case 'session':
-            $this->processSessionMessage($data, $client, $msg);
-            break;
-        case 'chat':
-            $this->processChatMessage($data, $client, $msg);
-            break;
-        case 'bye':
-            $this->onDisconnect($client);
-            break;
-        case 'debug':
-            $this->printStatus();
-        default:
-            $this->processSignalingMessage($data, $client, $msg);
-            break;
+            switch ($msg->type) {
+            case 'session':
+                $this->processSessionMessage($data, $client, $msg);
+                break;
+            case 'chat':
+                $this->processChatMessage($data, $client, $msg);
+                break;
+            case 'bye':
+                $this->onDisconnect($client);
+                break;
+            case 'debug':
+                $this->printStatus();
+            default:
+                $this->processSignalingMessage($data, $client, $msg);
+                break;
+            }
+        } catch (Exception $e) {
+            $client->log('onData(): ' . $e, 'err');
         }
     }
 
     public function onDisconnect($client) {
-        if (($key = array_search($client, $this->clients)) !== false) {
-            if ($client->getParticipantId() !== null) {
-                $this->exitSession($client);
+        $msg = array();
+        $msg['type'] = 'bye';
+        $msg['participant_id'] = $client->getParticipantId();
+        $msg_json = json_encode($msg);
+
+        if (isset($this->session_list[$client->getSessionId()])) {
+            foreach ($this->session_list[$client->getSessionId()] as $key => $sendto) {
+                try {
+                    if ($sendto === $client) {
+                        $this->removeClient($client, $key);
+                    } else {
+                        $sendto->send($msg_json);
+                    }
+                } catch (Exception $e) {
+                    $client->log('Data send failed: ' . $e, 'err');
+                }
             }
-            unset($this->clients[$key]);
+        } else {
+            if (($key = array_search($client, $this->clients)) !== false) {
+                $this->removeClient($client, $key);
+            }
         }
+    }
+
+    public function removeClient($client, $key) {
+        if ($client->getParticipantId() !== null) {
+            $this->exitSession($client);
+        }
+        unset($this->clients[$key]);
     }
 
     private function processChatMessage($data, $client, $msg) {
@@ -193,10 +220,11 @@ class SunriseMessageServer extends Application {
         $this->sendRequestAsync($url, $params, 'POST');
 
         // remove this client from the session
-        unset($this->session_list[$client->getSessionId()][$client->getParticipantId()]);
+        $session = $this->session_list[$client->getSessionid()];
+        unset($session[$client->getParticipantId()]);
 
-        // there's no one in the session
-        if (count($this->session_list[$client->getSessionId()]) == 0) {
+        if (count($session) == 0) {
+            // close the session if there's no one in it
             $this->closeSession($client);
         }
 
