@@ -43,7 +43,9 @@
                 <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post">
                     <input type="text" id="email" name="email" placeholder="Email" /><br />
                     <input type="password" id="password" name="password" placeholder="Password" /><br />
-                    <input type="button" id="button" name="button" value="Sign In" onclick="whenSubmit(event)" />
+                    <input type="button" id="signin" name="signin" value="Sign In" onclick="whenSubmit(event)" />
+                    <!-- For sign out test -->
+                    <a href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/"><input type="button" value="Sign Out"></a>
                 </form>
                 <div id="error">
                     <?php

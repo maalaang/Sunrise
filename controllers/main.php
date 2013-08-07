@@ -25,7 +25,6 @@ function signin() {
             $context['result'] = 5;
             $context['msg'] = 'Invalid Password';
         } else {
-            // TODO: Session Administration
             try {
                 $db = sr_pdo();
 
@@ -44,12 +43,18 @@ function signin() {
                     $context['msg'] = 'Wrong Password';
                 } else {
                     $context['result'] = 0;
-                    $context['msg'] = 'Successfully signined';
+                    $context['msg'] = 'Successfully signed in';
+
+                    // Successfully signed in & Session start
+                    session_start();
+                    $_SESSION['isLogged'] = true;
+                    $_SESSION['email'] = $user->email;
+                    $_SESSION['name'] = $user->first_name . ' ' . $user->last_name;
                 }
 
             } catch (PDOException $e) {
                 $context['result'] = 1;
-                $context['msg'] = 'Failed to signip. Please try it again.';
+                $context['msg'] = 'Failed to signin. Please try it again.';
             }
         }
         // TODO: What page will be shown up after signin?
@@ -123,6 +128,30 @@ function signup() {
         // Show signup view
         sr_response('views/main/signup.php', null);
     }
+}
+
+
+function signout() {
+    session_start();
+    $context = array();
+
+    if ($_SESSION['isLogged']) {
+        $context['result'] = 0;
+        $context['msg'] = 'Email: ' . $_SESSION['email'] . '<br />Name: ' . $_SESSION['name'] . '<br />Successfully signed out';
+
+        unset($_SESSION['isLogged']);
+        unset($_SESSION['email']);
+        unset($_SESSION['name']);
+        session_destroy();
+
+    } else {
+        $context['result'] = 1;
+        $context['msg'] = 'You were not signed in';
+    }
+
+    // TODO: What page will be shown up after signout?
+    // Show signout result
+    sr_response('views/main/signout.php', $context);
 }
 
 ?>
