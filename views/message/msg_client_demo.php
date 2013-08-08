@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Sunrise - WebSocket Client Test</title>
+<title>Sunrise - WebSocket Client Demo</title>
 
 <style>
 html,body {
@@ -19,7 +19,7 @@ html,body {
 
 <script>
 var socket;
-var host = "ws://dev.maalaang.com:8889/echo";
+var host = "ws://dev.maalaang.com:8890/broadcast";
 
 function init() {
     try {

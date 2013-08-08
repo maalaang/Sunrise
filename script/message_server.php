@@ -28,7 +28,7 @@ $config['session_api_close'] = $sr_msg_session_api_close;
 $config['session_api_join'] = $sr_msg_session_api_join;
 $config['session_api_exit'] = $sr_msg_session_api_exit;
 
-$server->registerApplication('sunrise/message/', new \Wrench\Application\SunriseSignalingApplication($config));
+$server->registerApplication('sunrise/message/', new \Wrench\Application\SunriseMessageServer($config));
 $server->run();
 
 ?>

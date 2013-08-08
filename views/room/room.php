@@ -28,6 +28,7 @@ var roomName = '<?= $context['session']->name ?>';
 var userName = '<?= $context['participant']->name ?>';
 var userId = '<?= $context['participant']->user_id ?>';
 var isRegisteredUser = 0;
+var msgServer = "ws://dev.maalaang.com:8889/sunrise/message/";
 
 setTimeout(initialize, 1);
 

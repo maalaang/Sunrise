@@ -64,4 +64,17 @@ function sr_current_url() {
     return $url;
 }
 
+/**
+ * Return regular expression for validation.
+ * @param type  the type of the form 
+ * @return regular expression 
+ */
+function sr_regex($type) {
+    switch ($type) {
+    case 'name'     : return $GLOBALS['sr_regex_name'];
+    case 'email'    : return $GLOBALS['sr_regex_email'];
+    case 'password' : return $GLOBALS['sr_regex_password'];
+    }
+}
+
 ?>
