@@ -14,6 +14,7 @@ $sr_db_charset      = 'utf8';
  */
 $sr_root        = '/workspace/husky/Sunrise';
 
+
 /**
  * Message server configuration.
  */
