@@ -40,12 +40,18 @@
         </script>
         <style>
             #signup-form{
-            width:300px;
-            margin:40px auto;
-            text-align:left;
+                width:300px;
+                margin:100px auto;
+                text-align:left;
+            }
+            #footer{
+                bottom:0;
+                position:fixed;            
+                width:100%;
             }
         </style>
     </head>
+
     <body>
         <div class="header">
             <div class="navbar navbar-inverse navbar-fixed-top">
@@ -97,6 +103,16 @@
                     echo 'Signup done';
                 }
             ?>
+        </div>
+        <div id="footer">
+            <div class="container" align="center">
+                <p>
+                    <a href="#" class="foot_link">Privacy Policy</a>
+                    <a href="#" class="foot_link">About Sunrise</a>
+                    <a href="#" class="foot_link">Admin Page</a>
+                    <a href="#" class="foot_link_right">Powered by Sunrise</a>
+                </p>
+            </div>
         </div>
     </body>
 </html>
