@@ -10,23 +10,23 @@ $sr_db_password     = 'sunrisedb3533';
 $sr_db_charset      = 'utf8';
 
 /**
- * Sunrise VC home directory from the web server root.
- */
-$sr_root        = '/workspace/husky/Sunrise';
+ *  * Sunrise VC home directory from the web server root.
+ *   */
+$sr_root        = '/workspace/blackhat/Sunrise';
 
 /**
- * Message server configuration.
- */
-$sr_msg_session_server          = 'http://localhost' . $sr_root;
-$sr_msg_session_api_open        = '/d/session/open/';
-$sr_msg_session_api_close       = '/d/session/close/';
-$sr_msg_session_api_join        = '/d/session/join/';
-$sr_msg_session_api_exit        = '/d/session/exit/';
-$sr_msg_session_api_init        = '/d/session/init/';
+ *  * Message server configuration.
+ *   */
+$sr_rest_server                 = 'http://localhost' . $sr_root;
+$sr_rest_room_open              = '/d/room/open/';
+$sr_rest_room_close             = '/d/room/close/';
+$sr_rest_room_join              = '/d/room/join/';
+$sr_rest_room_exit              = '/d/room/exit/';
+$sr_rest_room_init              = '/d/room/init/';
 
 /**
- * Regular expressions for validation.
- */
+ *  * Regular expressions for validation.
+ *   */
 $sr_regex_name      = '/^[a-zA-Z]+$/';
 $sr_regex_email     = '/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/';
 $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
