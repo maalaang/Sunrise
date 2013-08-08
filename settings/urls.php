@@ -22,9 +22,10 @@ $url_patterns = array (
     "#^/room/exit/$#" => room_exit,
     "#^/room/close/$#" => room_close,
     "#^/room/init/$#" => room_init,
+    "#^/admin/$#" => admin,
+    "#^/admin/room/list/$#" => admin_room_list,
     "#^/lobby/$#" => lobby,
     "#^/message/demo/$#" => message_demo,
-    "#^/admin/room/list/$#" => admin_room_list,
     "#^/sns/test/$#" => sns_test,
 );
 
