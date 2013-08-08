@@ -1,6 +1,6 @@
 <?php
 
-require_once (dirname(__FILE__) . '/../models/session.php');
+require_once (dirname(__FILE__) . '/../models/room.php');
 require_once (dirname(__FILE__) . '/../settings/config.php');
 
 /**

@@ -3,43 +3,43 @@
 require_once (dirname(__FILE__) . '/model.php');
 
 /**
- * A video conference room session.
+ * A video conference room.
  */
-class Session extends Model {
+class Room extends Model {
     /** Primary key */
     public $id;
 
-    /** Session name. Unique */
+    /** Room name. Unique */
     public $name;
 
-    /** Session title */
+    /** Room title */
     public $title;
 
-    /** Session description */
+    /** Room description */
     public $description;
 
-    /** Start time of this session */
+    /** Start time of this room */
     public $start_time;
 
     /** Password */
     public $password;
 
-    /** Flag for public or private session */
+    /** Flag for public or private room */
     public $is_open;
 
-    public function open_session($db) {
+    public function open($db) {
         $this->add($db);
     }
 
-    public function close_session($db) {
+    public function close($db) {
         $this->delete($db);
     }
 
-    public function generate_token() {
+    public function generateToken() {
         return md5($this->id . 'sunrise' . $this->name);
     }
 
-    public function validate_token($token) {
+    public function validateToken($token) {
         if ($token == md5($this->id . 'sunrise' . $this->name)) {
             return True;
         } else {

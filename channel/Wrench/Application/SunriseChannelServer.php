@@ -6,12 +6,12 @@ use Wrench\Application\Application;
 use Wrench\Application\NamedApplication;
 
 /**
- * Sunrise message server for signaling and chattting.
+ * Sunrise channel server for signaling and chattting.
  */
-class SunriseMessageServer extends Application {
+class SunriseChannelServer extends Application {
     protected $clients = array();
     protected $config = null;
-    protected $session_list = array();
+    protected $room_list = array();
 
     public function __construct($config) {
         $this->config = $config;
@@ -30,8 +30,8 @@ class SunriseMessageServer extends Application {
             $msg = json_decode($data);
 
             switch ($msg->type) {
-            case 'session':
-                $this->processSessionMessage($data, $client, $msg);
+            case 'room':
+                $this->processRoomMessage($data, $client, $msg);
                 break;
             case 'chat':
                 $this->processChatMessage($data, $client, $msg);
@@ -56,8 +56,8 @@ class SunriseMessageServer extends Application {
         $msg['participant_id'] = $client->getParticipantId();
         $msg_json = json_encode($msg);
 
-        if (isset($this->session_list[$client->getSessionId()])) {
-            foreach ($this->session_list[$client->getSessionId()] as $key => $sendto) {
+        if (isset($this->room_list[$client->getRoomId()])) {
+            foreach ($this->room_list[$client->getRoomId()] as $key => $sendto) {
                 try {
                     if ($sendto === $client) {
                         $this->removeClient($client, $key);
@@ -77,7 +77,7 @@ class SunriseMessageServer extends Application {
 
     public function removeClient($client, $key) {
         if ($client->getParticipantId() !== null) {
-            $this->exitSession($client);
+            $this->exitRoom($client);
         }
         unset($this->clients[$key]);
     }
@@ -95,30 +95,30 @@ class SunriseMessageServer extends Application {
     }
 
     private function printStatus() {
-        foreach ($this->session_list as $session_id => $clients) {
-            echo "session_id:" . $session_id . "\n";
+        foreach ($this->room_list as $room_id => $clients) {
+            echo "room_id:" . $room_id . "\n";
             foreach ($clients as $c) {
                 echo "\t" . $c->getParticipantId() . "\n";
             }
         }
     }
 
-    private function processSessionMessage($data, $client, $msg) {
+    private function processRoomMessage($data, $client, $msg) {
         switch ($msg->subtype) {
         case 'join':
-            $client->log('Session Join: ' . $msg->user_name);
-            $this->joinSession($msg, $client);
+            $client->log('Room Join: ' . $msg->user_name);
+            $this->joinRoom($msg, $client);
             break;
         case 'exit':
-            $client->log('Session Exit: ' . $msg->user_name);
-            $this->exitSession($client);
+            $client->log('Room Exit: ' . $msg->user_name);
+            $this->exitRoom($client);
             break;
         }
 
     }
 
     private function processSignalingMessage($data, $client, $msg) {
-        foreach ($this->session_list[$client->getSessionId()] as $sendto) {
+        foreach ($this->room_list[$client->getRoomId()] as $sendto) {
             if ($sendto !== $client) {
                 $sendto->send($data);
             }
@@ -163,13 +163,13 @@ class SunriseMessageServer extends Application {
         fclose($fp);
     }
 
-    private function joinSession($msg, $client) {
-        global $sr_msg_session_server;
-        global $sr_msg_session_api_join;
+    private function joinRoom($msg, $client) {
+        global $sr_rest_server;
+        global $sr_rest_room_join;
 
         if ($client->getParticipantId() !== null) {
             $response = array();
-            $response['type'] = 'session';
+            $response['type'] = 'room';
             $response['subtype'] = 'join';
             $response['result'] = 1;
             $response['msg'] = 'You are in the other room. Please close the other room before joining to a new room';
@@ -177,11 +177,11 @@ class SunriseMessageServer extends Application {
             return;
         }
 
-        // send session join request to the Sunrise VC server
+        // send room join request to the Sunrise VC server
         /*
-        $url = $sr_msg_session_server . $sr_msg_session_api_join;
+        $url = $sr_rest_server . $sr_rest_room_join;
         $params = array();
-        $params['session_id'] = $msg->session_id;
+        $params['room_id'] = $msg->room_id;
         $params['is_registered_user'] = $msg->is_registered_user;
         $params['user_name'] = $msg->user_name;
         $params['user_id'] = $msg->user_id;
@@ -190,19 +190,19 @@ class SunriseMessageServer extends Application {
         $this->sendRequestAsync($url, $params, 'POST');
         */
 
-        // store session information
-        $client->setSessionId($msg->session_id);
+        // store room information
+        $client->setRoomId($msg->room_id);
         $client->setParticipantId($msg->participant_id);
 
-        if (isset($this->session_list[$msg->session_id])) {
-            $this->session_list[$msg->session_id][] = $client;
+        if (isset($this->room_list[$msg->room_id])) {
+            $this->room_list[$msg->room_id][] = $client;
         } else {
-            $this->session_list[$msg->session_id] = array($msg->participant_id => $client);
+            $this->room_list[$msg->room_id] = array($msg->participant_id => $client);
         }
 
         // send response
         $response = array();
-        $response['type'] = 'session';
+        $response['type'] = 'room';
         $response['subtype'] = 'join';
         $response['result'] = 0;
 
@@ -210,55 +210,55 @@ class SunriseMessageServer extends Application {
 
     }
 
-    private function exitSession($client) {
-        global $sr_msg_session_server;
-        global $sr_msg_session_api_exit;
+    private function exitRoom($client) {
+        global $sr_rest_server;
+        global $sr_rest_room_exit;
 
-        // send session exit request to the Sunrise VC server
-        $url = $sr_msg_session_server . $sr_msg_session_api_exit;
+        // send room exit request to the Sunrise VC server
+        $url = $sr_rest_server . $sr_rest_room_exit;
         $params['participant_id'] = $client->getParticipantId();
         $this->sendRequestAsync($url, $params, 'POST');
 
-        // remove this client from the session
-        $session = $this->session_list[$client->getSessionid()];
-        unset($session[$client->getParticipantId()]);
+        // remove this client from theroom 
+        $room = $this->room_list[$client->getRoomid()];
+        unset($room[$client->getParticipantId()]);
 
-        if (count($session) == 0) {
-            // close the session if there's no one in it
-            $this->closeSession($client);
+        if (count($room) == 0) {
+            // close the room if there's no one in it
+            $this->closeRoom($client);
         }
 
         // send response
         $response = array();
-        $response['type'] = 'session';
+        $response['type'] = 'room';
         $response['subtype'] = 'exit';
         $response['result'] = 0;
 
         $client->send(json_encode($response));
 
         // close the connection
-        $client->setSessionId(null);
+        $client->setRoomId(null);
         $client->setParticipantId(null);
     }
 
-    private function closeSession($client) {
-        global $sr_msg_session_server;
-        global $sr_msg_session_api_close;
+    private function closeRoom($client) {
+        global $sr_rest_server;
+        global $sr_rest_room_close;
 
-        unset($this->session_list[$client->getSessionId()]);
+        unset($this->room_list[$client->getRoomId()]);
 
-        $url = $sr_msg_session_server . $sr_msg_session_api_close;
+        $url = $sr_rest_server . $sr_rest_room_close;
 
-        $params['session_id'] = $client->getSessionId();
+        $params['room_id'] = $client->getRoomId();
         $this->sendRequestAsync($url, $params, 'POST');
     }
 
     private function initDatabase() {
-        global $sr_msg_session_server;
-        global $sr_msg_session_api_init;
+        global $sr_rest_server;
+        global $sr_rest_room_init;
 
-        // send message to initialize database for session information
-        $url = $sr_msg_session_server . $sr_msg_session_api_init;
+        // send message to initialize database for room information
+        $url = $sr_rest_server . $sr_rest_room_init;
         $this->sendRequestAsync($url, null, 'POST');
     }
 }

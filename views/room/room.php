@@ -14,8 +14,8 @@
 
 <body>
 <script type="text/javascript">
-var sessionToken = '<?= $context['session']->generate_token() ?>';
-var sessionId = '<?= $context['session']->id ?>';
+var roomToken = '<?= $context['room']->generateToken() ?>';
+var roomId = '<?= $context['room']->id ?>';
 var participantId = '<?= $context['participant']->id ?>';
 var roomLink = '<?= $context['room_link'] ?>';
 var initiator = <?= $context['initiator'] ?>;
@@ -24,11 +24,11 @@ var pcConstraints = {"optional": [{"DtlsSrtpKeyAgreement": true}]};
 var offerConstraints = {"optional": [], "mandatory": {}};
 var mediaConstraints = {"audio": true, "video": {"mandatory": {}, "optional": []}};
 var stereo = false;
-var roomName = '<?= $context['session']->name ?>';
+var roomName = '<?= $context['room']->name ?>';
 var userName = '<?= $context['participant']->name ?>';
 var userId = '<?= $context['participant']->user_id ?>';
 var isRegisteredUser = 0;
-var msgServer = "ws://dev.maalaang.com:8889/sunrise/message/";
+var msgServer = "ws://dev.maalaang.com:8889/sunrise/channel/";
 
 setTimeout(initialize, 1);
 

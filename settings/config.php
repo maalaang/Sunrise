@@ -12,17 +12,17 @@ $sr_db_charset      = 'utf8';
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/husky/Sunrise';
+$sr_root        = '/workspace/blackhat/Sunrise';
 
 /**
  * Message server configuration.
  */
-$sr_msg_session_server          = 'http://localhost' . $sr_root;
-$sr_msg_session_api_open        = '/d/session/open/';
-$sr_msg_session_api_close       = '/d/session/close/';
-$sr_msg_session_api_join        = '/d/session/join/';
-$sr_msg_session_api_exit        = '/d/session/exit/';
-$sr_msg_session_api_init        = '/d/session/init/';
+$sr_rest_server                 = 'http://localhost' . $sr_root;
+$sr_rest_room_open              = '/d/room/open/';
+$sr_rest_room_close             = '/d/room/close/';
+$sr_rest_room_join              = '/d/room/join/';
+$sr_rest_room_exit              = '/d/room/exit/';
+$sr_rest_room_init              = '/d/room/init/';
 
 /**
  * Regular expressions for validation.

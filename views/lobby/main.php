@@ -9,7 +9,7 @@
             var params = {};
             params['name'] = $("#room_name").val();
 
-            $.post('<?= $GLOBALS['sr_root'] ?>/d/session/open/', arams, function(data) {
+            $.post('<?= $GLOBALS['sr_root'] ?>/d/room/open/', arams, function(data) {
                 if (data.result == 0) {
                     // a room is created. move to the room
                     window.location.replace('<?= $GLOBALS['sr_root'] ?>/d/room/?name=' + encodeURIComponent(data.name));

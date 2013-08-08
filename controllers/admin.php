@@ -1,21 +1,21 @@
 <?php
 
 /**
- * Display session list.
+ * Display room list.
  */
-function admin_session_list() {
+function admin_room_list() {
     $db = sr_pdo();
 
-    $stmt = $db->prepare('SELECT * FROM session');
+    $stmt = $db->prepare('SELECT * FROM room');
     $stmt->execute();
 
-    $session_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Session');
+    $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
 
     $context = array(
-        'session_list' => $session_list,
+        'room_list' => $room_list,
     );
 
-    sr_response('views/admin/session/session_list.php', $context);
+    sr_response('views/admin/room/room_list.php', $context);
 }
 
 ?>
