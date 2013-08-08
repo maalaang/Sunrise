@@ -36,58 +36,50 @@
                                 <a href="#">Dashboard</a>
                             </li>
                             <li class="dropdown">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Settings <b class="caret"></b></a>
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Sessions<b class="caret"></b></a>
                                 <ul class="dropdown-menu" id="menu1">
                                     <li>
                                         <a href="#">Tools<i class="icon-arrow-right"></i></a>
                                     </li>
                                     <li>
-                                        <a href="#">SEO Settings</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Other Link</a>
+                                        <a href="#">Status</a>
                                     </li>
                                     <li class="divider"></li>
-                                    <li>
-                                        <a href="#">Other Link</a>
-                                    </li>
                                     <li>
                                         <a href="#">Other Link</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Content <i class="caret"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a tabindex="-1" href="#">Blog</a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="#">News</a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="#">Custom Pages</a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="#">Calendar</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a tabindex="-1" href="#">FAQ</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Users <i class="caret"></i></a>
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Users<i class="caret"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a tabindex="-1" href="#">User List</a>
                                     </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a tabindex="-1" href="#">Custom Pages</a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="#">Custom Pages</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Settings<i class="caret"></i></a>
+                                <ul class="dropdown-menu">
                                     <li>
                                         <a tabindex="-1" href="#">Search</a>
                                     </li>
+                                    <li class="divider"></li>
+                                    <li>
+                                        <a tabindex="-1" href="#">Calendar</a>
+                                    </li>
                                     <li>
                                         <a tabindex="-1" href="#">Permissions</a>
+                                    </li>
+                                    <li>
+                                        <a tabindex="-1" href="#">FAQ</a>
                                     </li>
                                 </ul>
                             </li>
@@ -118,47 +110,34 @@
                 </div>
                 <div class="span9" id="content">
 
-                    <!-- morris graph chart -->
+                    <!-- Graph 1 -->
                     <div class="row-fluid section">
-                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
                                 <div class="muted pull-left">Morris.js <small>Monthly growth</small></div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span>
-
-                                </div>
+                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
-                                    <div id="hero-graph" style="height: 230px;"></div>
+                                    <div id="hero-graph-1" style="height: 230px;"></div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /block -->
                     </div>
 
-                    <!-- morris bar & donut charts -->
+                    <!-- Graph 2 -->
                     <div class="row-fluid section">
-                         <!-- block -->
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Morris.js</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span>
-
-                                </div>
+                                <div class="muted pull-left">Morris.js <small>Monthly growth</small></div>
+                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
                             </div>
                             <div class="block-content collapse in">
-                                <div class="span6 chart">
-                                    <h5>Devices sold</h5>
-                                    <div id="hero-bar" style="height: 250px;"></div>
-                                </div>
-                                <div class="span5 chart">
-                                    <h5>Month traffic</h5>
-                                    <div id="hero-donut" style="height: 250px;"></div>    
+                                <div class="span12">
+                                    <div id="hero-graph-2" style="height: 230px;"></div>
                                 </div>
                             </div>
                         </div>
-                        <!-- /block -->
                     </div>
 
                 </div>
@@ -178,41 +157,8 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
 
-        // Morris Bar Chart
-        Morris.Bar({
-            element: 'hero-bar',
-            data: [
-                {device: '1', sells: 136},
-                {device: '3G', sells: 1037},
-                {device: '3GS', sells: 275},
-                {device: '4', sells: 380},
-                {device: '4S', sells: 655},
-                {device: '5', sells: 1571}
-            ],
-            xkey: 'device',
-            ykeys: ['sells'],
-            labels: ['Sells'],
-            barRatio: 0.4,
-            xLabelMargin: 10,
-            hideHover: 'auto',
-            barColors: ["#3d88ba"]
-        });
-
-        // Morris Donut Chart
-        Morris.Donut({
-            element: 'hero-donut',
-            data: [
-                {label: 'Direct', value: 25 },
-                {label: 'Referrals', value: 40 },
-                {label: 'Search engines', value: 25 },
-                {label: 'Unique visitors', value: 10 }
-            ],
-            colors: ["#30a1ec", "#76bdee", "#c4dafe"],
-            formatter: function (y) { return y + "%" }
-        });
-
-        // Morris Line Chart
-        var tax_data = [
+        // Graph 1
+        var tax_data_1 = [
             {"period": "2013-04", "visits": 2407, "signups": 660},
             {"period": "2013-03", "visits": 3351, "signups": 729},
             {"period": "2013-02", "visits": 2469, "signups": 1318},
@@ -223,8 +169,28 @@
             {"period": "2012-09", "visits": 2245, "signups": 500}
         ];
         Morris.Line({
-            element: 'hero-graph',
-            data: tax_data,
+            element: 'hero-graph-1',
+            data: tax_data_1,
+            xkey: 'period',
+            xLabels: "month",
+            ykeys: ['visits', 'signups'],
+            labels: ['Visits', 'User signups']
+        });
+
+        // Graph 2
+        var tax_data_2 = [
+            {"period": "2013-04", "visits": 2407, "signups": 660},
+            {"period": "2013-03", "visits": 3351, "signups": 729},
+            {"period": "2013-02", "visits": 2469, "signups": 1318},
+            {"period": "2013-01", "visits": 2246, "signups": 461},
+            {"period": "2012-12", "visits": 3171, "signups": 1676},
+            {"period": "2012-11", "visits": 2155, "signups": 681},
+            {"period": "2012-10", "visits": 1226, "signups": 620},
+            {"period": "2012-09", "visits": 2245, "signups": 500}
+        ];
+        Morris.Line({
+            element: 'hero-graph-2',
+            data: tax_data_2,
             xkey: 'period',
             xLabels: "month",
             ykeys: ['visits', 'signups'],
