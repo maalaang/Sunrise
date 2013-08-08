@@ -10,13 +10,7 @@
 
     <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css" rel="stylesheet">
     <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
-    <style>
-        .jumbotron{
-            margin: 40px;
-        }
-
-
-    </style>
+    <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet">
   </head>
 
   <body>
@@ -76,17 +70,24 @@
         </div>
         <hr>
 
-        <footer>
-            <div class="foot_link" style="margin:0 10px 0 0;">
-                <span><a href="#" ><ins>Privacy Policy</ins></a></span>
-                <span><a href="#" ><ins>About Sunrise</ins></a></span>
-                <span><a href="#" ><ins>Admin Page</ins></a></span>
-                <span><a href="#" class="foot_policy" style="float: right;"><ins>Privacy Policy</ins></a></span>
-            </div>
-        </footer>
+       <!-- <footer>
+            <span><a href="#" class="foot_link"><ins>Privacy Policy</ins></a></span>
+            <span><a href="#" class="foot_link"><ins>About Sunrise</ins></a></span>
+            <span><a href="#" class="foot_link"><ins>Admin Page</ins></a></span>
+            <span><a href="#" class="foot_link_right"><ins>Powered by Sunrise</ins></a></span>
+        </footer>-->
       </div>
 
     </div> <!-- /container -->
 
-  </body>
+    </body>
+
+    <footer>
+        <div class="container">
+            <span><a href="#" class="foot_link"><ins>Privacy Policy</ins></a></span>
+            <span><a href="#" class="foot_link"><ins>About Sunrise</ins></a></span>
+            <span><a href="#" class="foot_link"><ins>Admin Page</ins></a></span>
+            <span><a href="#" class="foot_link_right"><ins>Powered by Sunrise</ins></a></span>
+        </div>
+    </footer>
 </html>
