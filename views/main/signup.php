@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css">
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css">
+
         <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script>
             function whenSubmit(e) {
@@ -34,17 +38,56 @@
                 document.signup_form.submit();
             }
         </script>
+        <style>
+            #signup-form{
+            width:300px;
+            margin:40px auto;
+            text-align:left;
+            }
+        </style>
     </head>
     <body>
-        <h1>Sign Up</h1>
-        <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post">
-            <input type="text" id="first_name" name="first_name" placeholder="First Name" />
-            <input type="text" id="last_name" name="last_name" placeholder="Last Name" /><br />
-            <input type="text" id="email" name="email" placeholder="Email" /><br />
-            <input type="password" id="password" name="password" placeholder="Password" /><br />
-            <input type="password" id="repeat_password" name="repeat_password" placeholder="Repeat Password" /><br />
-            <input type="button" id="button" name="button" value="Sign Up" onclick="whenSubmit(event)" />
-        </form>
+        <div class="header">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <a class="navbar-brand" href="#">Sunrise</a>
+                    <div class="nav-collapse collapse">
+                        <form class="navbar-form form-inline pull-right">
+                            <input type="text" placeholder="Email" class="form-control">
+                            <input type="password" placeholder="Password" class="form-control">
+                            <button type="submit" class="btn" id="btn_in">Sign In</button>
+                            <button type="submit" class="btn" id="btn_up">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="signup-form">
+            <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post">
+                <fieldset>
+                    <legend>Sign Up</legend>
+                    <table>
+                        <tr>
+                            <td><input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" /></td>
+                            <td><input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name" /></td>
+                        </tr>
+                        <tr>
+                             <td colspan="2"><input type="text" class="form-control" id="email" name="email" placeholder="Email" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="password" class="form-control" id="password" name="password" placeholder="Password" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="password" class="form-control"id="repeat_password" name="repeat_password" placeholder="Repeat Password" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input type="button" class="btn btn-primary" id="button" name="button" style="width:300px;"value="Sign Up" onclick="whenSubmit(event)" /></td>
+                        </tr>
+                    </table>
+                </fieldset>
+            </form>
+        </div>
         <div id="error">
             <?php
                 if ($context['result'] !== 0) {
