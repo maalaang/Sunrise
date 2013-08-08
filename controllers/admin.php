@@ -1,5 +1,9 @@
 <?php
 
+function admin() {
+    sr_response('views/admin/dashboard.php', null);
+}
+
 /**
  * Display session list.
  */

@@ -26,8 +26,9 @@ $url_patterns = array (
     "#^/session/join/$#" => session_join,
     "#^/session/exit/$#" => session_exit,
     "#^/session/init/$#" => session_init,
+    "#^/admin/$#" => admin,
     "#^/admin/session/list/$#" => admin_session_list,
-    "#^/sns/test/$#" => sns_test,
+    "#^/sns/test/$#" => sns_test
 
 );
 
