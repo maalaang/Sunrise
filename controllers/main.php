@@ -18,10 +18,10 @@ function signin() {
         $user = new User();
         $context = array();
 
-        if (!preg_match($sr_regex_email, $_POST['email'])) {
+        if (!preg_match($sr_regex_email, $_POST['signin_email'])) {
             $context['result'] = 4;
             $context['msg'] = 'Invalid Email Adress';
-        } else if (!preg_match($sr_regex_password, $_POST['password'])) {
+        } else if (!preg_match($sr_regex_password, $_POST['signin_password'])) {
             $context['result'] = 5;
             $context['msg'] = 'Invalid Password';
         } else {
@@ -29,7 +29,7 @@ function signin() {
                 $db = sr_pdo();
 
                 $stmt = $db->prepare('SELECT * FROM user WHERE email = :email');
-                $stmt->bindParam(':email', $_POST['email']);
+                $stmt->bindParam(':email', $_POST['signin_email']);
                 $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
                 $stmt->execute();
 
@@ -38,7 +38,7 @@ function signin() {
                 if ($user == Null || $user == false) {
                     $context['result'] = 2;
                     $context['msg'] = 'Couldn\'t Find Email Address';
-                } else if ($user->password != md5($_POST['password'])) {
+                } else if ($user->password != md5($_POST['signin_password'])) {
                     $context['result'] = 3;
                     $context['msg'] = 'Wrong Password';
                 } else {
@@ -77,10 +77,10 @@ function signup() {
         $user = new User();
         $context = array();
 
-        if (!preg_match($sr_regex_email, $_POST['email'])) {
+        if (!preg_match($sr_regex_email, $_POST['signup_email'])) {
             $context['result'] = 3;
             $context['msg'] = 'Invalid Email Adress';
-        } else if (!preg_match($sr_regex_password, $_POST['password'])) {
+        } else if (!preg_match($sr_regex_password, $_POST['signup_password'])) {
             $context['result'] = 4;
             $context['msg'] = 'Invalid Password';
         } else if (!preg_match($sr_regex_name, $_POST['first_name'])) {
@@ -89,13 +89,16 @@ function signup() {
         } else if (!preg_match($sr_regex_name, $_POST['last_name'])) {
             $context['result'] = 6;
             $context['msg'] = 'Invalid Name';
+        } else if ($_POST['signup_password'] != $_POST['repeat_password']) {
+            $context['result'] = 7;
+            $context['msg'] = 'Check Repeat Password';
         } else {
 
             //TODO: Manage is_authorized, last_active_date
             $user->first_name = $_POST['first_name'];
             $user->last_name = $_POST['last_name'];
-            $user->email = $_POST['email'];
-            $user->password = md5($_POST['password']);
+            $user->email = $_POST['signup_email'];
+            $user->password = md5($_POST['signup_password']);
             $user->is_authorized = 1;
             $user->join_date = Model::getCurrentTime();
             $user->last_active_date = Model::getCurrentTime();

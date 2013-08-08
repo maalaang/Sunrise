@@ -1,3 +1,4 @@
+<!-- Page for sign out test -->
 <!DOCTYPE html>
 <html>
     <head>

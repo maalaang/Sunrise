@@ -5,11 +5,12 @@
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet">
         <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/buttonEvent.js"></script>
         <script>
-            function whenSubmit(e) {
-                var email = document.getElementById('email').value;
-                var password = document.getElementById('password').value;
-
+            function whenSignin(e) {
+                var email = document.getElementById('signin_email').value;
+                var password = document.getElementById('signin_password').value;
+            
                 var emailRegex = new RegExp(<?= sr_regex('email') ?>);
                 var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
 
@@ -23,6 +24,9 @@
                 }
 
                 document.signin_form.submit();
+            }
+            function whenClickSignup(e) {
+                window.location.replace("<?= $GLOBALS['sr_root'] ?>/d/main/signup/");
             }
         </script>
         <style>
@@ -42,15 +46,7 @@
         <div class="header">
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
-                    <a class="navbar-brand" href="#">Sunrise</a>
-                    <div class="nav-collapse collapse">
-                        <form class="navbar-form form-inline pull-right">
-                            <input type="text" placeholder="Email" class="form-control">
-                            <input type="password" placeholder="Password" class="form-control">
-                            <button type="submit" class="btn" id="btn_in">Sign In</button>
-                            <button type="submit" class="btn" id="btn_up">Sign Up</button>
-                        </form>
-                    </div>
+                <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>
                 </div>
             </div>
         </div>
@@ -61,13 +57,16 @@
                     <legend>Sign In</legend>
                     <table>
                         <tr>
-                            <td><input type="text" class="form-control" id="email" name="email" placeholder="Email" autofocus /></td>
+                            <td><input type="text" class="form-control" id="signin_email" name="signin_email" placeholder="Email" autofocus /></td>
                         </tr>
                         <tr>
-                            <td><input type="password" class="form-control" id="password" name="password" placeholder="Password" /></td>
+                            <td><input type="password" class="form-control" id="signin_password" name="signin_password" placeholder="Password" /></td>
                         </tr>
                         <tr>
-                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" style="width:300px;" value="Sign In" onclick="whenSubmit(event)" /></td>
+                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" style="width:300px;" value="Sign In" onclick="whenSignin(event)" /></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" style="width:300px;" value="Sign Up Now!" onclick="whenClickSignup(event)" /></td>
                         </tr>
                     </table>
                 </fieldset>
