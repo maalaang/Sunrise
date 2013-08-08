@@ -19,11 +19,8 @@ body {
 
 @media screen and (min-width: 768px) {
     .jumbotron {
-<<<<<<< HEAD
         margin-top: 60px;
-=======
        margin-top: 20px;
->>>>>>> 96bd73fd21cbe5a5b9f02bf5b470cde4e5317327
     }
     .body-content {
         padding: 0;
