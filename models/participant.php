@@ -3,14 +3,14 @@
 require_once (dirname(__FILE__) . '/model.php');
 
 /**
- * Session participant.
+ * Video conference participant.
  */
 class Participant extends Model {
     /** Participant ID. Primary key */
     public $id;
 
-    /** Session ID which this participant is present at */
-    public $session_id;
+    /** The id of the room in which this participant is present */
+    public $room_id;
 
     /** Name of participant */
     public $name;
@@ -24,11 +24,11 @@ class Participant extends Model {
     /** Flag for this participant is a registered user or not */
     public $is_registered_user;
 
-    public function join_session($db) {
+    public function joinRoom($db) {
         $this->add($db);
     }
 
-    public function exit_session($db) {
+    public function exitRoom($db) {
         $this->delete($db);
     }
 

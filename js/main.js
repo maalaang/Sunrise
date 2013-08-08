@@ -251,16 +251,16 @@ function processSignalingMessage(message) {
 }
 
 function onChannelOpened() {
-    joinSession();
+    joinRoom();
     console.log('Channel opened. ' + socket.readyState);
 }
 
-function joinSession() {
-    console.log('Join to the session: ' + roomName);
-    sendMessage({type: 'session',
+function joinRoom() {
+    console.log('Join to the room: ' + roomName);
+    sendMessage({type: 'room',
         subtype: 'join',
-        session_id: sessionId,
-        session_token: sessionToken,
+        room_id: roomId,
+        room_token: roomToken,
         participant_id: participantId,
         user_name: userName,
         user_id: userId,
@@ -268,8 +268,8 @@ function joinSession() {
     });
 }
 
-function onSessionJoined() {
-    console.log('Joined to the session');
+function onRoomJoined() {
+    console.log('Joined to the room');
     channelReady = true;
     maybeStart();
 }
@@ -278,9 +278,9 @@ function onChannelMessage(message) {
     console.log('S->C: ' + message.data);
     var msg = JSON.parse(message.data);
 
-    if (msg.type === 'session') {
+    if (msg.type === 'room') {
         if (msg.subtype === 'join' && msg.result === 0) {
-            onSessionJoined();
+            onRoomJoined();
         }
         return;
     }

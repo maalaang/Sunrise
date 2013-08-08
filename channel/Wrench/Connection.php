@@ -84,13 +84,13 @@ class Connection extends Configurable
     protected $payloadHandler;
 
     /**
-     * The ID of the session that this connection joined in. Added for Sunrise.
+     * The ID of the room that this connection joined in. Added for Sunrise.
      * @var int
      */
-    protected $sessionId;
+    protected $roomId;
 
     /**
-     * Participant ID for Sunrise Session. Added for Sunrise.
+     * Participant ID for Sunrise Room. Added for Sunrise.
      * @var int
      */
     protected $participantId;
@@ -526,17 +526,17 @@ class Connection extends Configurable
     }
 
     /**
-     * Set the session ID
+     * Set the room ID
      */
-    public function setSessionId($sessionId) {
-        $this->sessionId = $sessionId;
+    public function setRoomId($roomId) {
+        $this->roomId = $roomId;
     }
 
     /**
-     * Get the session ID
+     * Get the room ID
      */
-    public function getSessionId() {
-        return $this->sessionId;
+    public function getRoomId() {
+        return $this->roomId;
     }
 
 }
