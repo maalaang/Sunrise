@@ -29,13 +29,6 @@
             }
         </script>
         <style>
-            .tail_content {
-                bottom: 0;
-                position: fixed;            
-                width: 100%;
-                z-index:7000;
-                background: white;
-            }
             .roomInfo label {
                 float: right;
             }
