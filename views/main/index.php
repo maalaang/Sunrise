@@ -29,10 +29,12 @@
             }
         </script>
         <style>
-            #footer {
+            .tail_content {
                 bottom: 0;
                 position: fixed;            
                 width: 100%;
+                z-index:7000;
+                background: white;
             }
             .roomInfo label {
                 float: right;
@@ -105,7 +107,7 @@
 
         </div>
 
-        <div id="footer">
+        <div class="tail_content">
             <div class="container" align="center">
                 <p>
                 <a href="#" class="foot_link">Privacy Policy</a>
