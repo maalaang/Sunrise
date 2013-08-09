@@ -4,9 +4,9 @@
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/styles.css" rel="stylesheet" media="screen">
+        <link href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet" media="screen">
     </head>
     <body>
-
         <!---------- Part 1 ---------->
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
@@ -19,67 +19,14 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
                             <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i>Husky Kim<i class="caret"></i></a>
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><?= $_SESSION['name'] ?><i class="caret"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a tabindex="-1" href="#">Profile</a>
                                     </li>
                                     <li class="divider"></li>
                                     <li>
-                                        <a tabindex="-1" href="#">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav">
-                            <li class="active">
-                                <a href="#">Dashboard</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" data-toggle="dropdown" class="dropdown-toggle">Sessions<b class="caret"></b></a>
-                                <ul class="dropdown-menu" id="menu1">
-                                    <li>
-                                        <a href="#">Tools<i class="icon-arrow-right"></i></a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Status</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a href="#">Other Link</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Users<i class="caret"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a tabindex="-1" href="#">User List</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a tabindex="-1" href="#">Custom Pages</a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="#">Custom Pages</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Settings<i class="caret"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a tabindex="-1" href="#">Search</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a tabindex="-1" href="#">Calendar</a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="#">Permissions</a>
-                                    </li>
-                                    <li>
-                                        <a tabindex="-1" href="#">FAQ</a>
+                                        <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/">Logout</a>
                                     </li>
                                 </ul>
                             </li>
@@ -109,12 +56,11 @@
                     </ul>
                 </div>
                 <div class="span9" id="content">
-
                     <!-- Graph 1 -->
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Morris.js <small>Monthly growth</small></div>
+                                <div class="muted pull-left">Session Opened</div>
                                 <div class="pull-right"><span class="badge badge-warning">View More</span></div>
                             </div>
                             <div class="block-content collapse in">
@@ -124,12 +70,11 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- Graph 2 -->
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Morris.js <small>Monthly growth</small></div>
+                                <div class="muted pull-left">Participants</div>
                                 <div class="pull-right"><span class="badge badge-warning">View More</span></div>
                             </div>
                             <div class="block-content collapse in">
@@ -139,16 +84,23 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <hr>
-            <footer>
-                <p>&copy; Sunrise 2013</p>
-            </footer>
         </div>
 
         <!---------- Part 3 ---------->
+        <div id="footer">
+            <div class="container" align="center">
+                <p>
+                <a href="#" class="foot_link">Privacy Policy</a>
+                <a href="#" class="foot_link">About Sunrise</a>
+                <a href="#" class="foot_link">Admin Page</a>
+                <a href="#" class="foot_link_right">Powered by Sunrise</a>
+                </p>
+            </div>
+        </div>
+
+        <!---------- Part 4 ---------->
         <link rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/morris.css">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
@@ -156,7 +108,6 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
-
         // Graph 1
         var tax_data_1 = [
             {"period": "2013-04", "visits": 2407, "signups": 660},
@@ -176,7 +127,6 @@
             ykeys: ['visits', 'signups'],
             labels: ['Visits', 'User signups']
         });
-
         // Graph 2
         var tax_data_2 = [
             {"period": "2013-04", "visits": 2407, "signups": 660},
@@ -196,7 +146,6 @@
             ykeys: ['visits', 'signups'],
             labels: ['Visits', 'User signups']
         });
-
         </script>
     </body>
 </html>

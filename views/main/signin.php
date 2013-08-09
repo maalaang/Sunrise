@@ -35,11 +35,6 @@
                 margin:100px auto;
                 text-align:left;
             }
-            #footer{
-                bottom:0;
-                position:fixed;
-                width:100%;
-            }
         </style>
     </head>
     <body>

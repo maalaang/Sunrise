@@ -29,11 +29,6 @@
             }
         </script>
         <style>
-            #footer {
-                bottom: 0;
-                position: fixed;            
-                width: 100%;
-            }
             .roomInfo label {
                 float: right;
             }
