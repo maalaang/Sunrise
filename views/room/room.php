@@ -7,14 +7,14 @@
 
     <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
     <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
-    <script src="<?= $GLOBALS['sr_root'] ?>/js/main.js"></script>
+    <script src="<?= $GLOBALS['sr_root'] ?>/js/room-webrtc.js"></script>
 
     <link rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/main.css">
 </head>
 
 <body>
 <script type="text/javascript">
-var roomToken = '<?= $context['room']->generateToken() ?>';
+var channelToken = '<?= $context['room']->channel_token ?>';
 var roomId = '<?= $context['room']->id ?>';
 var participantId = '<?= $context['participant']->id ?>';
 var roomLink = '<?= $context['room_link'] ?>';
@@ -28,7 +28,7 @@ var roomName = '<?= $context['room']->name ?>';
 var userName = '<?= $context['participant']->name ?>';
 var userId = '<?= $context['participant']->user_id ?>';
 var isRegisteredUser = 0;
-var msgServer = "ws://dev.maalaang.com:8889/sunrise/channel/";
+var sunriseChannelServer = "ws://dev.maalaang.com:8889/sunrise/channel/";
 
 setTimeout(initialize, 1);
 

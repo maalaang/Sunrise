@@ -27,7 +27,6 @@ function room() {
                 $room->name = $_GET['name'];
                 $room->title = '';
                 $room->description = '';
-                $room->start_time = Model::getCurrentTime();
                 $room->password = '';
                 $room->is_open = 1;
 
@@ -98,7 +97,6 @@ function room_open() {
     $room->name = $_POST['name'];
     $room->title = '';
     $room->description = '';
-    $room->start_time = Model::getCurrentTime();
     $room->password = '';
     $room->is_open = 1;
 
