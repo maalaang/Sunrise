@@ -8,6 +8,14 @@ function sessions() {
     sr_response('views/admin/sessions.php', null);
 }
 
+function users() {
+    sr_response('views/admin/users.php', null);
+}
+
+function settings() {
+    sr_response('views/admin/settings.php', null);
+}
+
 /**
  * Display room list.
  */

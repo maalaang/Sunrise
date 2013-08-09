@@ -6,6 +6,9 @@
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/styles.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet" media="screen">
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
     </head>
     <body>
         <!---------- Part 1 ---------->
@@ -43,43 +46,126 @@
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                         <li>
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-info pull-right">123</span> Dashboard</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i><span class="badge badge-info pull-right">123</span> Dashboard</a>
                         </li>
                         <li class="active">
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-success pull-right">234</span> Sessions</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/sessions/"><i class="icon-chevron-right"></i><span class="badge badge-success pull-right">234</span> Sessions</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-important pull-right">3,456</span> Users</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i><span class="badge badge-important pull-right">3,456</span> Users</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-warning pull-right">4,567</span> Settings</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i><span class="badge badge-warning pull-right">4,567</span> Settings</a>
                         </li>
                     </ul>
                 </div>
                 <div class="span9" id="content">
-                    <!-- Graph 1 -->
-                    <div class="row-fluid section">
-                        <div class="block">
-                            <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Currently Opened Sessions</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
-                            </div>
-                            <div class="block-content collapse in">
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Graph 2 -->
-                    <div class="row-fluid section">
-                        <div class="block">
-                            <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Session History</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
-                            </div>
-                            <div class="block-content collapse in">
-
+                    <div class="row-fluid">
+                        <div class="row-fluid section">
+                            <div class="navbar">
+                                <div class="navbar-inner">
+                                    <ul class="breadcrumb">
+                                        <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+                                        <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#' title="Show Sidebar" rel='tooltip'>&nbsp;</a></i>
+                                        <li>
+                                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/">Dashboard</a> <span class="divider">/</span>    
+                                        </li>
+                                        <li class="active">Sessions <span class="divider">/</span></li> 
+                                        <li>
+                                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/">Users</a> <span class="divider">/</span> 
+                                        </li>
+                                        <li>
+                                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/">Settings</a> 
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Table 1 -->
+                        <div class="row-fluid section">
+                            <div class="block">
+                                <div class="navbar navbar-inner block-header">
+                                    <div class="muted pull-left">Currently Opened Sessions</div>
+                                    <div class="pull-right"><span class="badge badge-info">1,234</span></div>
+                                </div>
+                                <div class="block-content collapse in">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Vincent</td>
+                                                <td>Gabriel</td>
+                                                <td>@gabrielva</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Table 2 -->
+                        <div class="row-fluid section">
+                            <div class="block">
+                                <div class="navbar navbar-inner block-header">
+                                    <div class="muted pull-left">Session History</div>
+                                    <div class="pull-right"><span class="badge badge-info">1,234</span></div>
+                                </div>
+                                <div class="block-content collapse in">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>First Name</th>
+                                                <th>Last Name</th>
+                                                <th>Username</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Jacob</td>
+                                                <td>Thornton</td>
+                                                <td>@fat</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Vincent</td>
+                                                <td>Gabriel</td>
+                                                <td>@gabrielva</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -98,51 +184,8 @@
         </div>
 
         <!---------- Part 4 ---------->
-        <link rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/morris.css">
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
-        // Graph 1
-        var tax_data_1 = [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
-        ];
-        Morris.Line({
-            element: 'hero-graph-1',
-            data: tax_data_1,
-            xkey: 'period',
-            xLabels: "month",
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
-        });
-        // Graph 2
-        var tax_data_2 = [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
-        ];
-        Morris.Line({
-            element: 'hero-graph-2',
-            data: tax_data_2,
-            xkey: 'period',
-            xLabels: "month",
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
-        });
+
         </script>
     </body>
 </html>

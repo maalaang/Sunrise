@@ -43,20 +43,41 @@
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                         <li class="active">
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-info pull-right">123</span> Dashboard</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i><span class="badge badge-info pull-right">123</span> Dashboard</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-success pull-right">234</span> Sessions</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/sessions/"><i class="icon-chevron-right"></i><span class="badge badge-success pull-right">234</span> Sessions</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-important pull-right">3,456</span> Users</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i><span class="badge badge-important pull-right">3,456</span> Users</a>
                         </li>
                         <li>
-                            <a href="#"><i class="icon-chevron-right"></i><span class="badge badge-warning pull-right">4,567</span> Settings</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i><span class="badge badge-warning pull-right">4,567</span> Settings</a>
                         </li>
                     </ul>
                 </div>
                 <div class="span9" id="content">
+                    <div class="row-fluid section">
+                        <div class="navbar">
+                            <div class="navbar-inner">
+                                <ul class="breadcrumb">
+                                    <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+                                    <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#' title="Show Sidebar" rel='tooltip'>&nbsp;</a></i>
+                                    <li class="active">Dashboard <span class="divider">/</span></li> 
+                                    <li>
+                                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/sessions/">Sessions</a> <span class="divider">/</span>    
+                                    </li>
+                                    <li>
+                                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/">Users</a> <span class="divider">/</span> 
+                                    </li>
+                                    <li>
+                                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/">Settings</a> 
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Graph 1 -->
                     <div class="row-fluid section">
                         <div class="block">
