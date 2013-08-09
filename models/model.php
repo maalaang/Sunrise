@@ -152,6 +152,15 @@ abstract class Model {
         return date('Y-m-d H:i:s');
     }
 
+    /**
+     * Generate unique id.
+     *
+     * @return  generated unique id (13 character + length($prefix))
+     */
+    public static function getUniqueId($prefix = "") {
+        return uniqid($prefix);
+    }
+
 }
 
 ?>

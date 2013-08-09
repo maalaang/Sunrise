@@ -84,16 +84,16 @@ class Connection extends Configurable
     protected $payloadHandler;
 
     /**
-     * The ID of the room that this connection joined in. Added for Sunrise.
-     * @var int
+     * The name of the client.
+     * @var string|null
      */
-    protected $roomId;
+    protected $name;
 
     /**
-     * Participant ID for Sunrise Room. Added for Sunrise.
-     * @var int
+     * The token of the channel that this client is belong to
+     * @var string|null
      */
-    protected $participantId;
+    protected $channel_token;
 
     /**
      * Constructor
@@ -158,7 +158,9 @@ class Connection extends Configurable
     {
         $this->ip = $this->socket->getIp();
         $this->port = $this->socket->getPort();
-        $this->configureClientId();
+
+        // Use uniqueid() instead of configureClientId()
+        $this->id = uniqid('u');
     }
 
     /**
@@ -510,33 +512,31 @@ class Connection extends Configurable
     }
 
     /**
-     * Set the participant ID
+     * Set client name
      */
-    public function setParticipantId($participantId) {
-        $this->participantId = $participantId;
+    public function setName($name) {
+        $this->name = $name;
     }
 
     /**
-     * Get the participant ID
-     *
-     * $return int
+     * Get client name
      */
-    public function getParticipantId() {
-        return $this->participantId;
+    public function getName() {
+        return $this->name;
     }
 
     /**
-     * Set the room ID
+     * Set channel token
      */
-    public function setRoomId($roomId) {
-        $this->roomId = $roomId;
+    public function setChannelToken($token) {
+        $this->channel_token = $token;
     }
 
     /**
-     * Get the room ID
+     * Get channel token
      */
-    public function getRoomId() {
-        return $this->roomId;
+    public function getChannelToken() {
+        return $this->channel_token;
     }
 
 }

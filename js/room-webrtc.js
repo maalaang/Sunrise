@@ -18,6 +18,7 @@ var sdpConstraints = {'mandatory': {
     'OfferToReceiveVideo': true }};
 var isVideoMuted = false;
 var isAudioMuted = false;
+var cnt = 0;
 
 function initialize() {
     console.log('Initializing; room=' + roomName + '.');
@@ -33,7 +34,7 @@ function initialize() {
     remoteVideo = document.getElementById('remoteVideo');
     resetStatus();
 
-    connectMessageServer();
+    openSunriseChannel();
     maybeRequestTurn();
     doGetUserMedia();
 
@@ -41,14 +42,14 @@ function initialize() {
     signalingReady = initiator;
 }
 
-function connectMessageServer() {
-    console.log('Connect to Sunrise Message Server');
+function openSunriseChannel() {
+    console.log('Open sunrise channel');
 
     try {
-        socket = new WebSocket(msgServer);
-        socket.onopen    = onChannelOpened;
+        socket = new WebSocket(sunriseChannelServer);
+        socket.onopen    = onChannelConnected;
         socket.onmessage = onChannelMessage;
-        socket.onclose   = onChannelClosed;
+        socket.onclose   = onChannelDisconnected;
         socket.onerror   = onChannelError;
 
     } catch(ex) {
@@ -245,42 +246,48 @@ function processSignalingMessage(message) {
     } else if (message.type === 'candidate') {
         var candidate = new RTCIceCandidate({sdpMLineIndex: message.label, candidate: message.candidate});
         pc.addIceCandidate(candidate);
-    } else if (message.type === 'bye') {
-        onRemoteHangup();
     }
 }
 
-function onChannelOpened() {
-    joinRoom();
-    console.log('Channel opened. ' + socket.readyState);
-}
+function onChannelConnected() {
+    console.log('Opening sunrise channel');
 
-function joinRoom() {
-    console.log('Join to the room: ' + roomName);
-    sendMessage({type: 'room',
-        subtype: 'join',
-        room_id: roomId,
-        room_token: roomToken,
-        participant_id: participantId,
-        user_name: userName,
-        user_id: userId,
-        is_registered_user: isRegisteredUser
+    sendMessage({type: 'channel',
+        subtype: 'open',
+        channel_token: channelToken,
+        user_name: userName
     });
 }
 
-function onRoomJoined() {
-    console.log('Joined to the room');
+function onChannelOpened() {
+    console.log('Channel opened');
     channelReady = true;
     maybeStart();
 }
 
+function onChannelClosed() {
+    console.log('Channel closded');
+    channelReady = false;
+}
+
 function onChannelMessage(message) {
     console.log('S->C: ' + message.data);
+
     var msg = JSON.parse(message.data);
 
-    if (msg.type === 'room') {
-        if (msg.subtype === 'join' && msg.result === 0) {
-            onRoomJoined();
+    if (msg.type === 'channel') {
+        switch (msg.subtype) {
+        case 'open':
+            onChannelOpened();
+            break;
+        case 'close':
+            onChannelClosed();
+            break;
+        case 'bye':
+            if (cnt++ == 0) {
+                onRemoteHangup();
+            }
+            break;
         }
         return;
     }
@@ -309,8 +316,8 @@ function onChannelMessage(message) {
 function onChannelError() {
     console.log('Channel error.');
 }
-function onChannelClosed() {
-    console.log('Channel closed.');
+function onChannelDisconnected() {
+    console.log('Channel disconnected.');
 }
 
 function onUserMediaSuccess(stream) {
@@ -366,6 +373,7 @@ function onHangup() {
     console.log('Hanging up.');
     transitionToDone();
     stop();
+
     // will trigger BYE from server
     socket.close();
 }
@@ -380,9 +388,10 @@ function onRemoteHangup() {
 function stop() {
     console.log('stop()');
     started = false;
-    signalingReady = false;
     isAudioMuted = false;
     isVideoMuted = false;
+    signalingReady = true;
+    initiator = false;
     pc.close();
     pc = null;
     msgQueue.length = 0;
@@ -610,7 +619,7 @@ function removeCN(sdpLines, mLineIndex) {
 }
 
 window.onbeforeunload = function() {
-    sendMessage({type: 'bye'});
+    sendMessage({type: 'channel', subtype: 'close'});
 }
 
 // Set the video diplaying in the center of window.

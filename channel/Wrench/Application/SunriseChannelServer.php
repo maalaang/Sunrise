@@ -4,6 +4,7 @@ namespace Wrench\Application;
 
 use Wrench\Application\Application;
 use Wrench\Application\NamedApplication;
+use Wrench\Exception\SocketException;
 
 /**
  * Sunrise channel server for signaling and chattting.
@@ -11,7 +12,7 @@ use Wrench\Application\NamedApplication;
 class SunriseChannelServer extends Application {
     protected $clients = array();
     protected $config = null;
-    protected $room_list = array();
+    protected $channels = array();
 
     public function __construct($config) {
         $this->config = $config;
@@ -19,7 +20,7 @@ class SunriseChannelServer extends Application {
     }
 
     public function onConnect($client) {
-        $this->clients[] = $client;
+        $this->clients[$client->getId()] = $client;
     }
 
     public function onUpdate() {
@@ -28,99 +29,83 @@ class SunriseChannelServer extends Application {
     public function onData($data, $client) {
         try {
             $msg = json_decode($data);
+            $msg['sender'] = $client->getId();
 
             switch ($msg->type) {
-            case 'room':
-                $this->processRoomMessage($data, $client, $msg);
+            case 'channel':
+                $this->onChannelMessage($client, $msg);
                 break;
             case 'chat':
-                $this->processChatMessage($data, $client, $msg);
+                $this->onChatMessage($client, $msg);
                 break;
-            case 'bye':
-                $this->onDisconnect($client);
-                break;
-            case 'debug':
-                $this->printStatus();
             default:
-                $this->processSignalingMessage($data, $client, $msg);
+                $this->onSignalingMessage($client, $msg);
                 break;
             }
+            // debug
+            $this->printStatus();
         } catch (Exception $e) {
             $client->log('onData(): ' . $e, 'err');
         }
     }
 
-    public function onDisconnect($client) {
-        $msg = array();
-        $msg['type'] = 'bye';
-        $msg['participant_id'] = $client->getParticipantId();
-        $msg_json = json_encode($msg);
+    private function onChannelMessage($client, $msg) {
+        switch ($msg->subtype) {
+        case 'open':
+            $client->log('channel open: ' . $msg->channel_token . ': ' . $msg->user_name);
+            $this->openChannel($msg, $client);
+            break;
+        case 'close':
+            $client->log('channel close: ' . $client->getChannelToken() . ': ' . $client->getName());
+            $this->closeChannel($client);
+            break;
+        }
+    }
 
-        if (isset($this->room_list[$client->getRoomId()])) {
-            foreach ($this->room_list[$client->getRoomId()] as $key => $sendto) {
+    private function onChatMessage($client, $msg) {
+        $channel = $this->channels[$client->getChannelToken()];
+        $data = json_encode($msg);
+
+        foreach ($channel as $sendto) {
+            if ($sendto !== $client) {
                 try {
-                    if ($sendto === $client) {
-                        $this->removeClient($client, $key);
-                    } else {
-                        $sendto->send($msg_json);
-                    }
-                } catch (Exception $e) {
-                    $client->log('Data send failed: ' . $e, 'err');
-                }
-            }
-        } else {
-            if (($key = array_search($client, $this->clients)) !== false) {
-                $this->removeClient($client, $key);
-            }
-        }
-    }
-
-    public function removeClient($client, $key) {
-        if ($client->getParticipantId() !== null) {
-            $this->exitRoom($client);
-        }
-        unset($this->clients[$key]);
-    }
-
-    private function processChatMessage($data, $client, $msg) {
-        foreach ($this->clients as $key => $sendto) {
-            try {
-                if ($sendto !== $client) {
                     $sendto->send($data);
+                } catch (SocketException $e) {
+                    $sendto->log('send chat message: ' . $e, 'err');
                 }
-            } catch (Exception $e) {
-                $client->log('Data send failed: ' . $e, 'err');
             }
         }
+    }
+
+    private function onSignalingMessage($data, $client, $msg) {
+        $channel = $this->channels[$client->getChannelToken()];
+        $data = json_encode($msg);
+
+        foreach ($channel as $sendto) {
+            if ($sendto !== $client) {
+                try {
+                    $sendto->send($data);
+                } catch (SocketException $e) {
+                    $sendto->log('send signaling message: ' . $e, 'err');
+                }
+            }
+        }
+    }
+
+    public function onDisconnect($client) {
+        // if the client is still connected with the channel, close the connection
+        $this->closeChannel($client);
+
+        // remove the client from the socket list
+        unset($this->clients[$client->getId()]);
+
     }
 
     private function printStatus() {
-        foreach ($this->room_list as $room_id => $clients) {
-            echo "room_id:" . $room_id . "\n";
+        foreach ($this->channels as $token => $clients) {
+            echo "channel:" . $token. "\n";
             foreach ($clients as $c) {
-                echo "\t" . $c->getParticipantId() . "\n";
-            }
-        }
-    }
-
-    private function processRoomMessage($data, $client, $msg) {
-        switch ($msg->subtype) {
-        case 'join':
-            $client->log('Room Join: ' . $msg->user_name);
-            $this->joinRoom($msg, $client);
-            break;
-        case 'exit':
-            $client->log('Room Exit: ' . $msg->user_name);
-            $this->exitRoom($client);
-            break;
-        }
-
-    }
-
-    private function processSignalingMessage($data, $client, $msg) {
-        foreach ($this->room_list[$client->getRoomId()] as $sendto) {
-            if ($sendto !== $client) {
-                $sendto->send($data);
+                echo "\t" . $c->getId() . "\n";
             }
         }
     }
@@ -163,19 +148,44 @@ class SunriseChannelServer extends Application {
         fclose($fp);
     }
 
-    private function joinRoom($msg, $client) {
-        global $sr_rest_server;
-        global $sr_rest_room_join;
+    private function openChannel($msg, $client) {
+        $client->setChannelToken($msg->channel_token);
+        $client->setName($msg->user_name);
 
-        if ($client->getParticipantId() !== null) {
-            $response = array();
-            $response['type'] = 'room';
-            $response['subtype'] = 'join';
-            $response['result'] = 1;
-            $response['msg'] = 'You are in the other room. Please close the other room before joining to a new room';
-            $client->send(json_encode($response));
-            return;
+        if (isset($this->channels[$msg->channel_token])) {
+            $this->channels[$msg->channel_token][$client->getId()] = $client;
+        } else {
+            $this->channels[$msg->channel_token] = array($client->getId() => $client);
         }
+
+        // send response
+        $response = array();
+        $response['type'] = 'channel';
+        $response['subtype'] = 'open';
+        $response['participant_cnt'] = count($this->channels[$msg->channel_token]);
+
+        $participant_list = array();
+        foreach ($this->channels[$msg->channel_token] as $participant) {
+            $participant_list[$participant->getId()] = array(
+                "name" => $participant->getName(),
+            );
+        }
+        $response['participant_list'] = $participant_list;
+
+        $client->send(json_encode($response));
+
+//        global $sr_rest_server;
+//        global $sr_rest_room_join;
+
+//        if ($client->getParticipantId() !== null) {
+//            $response = array();
+//            $response['type'] = 'room';
+//            $response['subtype'] = 'join';
+//            $response['result'] = 1;
+//            $response['msg'] = 'You are in the other room. Please close the other room before joining to a new room';
+//            $client->send(json_encode($response));
+//            return;
+//        }
 
         // send room join request to the Sunrise VC server
         /*
@@ -191,61 +201,75 @@ class SunriseChannelServer extends Application {
         */
 
         // store room information
-        $client->setRoomId($msg->room_id);
-        $client->setParticipantId($msg->participant_id);
-
-        if (isset($this->room_list[$msg->room_id])) {
-            $this->room_list[$msg->room_id][] = $client;
-        } else {
-            $this->room_list[$msg->room_id] = array($msg->participant_id => $client);
-        }
-
-        // send response
-        $response = array();
-        $response['type'] = 'room';
-        $response['subtype'] = 'join';
-        $response['result'] = 0;
-
-        $client->send(json_encode($response));
-
+//        $client->setRoomId($msg->room_id);
+//        $client->setParticipantId($msg->participant_id);
     }
 
-    private function exitRoom($client) {
-        global $sr_rest_server;
-        global $sr_rest_room_exit;
-
-        // send room exit request to the Sunrise VC server
-        $url = $sr_rest_server . $sr_rest_room_exit;
-        $params['participant_id'] = $client->getParticipantId();
-        $this->sendRequestAsync($url, $params, 'POST');
-
-        // remove this client from theroom 
-        $room = $this->room_list[$client->getRoomid()];
-        unset($room[$client->getParticipantId()]);
-
-        if (count($room) == 0) {
-            // close the room if there's no one in it
-            $this->closeRoom($client);
+    private function closeChannel($client) {
+        if ($client->getChannelToken() === null) {
+            return;
         }
+
+        $channel = $this->channels[$client->getChannelToken()];
+
+        // send channel close message to the remaining participants
+        $msg = array();
+        $msg['type'] = 'channel';
+        $msg['subtype'] = 'bye';
+        $msg['participant_id'] = $client->getId();
+
+        $msg_json = json_encode($msg);
+
+        foreach ($channel as $sendto) {
+            if ($sendto !== $client) {
+                try {
+                    $sendto->send($msg_json);
+                } catch (SocketException $e) {
+                    $sendto->log('failed to send channel bye message - ' . $e, 'err');
+                }
+            }
+        }
+
+        // close the connection between the client and the channel
+        unset($this->channels[$client->getChannelToken()][$client->getId()]);
+
+        // remove the channel if there is no client connected to the channel
+        if (count($this->channels[$client->getChannelToken()]) == 0) {
+            unset($this->channels[$client->getChannelToken()]);
+        }
+
+        $client->setChannelToken(null);
 
         // send response
         $response = array();
-        $response['type'] = 'room';
-        $response['subtype'] = 'exit';
+        $response['type'] = 'channel';
+        $response['subtype'] = 'close';
         $response['result'] = 0;
 
-        $client->send(json_encode($response));
+        try {
+            $client->send(json_encode($response));
+        } catch (SocketException $e) {
+            $client->log('channel close: failed to send response - ' . $e, 'err');
+        }
+
+//        global $sr_rest_server;
+//        global $sr_rest_room_exit;
+
+        // send room exit request to the Sunrise VC server
+//        $url = $sr_rest_server . $sr_rest_room_exit;
+//        $params['participant_id'] = $client->getParticipantId();
+//        $this->sendRequestAsync($url, $params, 'POST');
 
         // close the connection
-        $client->setRoomId(null);
-        $client->setParticipantId(null);
+//        $client->setRoomId(null);
+//        $client->setParticipantId(null);
     }
 
     private function closeRoom($client) {
         global $sr_rest_server;
         global $sr_rest_room_close;
 
-        unset($this->room_list[$client->getRoomId()]);
+        unset($this->channels[$client->getRoomId()]);
 
         $url = $sr_rest_server . $sr_rest_room_close;
 
