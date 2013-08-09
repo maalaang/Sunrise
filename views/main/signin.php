@@ -35,11 +35,6 @@
                 margin:100px auto;
                 text-align:left;
             }
-            #footer{
-                bottom:0;
-                position:fixed;
-                width:100%;
-            }
         </style>
     </head>
     <body>
@@ -84,7 +79,7 @@
             ?>
         </div>
 
-        <div id="footer">
+        <div class="tail_content">
             <div class="container" align="center">
                 <p>
                     <a href="#" class="foot_link">Privacy Policy</a>
