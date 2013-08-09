@@ -1,8 +1,13 @@
 .foot_link{
-    margin:10px;   
+    margin: 10px;   
 }
 .foot_link_right{
-    margin:10px;
+    margin: 10px;
+}
+#footer {
+    bottom: 0;
+    position: fixed;          
+    width: 100%;
 }
 .tail_content{
     bottom:0;
