@@ -1,7 +1,11 @@
 <?php
 
-function admin() {
+function dashboard() {
     sr_response('views/admin/dashboard.php', null);
+}
+
+function sessions() {
+    sr_response('views/admin/sessions.php', null);
 }
 
 /**
