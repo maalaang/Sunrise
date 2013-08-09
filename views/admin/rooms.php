@@ -9,6 +9,11 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
+        <style>
+            #sr_table * {
+                text-align: center;
+            }
+        </style>
     </head>
     <body>
         <!---------- Part 1 ---------->
@@ -44,10 +49,10 @@
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li class="active">
+                        <li>
                             <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a>
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a>
                         </li>
                         <li>
@@ -60,32 +65,78 @@
                 </div>
                 <div class="span9" id="content">
 
-                    <!-- Graph 1 -->
+                    <!-- Table 1 -->
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Room Opened</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
+                                <div class="muted pull-left">Currently Opened Rooms</div>
+                                <div class="pull-right"><span class="badge badge-info">1,234</span></div>
                             </div>
                             <div class="block-content collapse in">
-                                <div class="span12">
-                                    <div id="hero-graph-1" style="height: 230px;"></div>
-                                </div>
+                                <table class="table table-striped" id="sr_table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Start Time</th>
+                                            <th>Is Open</th>
+                                            <th>Participants</th>
+                                            <th>Close Session</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Graph 2 -->
+                    <!-- Table 2 -->
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Participants</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
+                                <div class="muted pull-left">Room History</div>
+                                <div class="pull-right"><span class="badge badge-info">1,234</span></div>
                             </div>
                             <div class="block-content collapse in">
-                                <div class="span12">
-                                    <div id="hero-graph-2" style="height: 230px;"></div>
-                                </div>
+                                <table class="table table-striped" id="sr_table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Is Open</th>
+                                            <th>Participants</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                            <td>Test</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -105,50 +156,5 @@
                 </p>
             </div>
         </div>
-
-        <!---------- Part 4 ---------->
-        <link rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/morris.css">
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>
-        <script>
-        // Graph 1
-        var tax_data_1 = [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
-        ];
-        Morris.Line({
-            element: 'hero-graph-1',
-            data: tax_data_1,
-            xkey: 'period',
-            xLabels: "month",
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
-        });
-        // Graph 2
-        var tax_data_2 = [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
-        ];
-        Morris.Line({
-            element: 'hero-graph-2',
-            data: tax_data_2,
-            xkey: 'period',
-            xLabels: "month",
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
-        });
-        </script>
     </body>
 </html>

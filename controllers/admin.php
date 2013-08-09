@@ -4,12 +4,23 @@ function dashboard() {
     sr_response('views/admin/dashboard.php', null);
 }
 
-function sessions() {
-    sr_response('views/admin/sessions.php', null);
+function rooms() {
+    sr_response('views/admin/rooms.php', null);
 }
 
 function users() {
-    sr_response('views/admin/users.php', null);
+    $db = sr_pdo();
+
+    $stmt = $db->prepare('SELECT * FROM user');
+    $stmt->execute();
+
+    $user_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'User');
+
+    $context = array(
+        'user_list' => $user_list
+    );
+
+    sr_response('views/admin/users.php', $context);
 }
 
 function settings() {

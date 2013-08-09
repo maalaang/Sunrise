@@ -6,8 +6,7 @@ if ($_SESSION['isLogged']) {
     $userName = $_SESSION['name'];
     $userEmail = $_SESSION['email'];
 } else {
-    $userName = 'Unknown';
-    $userEmail = 'Unknown';
+    sr_response('views/main/signin.php', null);
 }
 
 ?>

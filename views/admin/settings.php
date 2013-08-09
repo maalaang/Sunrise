@@ -6,28 +6,30 @@
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/styles.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet" media="screen">
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
     </head>
     <body>
         <!---------- Part 1 ---------->
         <div class="navbar navbar-fixed-top">
             <div class="navbar-inner">
                 <div class="container-fluid">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
-                     <span class="icon-bar"></span>
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                     </a>
                     <a class="brand" href="#">Sunrise Admin Page</a>
                     <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
                             <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><?= $userName ?> <i class="caret"></i></a>
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?= $userName ?> <i class="caret"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a tabindex="-1" href="#">Profile</a>
                                     </li>
                                     <li class="divider"></li>
                                     <li>
-                                        <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/">Logout</a>
+                                        <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/">Sign Out</a>
                                     </li>
                                 </ul>
                             </li>
@@ -43,20 +45,21 @@
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                         <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i><span class="badge badge-info pull-right">123</span> Dashboard</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a>
                         </li>
                         <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/sessions/"><i class="icon-chevron-right"></i><span class="badge badge-success pull-right">234</span> Sessions</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a>
                         </li>
                         <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i><span class="badge badge-important pull-right">3,456</span> Users</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a>
                         </li>
                         <li class="active">
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i><span class="badge badge-warning pull-right">4,567</span> Settings</a>
+                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a>
                         </li>
                     </ul>
                 </div>
                 <div class="span9" id="content">
+
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
@@ -68,6 +71,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
@@ -79,6 +83,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
@@ -90,6 +95,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
@@ -101,17 +107,19 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Session Setting</div>
+                                <div class="muted pull-left">Room Setting</div>
                                 <div class="pull-right"><span class="badge badge-warning">View More</span></div>
                             </div>
                             <div class="block-content collapse in">
-                                <!-- Session Setting -->
+                                <!-- Room Setting -->
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -127,33 +135,5 @@
                 </p>
             </div>
         </div>
-
-        <!---------- Part 4 ---------->
-        <link rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/morris.css">
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
-        <script>
-        var tax_data_1 = [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
-        ];
-        Morris.Line({
-            element: 'hero-graph-1',
-            data: tax_data_1,
-            xkey: 'period',
-            xLabels: "month",
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
-        });
-        </script>
     </body>
 </html>
