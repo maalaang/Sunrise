@@ -4,4 +4,10 @@
 .foot_link_right{
     margin:10px;
 }
-
+.tail_content{
+    bottom:0;
+    position:fixed;
+    width:100%;
+    z-index:7000;
+    background:white;
+}
