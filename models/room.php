@@ -18,6 +18,9 @@ class Room extends Model {
     /** Room description */
     public $description;
 
+    /** Sunrise channel token */
+    public $channel_token;
+
     /** Start time of this room */
     public $start_time;
 
@@ -28,23 +31,14 @@ class Room extends Model {
     public $is_open;
 
     public function open($db) {
+        $this->start_time = Model::getCurrentTime();
+        $this->channel_token = Model::getUniqueId('c');
+
         $this->add($db);
     }
 
     public function close($db) {
         $this->delete($db);
-    }
-
-    public function generateToken() {
-        return md5($this->id . 'sunrise' . $this->name);
-    }
-
-    public function validateToken($token) {
-        if ($token == md5($this->id . 'sunrise' . $this->name)) {
-            return True;
-        } else {
-            return False;
-        }
     }
 }
 
