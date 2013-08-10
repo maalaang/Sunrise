@@ -11,38 +11,35 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
             $(document).ready(function () {
-                $.ajaxSetup({
-                    url: "<?= $GLOBALS['sr_root'] ?>/controllers/admin_users.php",
-                    type: 'POST',
-                    error: function (data) { alert('Error:' + data); }
-                });
-                $('.authorized').click(function () {
-                    if (this.checked) {
-                        $checked = 'checked';
-                    } else {
-                        $checked = 'unchecked';
+                $('#sr_page li').click(function () {
+                    switch (this.id) {
+                    case 'begin': break;
+                    case 'prev': break;
+                    case 'next': break;
+                    case 'end': break;
+                    default:
+                        if ($(this).attr('class') != 'active') {
+                            $('#sr_page li.active').attr('class', 'None');
+                            $(this).attr('class', 'active');
+
+                            var pnum = $('#' + this.id + '_a').text();
+
+                            $.ajax({
+                                data: { page: 'users', type: 'pagination', page_number: pnum },
+                                dataType: 'JSON',
+                                success: function (data) { updateTable(data); }
+                            });
+                        }
                     }
-                    $.ajax({
-                        data: { userId: this.id, type: 'authorized', checked: $checked },
-                    });
-                });
-                $('.admin').click(function () {
-                    $userId = this.id;
-                    $type = 'authorized';
-                    if (this.checked) {
-                        $checked = 'checked';
-                    } else {
-                        $checked = 'unchecked';
-                    }
-                    $.ajax({
-                        data: { userId: this.id, type: 'admin', checked: $checked },
-                    });
                 });
             });
         </script>
         <style>
             #sr_table * {
                 text-align: center;
+            }
+            #sr_page li {
+                cursor: pointer;
             }
         </style>
     </head>
@@ -80,18 +77,10 @@
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a>
-                        </li>
-                        <li class="active">
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a>
-                        </li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a></li>
+                        <li class="active"><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a></li>
                     </ul>
                 </div>
                 <div class="span9" id="content">
@@ -119,38 +108,27 @@
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $user_list = $context['user_list'];
-                                        $checkbox = '<input type="checkbox" ';
-
-                                        foreach ($user_list as $user) {
-                                            $is_authorized = $checkbox;
-                                            $is_authorized .= 'class="authorized" id="' . $user->id . '" ';
-
-                                            $is_admin = $checkbox;
-                                            $is_admin .= 'class="admin" id="' . $user->id . '" ';
-
-                                            if ($user->is_authorized) {
-                                                $is_authorized .= 'checked ';
-                                            }
-                                            if ($user->is_admin) {
-                                                $is_admin .= 'checked ';
-                                            }
-
-                                            $is_authorized .= ' />';
-                                            $is_admin .= ' />';
-
-                                            echo '<tr><td>' . $user->id . '</td>' .
-                                                '<td>' . $user->email . '</td>' .
-                                                '<td>' . $user->first_name . '</td>' .
-                                                '<td>' . $user->last_name . '</td>' .
-                                                '<td>' . $is_authorized . '</td>' .
-                                                '<td>' . $is_admin . '</td>' .
-                                                '<td>' . $user->join_date . '</td>' .
-                                                '<td>' . $user->last_active_date . '</td></tr>';
+                                        for ($i = 0; $i < 10; $i++) {
+                                            echo '<tr id="tr' . $i . '"></tr>';
                                         }
                                         ?>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div id="sr_page">
+                            <div class="pagination pagination-right">
+                                <ul>
+                                    <li id="begin" class="disabled"><a id="begin_a">&laquo;</a></li>
+                                    <li id="prev" class="disabled"><a id="prev_a">&lsaquo;</a></li>
+                                    <li id="1st" class="active"><a id="1st_a">1</a></li>
+                                    <li id="2nd"><a id="2nd_a">2</a></li>
+                                    <li id="3rd"><a id="3rd_a">3</a></li>
+                                    <li id="4th"><a id="4th_a">4</a></li>
+                                    <li id="5th"><a id="5th_a">5</a></li>
+                                    <li id="next"><a id="next_a">&rsaquo;</a></li>
+                                    <li id="end"><a id="end_a">&raquo;</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -170,5 +148,76 @@
                 </p>
             </div>
         </div>
+
+        <!---------- Part 4 ---------->
+        <script>
+            $.ajaxSetup({
+                url: "<?= $GLOBALS['sr_root'] ?>/controllers/admin.php",
+                type: 'POST',
+            });
+
+            function checkAuthorized() {
+                var isChecked = 'unchecked';
+                if (this.checked) {
+                    isChecked = 'checked';
+                }
+                $.ajax({
+                    data: { page: 'users', type: 'authorized', id: this.id, checked: isChecked }
+                });
+            }
+
+            function checkAdmin() {
+                var isChecked = 'unchecked';
+                if (this.checked) {
+                    isChecked = 'checked';
+                }
+                $.ajax({
+                    data: { page: 'users', type: 'admin', id: this.id, checked: isChecked }
+                });
+            }
+
+            function updateTable(data) {
+                var id = '';
+                var temp = '';
+                var tags = '';
+                var checkbox = '<input type="checkbox" ';
+
+                $.each(data, function(index, user) {
+                    id = '';
+                    tags = '';
+
+                    $.each(user, function(key, val) {
+                        if (key != 'password') {
+                            switch (key) {
+                            case 'is_authorized':
+                                temp = checkbox;
+                                temp += 'class="authorized" id="' + id + '" ';
+                                if (val == '1') temp += 'checked '; 
+                                temp += '/>';
+                                val = temp;
+                                break;
+                            case 'is_admin':
+                                temp = checkbox;
+                                temp += 'class="admin" id="' + id + '" ';
+                                if (val == '1') temp += 'checked '; 
+                                temp += '/>';
+                                val = temp;
+                                break;
+                            case 'id':
+                                id = val;
+                                break;
+                            }
+                            tags += '<td>' + val + '</td>';
+                        }
+                    });
+                    $('#tr' + index).html(tags);
+                });
+
+                $('.authorized').click(checkAuthorized);
+                $('.admin').click(checkAdmin);
+            }
+
+            updateTable(<?= json_encode($context['user_list']) ?>);
+        </script>
     </body>
 </html>
