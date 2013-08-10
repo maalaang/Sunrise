@@ -5,7 +5,6 @@
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet">
         <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
-        <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/buttonEvent.js"></script>
         <script>
             function whenSignin(e) {
                 var email = document.getElementById('signin_email').value;
