@@ -26,19 +26,21 @@
             .sns_btn{
                 float:right;
             }
+            .navbar-inverse{
+                background-color:purple;
+            }
         </style>
 
 
         <script>
-            function whenClickSpeaker(){
-                $("#btn_speaker i").toggleClass("glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up");
+            function whenClickMic(){
+                $("#menu_mic i").toggleClass("glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up");
             }
-            function whenClickVideo(){
-                $("#btn_video i").toggleClass("glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open");
+            function whenClickScreen(){
+                $("#menu_screen i").toggleClass("glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open");
             }
             function whenClickExit(){
             }
-
             //Initalizing JScrollpane
             $(document).ready(function(){
                 $('.scroll-pane').jScrollPane();
@@ -47,12 +49,43 @@
     </head>
 
     <body>
-
-
         <div class="head_content">
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>
                 <div class="nav-collapse collapse">
+                    <form class="navbar-form form-inline pull-right" name"option_form" id="option_form">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a id="menu_screen" href="#" onclick="whenClickScreen()">
+                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a id="menu_mic" href="#" onclick="whenClickMic()">
+                                    <i class="glyphicon glyphicon-volume-up"></i>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" id="menu_sns" href="#">
+                                    <i class="glyphicon glyphicon-link"></i>
+                                    <span class="caret"></span>
+                                </a> 
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Facebook</a></li>
+                                    <li><a href="#">Twitter</a></li>
+                                    <li><a href="#">Google+</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a id="menu_exit" href="#" onclick="whenClickExit()">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                                        <!--Button Ver.-->
+<!--                <div class="nav-collapse collapse">
                     <form class="navbar-form form-inline pull-right" name="option_form" id="option_form">
                         <button type="button" class="btn btn-primary" id="btn_video" onclick="whenClickVideo()">
                             <i class="glyphicon glyphicon-eye-open"></i>
@@ -75,25 +108,23 @@
                             <i class="glyphicon glyphicon-remove"></i>
                         </button>
                     </form>
-                </div>
+                </div>-->
             </div>
         </div>
 
 
         <div class="main_content col-lg-8">
             <div class="header">
-                <span class="sns_btn">Invite People</span>
-                
-                <span><h3>Design team weekly meeting</h3></span>
-                The layout of the video chat room...
+                <span class="sns_btn">Invite People</span> 
+                <span><h1><a id="title" href="#" style="color:purple;">Design team weekly meeting</a></h1></span>
+                <span><h3><a id="title_description" href="#" style="color:gray;">The layout of the video chat room...</a></h3></span>
             </div>
         </div>
 
 
         <div class="side_content col-lg-4">
             <h1>Side_Content</h1>
-            <div class="scroll-pane jspScrollable" tabindex="0" style="overflow: hidden; padding:0px; width: auto;height:200px;">
-                <div class="jspPane" style="padding:0px; top:0px; width:auto;height:200px">
+                <div class="scroll-pane" style="width:100%; height:400px; overflow:auto;">
                     <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in ligula id sem tristique ultrices
                     eget id neque. Duis enim turpis, tempus at accumsan vitae, lobortis id sapien. Pellentesque nec orci
@@ -120,21 +151,33 @@
                     habitasse platea dictumst. Ut imperdiet mauris vitae eros varius eget accumsan lectus adipiscing.
                     </p>
                     <p>
+                    Quisque et massa leo, sit amet adipiscing nisi. Mauris vel condimentum dolor. Duis quis ullamcorper
+                    eros. Proin metus dui, facilisis id bibendum sed, aliquet non ipsum. Aenean pulvinar risus eu nisi
+                    dictum eleifend. Maecenas mattis dolor eget lectus pretium eget molestie libero auctor. Praesent sit
+                    amet tellus sed nibh convallis semper. Curabitur nisl odio, feugiat non dapibus sed, tincidunt ut
+                    est. Nullam erat velit, suscipit aliquet commodo sit amet, mollis in mauris. Curabitur pharetra
+                    dictum interdum. In posuere pretium ultricies. Curabitur volutpat eros vehicula quam ultrices
+                    varius. Proin volutpat enim a massa tempor ornare. Sed ullamcorper fermentum nisl, ac hendrerit sem
+                    feugiat ac. Donec porttitor ullamcorper quam. Morbi pretium adipiscing quam, quis bibendum diam
+                    congue eget. Sed at lectus at est malesuada iaculis. Sed fermentum quam dui. Donec eget ipsum dolor,
+                    id mollis nisi. Donec fermentum vehicula porta.
+                    </p>
+                    <p>
+                    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                    Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
+                    sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+                    Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+                    commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros
+                    ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis.
+                    Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna
+                    eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis
+                    luctus, metus
+                    </p>
+                    <p>
                     Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
                     Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit
                     amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
                     </p>
-                </div>
-                <div class="jspVerticalBar">
-                    <div class="jspCap jspCapTop"></div>
-                    <div class="jspTrack" style="height:200px;">
-                        <div class="jspDrag" style="height:77px;">
-                            <div class="jspDragTop"></div>
-                            <div class="jspDragBottom"></div>
-                        </div>
-                    </div>
-                    <div class="jspCap jspCapBottom"></div>
-                </div>
             </div>
         </div>
 
