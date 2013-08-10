@@ -9,6 +9,37 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
+        <script>
+            $(document).ready(function () {
+                $.ajaxSetup({
+                    url: "<?= $GLOBALS['sr_root'] ?>/controllers/admin_users.php",
+                    type: 'POST',
+                    error: function (data) { alert('Error:' + data); }
+                });
+                $('.authorized').click(function () {
+                    if (this.checked) {
+                        $checked = 'checked';
+                    } else {
+                        $checked = 'unchecked';
+                    }
+                    $.ajax({
+                        data: { userId: this.id, type: 'authorized', checked: $checked },
+                    });
+                });
+                $('.admin').click(function () {
+                    $userId = this.id;
+                    $type = 'authorized';
+                    if (this.checked) {
+                        $checked = 'checked';
+                    } else {
+                        $checked = 'unchecked';
+                    }
+                    $.ajax({
+                        data: { userId: this.id, type: 'admin', checked: $checked },
+                    });
+                });
+            });
+        </script>
         <style>
             #sr_table * {
                 text-align: center;
@@ -89,24 +120,31 @@
                                     <tbody>
                                         <?php
                                         $user_list = $context['user_list'];
-
-                                        $checked_box = '<input type="checkbox" checked />';
-                                        $unchecked_box = '<input type="checkbox" />';
+                                        $checkbox = '<input type="checkbox" ';
 
                                         foreach ($user_list as $user) {
+                                            $is_authorized = $checkbox;
+                                            $is_authorized .= 'class="authorized" id="' . $user->id . '" ';
+
+                                            $is_admin = $checkbox;
+                                            $is_admin .= 'class="admin" id="' . $user->id . '" ';
 
                                             if ($user->is_authorized) {
-                                                $is_authorized = $checked_box;
-                                            } else {
-                                                $is_authorized= $unchecked_box;
+                                                $is_authorized .= 'checked ';
                                             }
+                                            if ($user->is_admin) {
+                                                $is_admin .= 'checked ';
+                                            }
+
+                                            $is_authorized .= ' />';
+                                            $is_admin .= ' />';
 
                                             echo '<tr><td>' . $user->id . '</td>' .
                                                 '<td>' . $user->email . '</td>' .
                                                 '<td>' . $user->first_name . '</td>' .
                                                 '<td>' . $user->last_name . '</td>' .
                                                 '<td>' . $is_authorized . '</td>' .
-                                                '<td>' . $unchecked_box . '</td>' .
+                                                '<td>' . $is_admin . '</td>' .
                                                 '<td>' . $user->join_date . '</td>' .
                                                 '<td>' . $user->last_active_date . '</td></tr>';
                                         }

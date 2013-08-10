@@ -25,6 +25,9 @@ class User extends Model {
     /** Flag for having been authorized or not */
     public $is_authorized;
 
+    /** Flag for having administrator authority */
+    public $is_admin;
+
     /** Date when the user joined */
     public $join_date;
 

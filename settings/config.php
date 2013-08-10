@@ -12,8 +12,7 @@ $sr_db_charset      = 'utf8';
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/whale/Sunrise';
-
+$sr_root        = '/workspace/husky/Sunrise';
 
 /**
  * Message server configuration.

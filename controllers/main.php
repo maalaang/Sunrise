@@ -99,7 +99,8 @@ function signup() {
             $user->last_name = $_POST['last_name'];
             $user->email = $_POST['signup_email'];
             $user->password = md5($_POST['signup_password']);
-            $user->is_authorized = 1;
+            $user->is_authorized = 0;
+            $user->is_admin = 0;
             $user->join_date = Model::getCurrentTime();
             $user->last_active_date = Model::getCurrentTime();
 
