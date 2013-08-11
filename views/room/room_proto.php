@@ -47,13 +47,15 @@
 
                 input_message = document.getElementById('input_message').value;
                 output_message = document.getElementById('output_message').value;
+
+                if(input_message !== ''){
                 console.log(input_message);
                 console.log(output_message);
                 
                 output_message += input_message+'\n';
                 document.getElementById('input_message').value = '';
                 document.getElementById('output_message').value = output_message;
-                
+                }
             }
             //Initalizing JScrollpane
             $(document).ready(function(){
@@ -129,9 +131,24 @@
 
         <div class="main_content col-lg-8">
             <div class="header">
-                <span class="sns_btn">Invite People</span> 
-                <span><h1><a id="title" href="#" style="color:purple;">Design team weekly meeting</a></h1></span>
-                <span><h3><a id="title_description" href="#" style="color:gray;">The layout of the video chat room...</a></h3></span>
+                <span class="sns_btn">Invite People 
+                <table>
+                    <tr>
+                        <td><a id="sns_facebook" href="#"/>face</td>
+                        <td><a id="sns_twit" href="#"/>Twit</td>
+                    </tr>
+                </table>
+                </span>
+                    <span>
+                        <h1>Design team weekly meeting<a id="title" href="#" />
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </h1>
+                    </span>
+                    <span>
+                        <h3>The layout of the video chat room...<a id="title_description" href="#" style="color:gray;"/>
+                            <i class="glyphicon glyphicon-pencil"></i>
+                        </h3>
+                    </span>
             </div>
         </div>
 
