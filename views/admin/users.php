@@ -19,15 +19,15 @@
                     case 'end': break;
                     default:
                         if ($(this).attr('class') != 'active') {
-                            $('#sr_page li.active').attr('class', 'None');
-                            $(this).attr('class', 'active');
-
+                            var id = this.id;
                             var pnum = $('#' + this.id + '_a').text();
-
                             $.ajax({
                                 data: { page: 'users', type: 'pagination', page_number: pnum },
                                 dataType: 'JSON',
-                                success: function (data) { updateTable(data); }
+                                success: function (data) {
+                                    updateTable(data);
+                                    updatePage(id, pnum);
+                                }
                             });
                         }
                     }
@@ -119,9 +119,9 @@
                         <div id="sr_page">
                             <div class="pagination pagination-right">
                                 <ul>
-                                    <li id="begin" class="disabled"><a id="begin_a">&laquo;</a></li>
-                                    <li id="prev" class="disabled"><a id="prev_a">&lsaquo;</a></li>
-                                    <li id="1st" class="active"><a id="1st_a">1</a></li>
+                                    <li id="begin"><a id="begin_a">&laquo;</a></li>
+                                    <li id="prev"><a id="prev_a">&lsaquo;</a></li>
+                                    <li id="1st"><a id="1st_a">1</a></li>
                                     <li id="2nd"><a id="2nd_a">2</a></li>
                                     <li id="3rd"><a id="3rd_a">3</a></li>
                                     <li id="4th"><a id="4th_a">4</a></li>
@@ -154,6 +154,7 @@
             $.ajaxSetup({
                 url: "<?= $GLOBALS['sr_root'] ?>/controllers/admin.php",
                 type: 'POST',
+                error: function (jqXHR, textStatus, errorThrown) { alert('Ajax Error: ' + textStatus); },
             });
 
             function checkAuthorized() {
@@ -176,13 +177,13 @@
                 });
             }
 
-            function updateTable(data) {
+            function updateTable(user_list) {
                 var id = '';
                 var temp = '';
                 var tags = '';
                 var checkbox = '<input type="checkbox" ';
 
-                $.each(data, function(index, user) {
+                $.each(user_list, function(index, user) {
                     id = '';
                     tags = '';
 
@@ -213,11 +214,33 @@
                     $('#tr' + index).html(tags);
                 });
 
+                if (user_list.length < 10) {
+                    for (var i = user_list.length; i < 10; i++) {
+                        $('#tr' + i).html('');
+                    }
+                }
+
                 $('.authorized').click(checkAuthorized);
                 $('.admin').click(checkAdmin);
             }
 
+            // TODO : Here!
+            function updatePage(selected_btn, current_page) {
+                var total_record_num= <?= User::getRecordNum() ?>;
+
+                if (current_page == '1') {
+                    $('#begin, #prev').attr('class', 'disabled');
+                } else {
+                    $('#begin, #prev').attr('class', '');
+                }
+
+                $('#sr_page li.active').attr('class', '');
+                $('#' + selected_btn).attr('class', 'active');
+            }
+
+            // Initialize table
             updateTable(<?= json_encode($context['user_list']) ?>);
+            updatePage('1st', '1');
         </script>
     </body>
 </html>

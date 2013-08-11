@@ -58,6 +58,7 @@ function users() {
                 $db = sr_pdo();
 
                 $beginRecordNum = ($_POST['page_number'] - 1) * 10;
+
                 $stmt = $db->prepare('SELECT * FROM user LIMIT '. $beginRecordNum . ', 10');
                 $stmt->execute();
 

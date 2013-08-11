@@ -103,7 +103,9 @@ abstract class Model {
      * @param db    PDO handle
      * @return  the number of instances deleted
      */
-    public static function delete_all($db) {
+    public static function delete_all() {
+        $db = sr_pdo();
+
         $called_class = get_called_class();
 
         $table = $called_class::getTableName();
@@ -121,7 +123,9 @@ abstract class Model {
      * @param db    PDO handle
      * @return Null 
      */
-    public static function reorder_id($db) {
+    public static function reorder_id() {
+        $db = sr_pdo();
+
         $called_class = get_called_class();
 
         $table = $called_class::getTableName();
@@ -131,6 +135,28 @@ abstract class Model {
         $stmt = $db->query("UPDATE $table SET $table.id=@CNT:=@CNT+1");
 
         return Null;
+    }
+
+    /**
+     * Returns the number of records of the table associated with this model.
+     *
+     * @param db    PDO handle
+     * @return  the number of records 
+     */
+    public static function getRecordNum() {
+        $db = sr_pdo();
+
+        $called_class = get_called_class();
+
+        $table = $called_class::getTableName();
+
+        $stmt = $db->prepare("SELECT COUNT(*) FROM $table");
+
+        $stmt->execute();
+
+        $number_of_records = $stmt->fetch();
+
+        return $number_of_records['COUNT(*)'];
     }
 
     /**
