@@ -12,24 +12,38 @@
         <script>
             $(document).ready(function () {
                 $('#sr_page li').click(function () {
-                    switch (this.id) {
-                    case 'begin': break;
-                    case 'prev': break;
-                    case 'next': break;
-                    case 'end': break;
-                    default:
-                        if ($(this).attr('class') != 'active') {
-                            var id = this.id;
-                            var pnum = $('#' + this.id + '_a').text();
-                            $.ajax({
-                                data: { page: 'users', type: 'pagination', page_number: pnum },
+                    if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
+                        var id = '';
+                        var pnum = '';
+
+                        switch (this.id) {
+                        case 'begin':
+                            pnum = Number('1');
+                            break;
+                        case 'prev':
+                            id = $('#sr_page li.active').attr('id'); 
+                            pnum = Number($('#' + id + '_a').text()) - 1;
+                            break;
+                        case 'next':
+                            id = $('#sr_page li.active').attr('id'); 
+                            pnum = Number($('#' + id + '_a').text()) + 1;
+                            break;
+                        case 'end':
+                            pnum = parseInt(<?= User::getRecordNum() ?> / 10 + 1);
+                            break;
+                        default:
+                            pnum = Number($('#' + this.id + '_a').text());
+                            break;
+                        }
+
+                        $.ajax({
+                            data: { page: 'users', type: 'pagination', page_number: pnum },
                                 dataType: 'JSON',
                                 success: function (data) {
                                     updateTable(data);
-                                    updatePage(id, pnum);
+                                    updatePage(pnum);
                                 }
-                            });
-                        }
+                        });
                     }
                 });
             });
@@ -119,15 +133,15 @@
                         <div id="sr_page">
                             <div class="pagination pagination-right">
                                 <ul>
-                                    <li id="begin"><a id="begin_a">&laquo;</a></li>
-                                    <li id="prev"><a id="prev_a">&lsaquo;</a></li>
-                                    <li id="1st"><a id="1st_a">1</a></li>
-                                    <li id="2nd"><a id="2nd_a">2</a></li>
-                                    <li id="3rd"><a id="3rd_a">3</a></li>
-                                    <li id="4th"><a id="4th_a">4</a></li>
-                                    <li id="5th"><a id="5th_a">5</a></li>
-                                    <li id="next"><a id="next_a">&rsaquo;</a></li>
-                                    <li id="end"><a id="end_a">&raquo;</a></li>
+                                    <li id="begin"><a>&laquo;</a></li>
+                                    <li id="prev"><a>&lsaquo;</a></li>
+                                    <li id="1st"><a id="1st_a"></a></li>
+                                    <li id="2nd"><a id="2nd_a"></a></li>
+                                    <li id="3rd"><a id="3rd_a"></a></li>
+                                    <li id="4th"><a id="4th_a"></a></li>
+                                    <li id="5th"><a id="5th_a"></a></li>
+                                    <li id="next"><a>&rsaquo;</a></li>
+                                    <li id="end"><a>&raquo;</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -181,6 +195,7 @@
                 var id = '';
                 var temp = '';
                 var tags = '';
+                var indexNum = 0;
                 var checkbox = '<input type="checkbox" ';
 
                 $.each(user_list, function(index, user) {
@@ -209,14 +224,21 @@
                                 break;
                             }
                             tags += '<td>' + val + '</td>';
+                            indexNum++;
                         }
                     });
                     $('#tr' + index).html(tags);
                 });
 
+                indexNum /= user_list.length;
+
                 if (user_list.length < 10) {
+                    tags = '<td>-</td>';
+                    for (var i = 0; i < indexNum-1; i++) {
+                        tags += '<td></td>';
+                    }
                     for (var i = user_list.length; i < 10; i++) {
-                        $('#tr' + i).html('');
+                        $('#tr' + i).html(tags);
                     }
                 }
 
@@ -224,23 +246,42 @@
                 $('.admin').click(checkAdmin);
             }
 
-            // TODO : Here!
-            function updatePage(selected_btn, current_page) {
-                var total_record_num= <?= User::getRecordNum() ?>;
+            function updatePage(current_page) {
+                var last_page = parseInt(<?= User::getRecordNum() ?> / 10 + 1);
+                var first_page_in_view = parseInt((current_page - 1) / 5) * 5 + 1;
+                var selected_button = (current_page - 1) % 5 + 1;
 
-                if (current_page == '1') {
+                var ordinal = [ '', '1st', '2nd', '3rd', '4th', '5th' ];
+
+                for (var btn = 1; btn <= 5; btn++) {
+                    $('#' + ordinal[btn] + '_a').text(first_page_in_view + btn - 1);
+                }
+
+                if (current_page == 1) {
                     $('#begin, #prev').attr('class', 'disabled');
                 } else {
                     $('#begin, #prev').attr('class', '');
                 }
 
+                if (current_page == last_page) {
+                    $('#next, #end').attr('class', 'disabled');
+                } else {
+                    $('#next, #end').attr('class', '');
+                }
+
                 $('#sr_page li.active').attr('class', '');
-                $('#' + selected_btn).attr('class', 'active');
+                $('#' + ordinal[selected_button]).attr('class', 'active');
+
+                if (last_page - first_page_in_view < 4) {
+                    for (var btn = (last_page - 1) % 5 + 2; btn <= 5; btn++) {
+                        $('#' + ordinal[btn]).attr('class', 'active');
+                    }
+                }
             }
 
             // Initialize table
             updateTable(<?= json_encode($context['user_list']) ?>);
-            updatePage('1st', '1');
+            updatePage(1);
         </script>
     </body>
 </html>
