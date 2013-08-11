@@ -1,31 +1,113 @@
 <?php
 
+require_once (dirname(__FILE__) . '/../models/user.php');
+require_once (dirname(__FILE__) . '/../include/utils.php');
+
+/**
+ * Ajax request dispatcher 
+ */
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    switch ($_POST['page']) {
+    case 'dashboard':
+        dashboard();
+        break;
+    case 'rooms':
+        rooms();
+        break;
+    case 'users':
+        users();
+        break;
+    case 'settings':
+        settings();
+        break;
+    }
+}
+
+
 function dashboard() {
     sr_response('views/admin/dashboard.php', null);
 }
+
 
 function rooms() {
     sr_response('views/admin/rooms.php', null);
 }
 
+
 function users() {
-    $db = sr_pdo();
+    // Show Users Page
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        $db = sr_pdo();
 
-    $stmt = $db->prepare('SELECT * FROM user');
-    $stmt->execute();
+        $stmt = $db->prepare('SELECT * FROM user LIMIT 10');
+        $stmt->execute();
 
-    $user_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'User');
+        $user_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'User');
 
-    $context = array(
-        'user_list' => $user_list
-    );
+        $context = array(
+            'user_list' => $user_list
+        );
 
-    sr_response('views/admin/users.php', $context);
+        sr_response('views/admin/users.php', $context);
+
+    // Handling Ajax Request
+    } else {
+        // Pagination
+        if ($_POST['type'] == 'pagination') {
+            try {
+                $db = sr_pdo();
+
+                $beginRecordNum = ($_POST['page_number'] - 1) * 10;
+                $stmt = $db->prepare('SELECT * FROM user LIMIT '. $beginRecordNum . ', 10');
+                $stmt->execute();
+
+                $user_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'User');
+
+                echo json_encode($user_list);
+
+            } catch (PDOException $e) {
+
+            }
+        // Update Authorized or Admin Authority
+        } else {
+            try {
+                $db = sr_pdo();
+
+                $stmt = $db->prepare('SELECT * FROM user WHERE id = :id');
+                $stmt->bindParam(':id', $_POST['id']);
+                $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
+                $stmt->execute();
+
+                $user = $stmt->fetch();
+
+                if ($_POST['type'] == 'authorized') {
+                    if ($_POST['checked'] == 'checked') {
+                        $user->is_authorized = 1;
+                    } else {
+                        $user->is_authorized = 0;
+                    }
+                } else {
+                    if ($_POST['checked'] == 'checked') {
+                        $user->is_admin = 1;
+                    } else {
+                        $user->is_admin = 0;
+                    }
+                }
+
+                $result = $user->save($db);
+
+            } catch (PDOException $e) {
+
+            }
+        }
+    }
 }
+
 
 function settings() {
     sr_response('views/admin/settings.php', null);
 }
+
 
 /**
  * Display room list.
