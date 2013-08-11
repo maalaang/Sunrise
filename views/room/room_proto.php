@@ -41,6 +41,9 @@
             }
             function whenClickExit(){
             }
+            function whenClickSend(){
+                $("#output_message").value = "asdf";
+            }
             //Initalizing JScrollpane
             $(document).ready(function(){
                 $('.scroll-pane').jScrollPane();
@@ -124,7 +127,7 @@
 
         <div class="side_content col-lg-4">
             <h1>Side_Content</h1>
-                <div class="scroll-pane" style="width:100%; height:400px; overflow:auto;">
+<!--                <div class="scroll-pane" style="width:100%; height:400px; overflow:auto;">
                     <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in ligula id sem tristique ultrices
                     eget id neque. Duis enim turpis, tempus at accumsan vitae, lobortis id sapien. Pellentesque nec orci
@@ -178,6 +181,17 @@
                     Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit
                     amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
                     </p>
+            </div>-->
+            <div class="chat-form">
+                <div class="form-group">
+                    <textarea class="form-control" id="output_message" rows="20" text="asdfae"></textarea>
+                    <form class="form-inline">
+                        <button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickSend">Send</button>
+                        <!--Send message to server-->
+                        <!--<button type="button" class="btn btn-primary" style="float:right; width:20%;">Send</button>-->
+                        <input type="text" class="form-control" id="input_message" placeholder="Input your message" style="width:80%;">
+                    </form>
+                </div>
             </div>
         </div>
 
