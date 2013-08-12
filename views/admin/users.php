@@ -10,40 +10,49 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
+            function loadData(selected_btn) {
+                var id = '';
+                var pnum = '';
+
+                switch (selected_btn) {
+                case 'begin':
+                    pnum = Number('1');
+                    break;
+                case 'prev':
+                    id = $('#sr_page li.active').attr('id'); 
+                    pnum = Number($('#' + id + '_a').text()) - 1;
+                    break;
+                case 'next':
+                    id = $('#sr_page li.active').attr('id'); 
+                    pnum = Number($('#' + id + '_a').text()) + 1;
+                    break;
+                case 'end':
+                    pnum = parseInt(<?= User::getRecordNum() ?> / 10 + 1);
+                    break;
+                case 'filter':
+                    // TODO: Filtering
+                    break;
+                default:
+                    pnum = Number($('#' + selected_btn + '_a').text());
+                    break;
+                }
+
+                $.ajax({
+                    data: { page: 'users', type: 'pagination', page_number: pnum },
+                        dataType: 'JSON',
+                        success: function (data) {
+                            updateTable(data);
+                            updatePage(pnum);
+                        }
+                });
+            }
             $(document).ready(function () {
+                $('#filter_authorized, #filter_admin').click(function () {
+                    setTimeout(loadData('filter'), 0);
+                });
                 $('#sr_page li').click(function () {
                     if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
-                        var id = '';
-                        var pnum = '';
-
-                        switch (this.id) {
-                        case 'begin':
-                            pnum = Number('1');
-                            break;
-                        case 'prev':
-                            id = $('#sr_page li.active').attr('id'); 
-                            pnum = Number($('#' + id + '_a').text()) - 1;
-                            break;
-                        case 'next':
-                            id = $('#sr_page li.active').attr('id'); 
-                            pnum = Number($('#' + id + '_a').text()) + 1;
-                            break;
-                        case 'end':
-                            pnum = parseInt(<?= User::getRecordNum() ?> / 10 + 1);
-                            break;
-                        default:
-                            pnum = Number($('#' + this.id + '_a').text());
-                            break;
-                        }
-
-                        $.ajax({
-                            data: { page: 'users', type: 'pagination', page_number: pnum },
-                                dataType: 'JSON',
-                                success: function (data) {
-                                    updateTable(data);
-                                    updatePage(pnum);
-                                }
-                        });
+                        loadData(this.id);
                     }
                 });
             });
@@ -119,8 +128,8 @@
                                 <div class="pull-right">
                                     <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
                                         <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
-                                        <button class="btn btn-small" id="filter_athorize">Authorize</button>
-                                        <button class="btn btn-small" id="filter-admin">Admin</button>
+                                        <button class="btn btn-small" id="filter_authorized">Authorize</button>
+                                        <button class="btn btn-small" id="filter_admin">Admin</button>
                                     </div>
                                     <button class="btn btn-small btn-info disabled" disabled>Total: <?= User::getRecordNum() ?></button>
                                 </div>
@@ -298,7 +307,7 @@
 
                 if (last_page - first_page_in_view < 4) {
                     for (var btn = (last_page - 1) % 5 + 2; btn <= 5; btn++) {
-                        $('#' + ordinal[btn]).attr('class', 'active');
+                        $('#' + ordinal[btn]).attr('class', 'disabled');
                     }
                 }
             }
