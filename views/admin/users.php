@@ -49,8 +49,18 @@
             });
         </script>
         <style>
+            #sr_filter {
+                padding-top: 0px;
+            }
+            #sr_table {
+                margin-bottom: 0px;
+            }
             #sr_table * {
                 text-align: center;
+            }
+            #sr_page {
+                margin-top: 0px;
+                margin-bottom: 5px;
             }
             #sr_page li {
                 cursor: pointer;
@@ -103,8 +113,17 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Registered Users</div>
-                                <div class="pull-right"><span class="badge badge-info">1,234</span></div>
+                                <div class="muted pull-left">
+                                    <h4>Registered Users</h4>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
+                                        <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
+                                        <button class="btn btn-small" id="filter_athorize">Authorize</button>
+                                        <button class="btn btn-small" id="filter-admin">Admin</button>
+                                    </div>
+                                    <button class="btn btn-small btn-info disabled" disabled>Total: <?= User::getRecordNum() ?></button>
+                                </div>
                             </div>
                             <div class="block-content collapse in">
                                 <table class="table table-striped" id="sr_table">
@@ -121,28 +140,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                        for ($i = 0; $i < 10; $i++) {
-                                            echo '<tr id="tr' . $i . '"></tr>';
-                                        }
-                                        ?>
+                                        <tr id="tr0"> </tr>
+                                        <tr id="tr1"> </tr>
+                                        <tr id="tr2"> </tr>
+                                        <tr id="tr3"> </tr>
+                                        <tr id="tr4"> </tr>
+                                        <tr id="tr5"> </tr>
+                                        <tr id="tr6"> </tr>
+                                        <tr id="tr7"> </tr>
+                                        <tr id="tr8"> </tr>
+                                        <tr id="tr9"> </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                        <div id="sr_page">
-                            <div class="pagination pagination-right">
-                                <ul>
-                                    <li id="begin"><a>&laquo;</a></li>
-                                    <li id="prev"><a>&lsaquo;</a></li>
-                                    <li id="1st"><a id="1st_a"></a></li>
-                                    <li id="2nd"><a id="2nd_a"></a></li>
-                                    <li id="3rd"><a id="3rd_a"></a></li>
-                                    <li id="4th"><a id="4th_a"></a></li>
-                                    <li id="5th"><a id="5th_a"></a></li>
-                                    <li id="next"><a>&rsaquo;</a></li>
-                                    <li id="end"><a>&raquo;</a></li>
-                                </ul>
+                            <div class="navbar navbar-inner block-header">
+                                <div class="pagination pagination-right" id="sr_page">
+                                    <ul>
+                                        <li id="begin"><a>&laquo;</a></li>
+                                        <li id="prev"><a>&lsaquo;</a></li>
+                                        <li id="1st"><a id="1st_a"></a></li>
+                                        <li id="2nd"><a id="2nd_a"></a></li>
+                                        <li id="3rd"><a id="3rd_a"></a></li>
+                                        <li id="4th"><a id="4th_a"></a></li>
+                                        <li id="5th"><a id="5th_a"></a></li>
+                                        <li id="next"><a>&rsaquo;</a></li>
+                                        <li id="end"><a>&raquo;</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
