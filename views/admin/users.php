@@ -10,47 +10,11 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
-            function loadData(selected_btn) {
-                var id = '';
-                var pnum = '';
-
-                switch (selected_btn) {
-                case 'begin':
-                    pnum = Number('1');
-                    break;
-                case 'prev':
-                    id = $('#sr_page li.active').attr('id'); 
-                    pnum = Number($('#' + id + '_a').text()) - 1;
-                    break;
-                case 'next':
-                    id = $('#sr_page li.active').attr('id'); 
-                    pnum = Number($('#' + id + '_a').text()) + 1;
-                    break;
-                case 'end':
-                    pnum = parseInt(<?= User::getRecordNum() ?> / 10 + 1);
-                    break;
-                case 'filter':
-                    // TODO: Filtering
-                    break;
-                default:
-                    pnum = Number($('#' + selected_btn + '_a').text());
-                    break;
-                }
-
-                $.ajax({
-                    data: { page: 'users', type: 'pagination', page_number: pnum },
-                        dataType: 'JSON',
-                        success: function (data) {
-                            updateTable(data);
-                            updatePage(pnum);
-                        }
-                });
-            }
             $(document).ready(function () {
                 $('#filter_authorized, #filter_admin').click(function () {
-                    setTimeout(loadData('filter'), 0);
+                    setTimeout(function () { loadData('filter') }, 0);
                 });
-                $('#sr_page li').click(function () {
+                $('#sr_page li'.click(function () {
                     if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
                         loadData(this.id);
                     }
@@ -131,7 +95,7 @@
                                         <button class="btn btn-small" id="filter_authorized">Authorize</button>
                                         <button class="btn btn-small" id="filter_admin">Admin</button>
                                     </div>
-                                    <button class="btn btn-small btn-info disabled" disabled>Total: <?= User::getRecordNum() ?></button>
+                                    <button class="btn btn-small btn-info disabled" id="record_number" disabled></button>
                                 </div>
                             </div>
                             <div class="block-content collapse in">
@@ -224,6 +188,59 @@
                 });
             }
 
+            function loadData(selected_btn) {
+                var id = '';
+                var pnum = '';
+
+                var filter_arr = new Object();
+
+                if ($('#filter_admin').attr('class').match('active')) {
+                    filter_arr['is_admin'] = '1';
+                }
+                if ($('#filter_authorized').attr('class').match('active')) {
+                    filter_arr['is_authorized'] = '1';
+                }
+
+                switch (selected_btn) {
+                case 'begin':
+                    pnum = Number('1');
+                    break;
+                case 'prev':
+                    id = $('#sr_page li.active').attr('id'); 
+                    pnum = Number($('#' + id + '_a').text()) - 1;
+                    break;
+                case 'next':
+                    id = $('#sr_page li.active').attr('id'); 
+                    pnum = Number($('#' + id + '_a').text()) + 1;
+                    break;
+                case 'end':
+                    pnum = Number('-1');
+                    break;
+                case 'filter':
+                    pnum = Number('1');
+                    break;
+                default:
+                    pnum = Number($('#' + selected_btn + '_a').text());
+                    break;
+                }
+
+                $.ajax({
+                    data: { page: 'users',
+                            type: 'pagination',
+                            filter: JSON.stringify(filter_arr),
+                            page_number: pnum
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if (selected_btn == 'end') {
+                            pnum = parseInt(data['total_record_number'] / 10 + 1);
+                        }
+                        updateTable(data['user_list']);
+                        updatePage(pnum, data['total_record_number']);
+                    }
+                });
+            }
+
             function updateTable(user_list) {
                 var id = '';
                 var temp = '';
@@ -279,16 +296,21 @@
                 $('.admin').click(checkAdmin);
             }
 
-            function updatePage(current_page) {
-                var last_page = parseInt(<?= User::getRecordNum() ?> / 10 + 1);
+            function updatePage(current_page, total_record_number) {
+                var last_page = parseInt(total_record_number / 10 + 1);
                 var first_page_in_view = parseInt((current_page - 1) / 5) * 5 + 1;
                 var selected_button = (current_page - 1) % 5 + 1;
 
                 var ordinal = [ '', '1st', '2nd', '3rd', '4th', '5th' ];
 
+                $('#record_number').html('Total: ' + total_record_number);
+
                 for (var btn = 1; btn <= 5; btn++) {
                     $('#' + ordinal[btn] + '_a').text(first_page_in_view + btn - 1);
                 }
+
+                $('#sr_page li').attr('class', '');
+                $('#' + ordinal[selected_button]).attr('class', 'active');
 
                 if (current_page == 1) {
                     $('#begin, #prev').attr('class', 'disabled');
@@ -302,9 +324,6 @@
                     $('#next, #end').attr('class', '');
                 }
 
-                $('#sr_page li.active').attr('class', '');
-                $('#' + ordinal[selected_button]).attr('class', 'active');
-
                 if (last_page - first_page_in_view < 4) {
                     for (var btn = (last_page - 1) % 5 + 2; btn <= 5; btn++) {
                         $('#' + ordinal[btn]).attr('class', 'disabled');
@@ -314,7 +333,7 @@
 
             // Initialize table
             updateTable(<?= json_encode($context['user_list']) ?>);
-            updatePage(1);
+            updatePage(1, <?= User::getRecordNum(array()) ?>);
         </script>
     </body>
 </html>

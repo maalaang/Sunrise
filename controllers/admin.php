@@ -57,14 +57,40 @@ function users() {
             try {
                 $db = sr_pdo();
 
-                $beginRecordNum = ($_POST['page_number'] - 1) * 10;
+                $json = $_POST['filter'];
+                $json = stripslashes($json);
+                $filter = json_decode($json);
 
-                $stmt = $db->prepare('SELECT * FROM user LIMIT '. $beginRecordNum . ', 10');
+                $where = '';
+                $index = 0;
+                foreach ($filter as $field => $value) {
+                    if ($index++ == 0) {
+                        $where .= 'WHERE ';
+                    } else {
+                        $where .= ' AND ';
+                    }
+                    $where .= $field . '=' . $value;
+                }
+
+                $total_record_number = User::getRecordNum($filter);
+
+                if ($_POST['page_number'] == -1) {
+                    $beginRecordNum = (int)($total_record_number / 10) * 10 + 1;
+                } else {
+                    $beginRecordNum = ($_POST['page_number'] - 1) * 10;
+                }
+
+                $stmt = $db->prepare("SELECT * FROM user $where LIMIT $beginRecordNum, 10");
                 $stmt->execute();
 
                 $user_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'User');
 
-                echo json_encode($user_list);
+                $result = array(
+                    'user_list' => $user_list,
+                    'total_record_number' => $total_record_number
+                );
+
+                echo json_encode($result);
 
             } catch (PDOException $e) {
 
