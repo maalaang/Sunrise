@@ -62,9 +62,6 @@
                 var title;
                 var description;
 
-                $('#edit_title').html('');
-                $('#edit_description').html('');
-
                 title = $('#title').html();
                 description = $('#description').html();
 
@@ -78,8 +75,6 @@
                 var edit_title;
                 var edit_description;
 
-                $('#edit_title').html('');
-                $('#edit_description').html('');
 
                 //value initializing
                 title = $('#title').html();
@@ -92,6 +87,13 @@
                     $('#title').html(edit_title);
                 if(edit_description !== '')
                     $('#description').html(edit_description);
+            }
+            function whenClickEditClose(){
+                console.log("11111");
+                $('#edit_title').html('');
+                $('#edit_description').html('');
+                console.log($('#edit_title').html());
+                console.log("22222");
             }
             //Initalizing JScrollpane
             $(document).ready(function(){
@@ -220,7 +222,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" onclick="whenClickEditClose()" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="whenClickEditSave()">Save changes</button>
                     </div>
                 </div><!-- /.modal-content -->
