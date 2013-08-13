@@ -29,8 +29,11 @@
             .navbar-inverse{
                 background-color:purple;
             }
+            #inviteModalForm{
+                width: 50%;
+                margin-left: -25%;
+            }
         </style>
-
 
         <script>
             function whenClickMic(){
@@ -49,8 +52,6 @@
                 output_message = document.getElementById('output_message').value;
 
                 if(input_message !== ''){
-                console.log(input_message);
-                console.log(output_message);
                 
                 output_message += input_message+'\n';
                 document.getElementById('input_message').value = '';
@@ -60,6 +61,9 @@
             function whenClickEdit(){
                 var title;
                 var description;
+
+                $('#edit_title').html('');
+                $('#edit_description').html('');
 
                 title = $('#title').html();
                 description = $('#description').html();
@@ -74,6 +78,8 @@
                 var edit_title;
                 var edit_description;
 
+                $('#edit_title').html('');
+                $('#edit_description').html('');
 
                 //value initializing
                 title = $('#title').html();
@@ -82,7 +88,6 @@
                 edit_title = $('#edit_title').val();
                 edit_description = $('#edit_description').val();
 
-                console.log(edit_title);
                 if(edit_title !== '')
                     $('#title').html(edit_title);
                 if(edit_description !== '')
@@ -141,50 +146,15 @@
                         <tr>
                             <td>
                                 <h2 id="title" style="text-align:left">The title</h2>
-                                <h3 id="description" style="text-align:left">The layout of the video chat room...
-                                    <a data-toggle="modal" href="#myModal" onclick="whenClickEdit()">
+                                <h3 id="description" style="text-align:left">The layout of the video chat room...</h3>
+                                    <a data-toggle="modal" href="#editModal" onclick="whenClickEdit()">
                                         <i class="glyphicon glyphicon-link"></i>
                                     </a>
-                                </h3>
-                                <div class="modal fade" id="myModal">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                <h4 class="modal-title">Modal title</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <table>
-                                                    <tr>
-                                                        <td>
-                                                            Title : 
-                                                        </td>
-                                                        <td width="80%">
-                                                            <input type="text" id="edit_title" class="form-control" placeholder="">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Description : 
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="edit_description" class="form-control" placeholder="">
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary" onclick="whenClickEditSave()">Save changes</button>
-                                            </div>
-                                        </div><!-- /.modal-content -->
-                                    </div><!-- /.modal-dialog -->
-                                </div><!-- /.modal -->
                             </td>
                             <td align="right">
                                 <table>
                                     <td><span id="invite_label" class="label label-important">Invite People </td>
-                                    <td><a id="invite_email" href="#"/>Email</td>
+                                    <td><a id="invite_email" data-toggle="modal" href="#inviteModal"/>Email</td>
                                     <td><a id="invite_facebook" href="#"/>face</td>
                                     <td><a id="invite_twit" href="#"/>Twit</td>
                                     <td><a id="invite_url" href="#"/>Link</td>
@@ -196,9 +166,6 @@
             </div>
         </div>
 
-        <div class="title_inputform">
-            
-        </div>
 
         <div class="side_content col-lg-4">
             <h1>Side_Content</h1>
@@ -215,7 +182,6 @@
             </div>
         </div>
 
-</div>
         <div class="tail_content">
             <div class="container" align="center">
                 <p>
@@ -225,6 +191,75 @@
                     <a href="#" id="foot_link">Powered by Sunrise</a>
                 </p>
             </div> 
+        </div>
+        <div class="modal fade" id="editModal">
+            <div class="modal-dialog" id="editModalForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    Title : 
+                                </td>
+                                <td width="80%">
+                                    <input type="text" id="edit_title" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Description : 
+                                </td>
+                                <td>
+                                    <input type="text" id="edit_description" class="form-control">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="whenClickEditSave()">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        
+        <div class="modal fade" id="inviteModal">
+            <div class="modal-dialog" id="inviteModalForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Invite People</h4>
+                    </div>
+                    <div class="modal-body">
+                            <div class="row"> 
+                                <div class="col-lg-2">  
+                                    <ul class="nav nav-pills nav-stacked" id="inviteTab" style="text-align:left;">
+                                        <li class="active"><a href="#Email">Email</a></li>     
+                                        <li><a href="#Facebook">Facebook</a></li>  
+                                        <li><a href="#Twitter">Twitter</a></li>   
+                                        <li><a href="#URL">URL</a></li>   
+                                    </ul>
+                                </div>
+                                <div class="col-lg-10">
+                                    1111111111
+                                </div>
+                            </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane active" id="Email"><div>
+            <div class="tab-pane" id="Facebook"><div>
+            <div class="tab-pane" id="Twitter"><div>
+            <div class="tab-pane" id="URL"><div>
+            
+        </div>
     </body>
 
             
