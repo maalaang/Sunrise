@@ -8,9 +8,9 @@
 
         <title>WebRTC Reference App</title>
 
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.7.1.js"></script>
         <script src="/workspace/whale/Sunrise/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script type="text/javascript" src="/workspace/whale/Sunrise/js/jquery.mousewheel.js"></script>
         <script type="text/javascript" src="/workspace/whale/Sunrise/js/jquery.jscrollpane.min.js"></script>
 
@@ -34,10 +34,10 @@
 
         <script>
             function whenClickMic(){
-                $("#menu_mic i").toggleClass("glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up");
+                $('#menu_mic i').toggleClass('glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up');
             }
             function whenClickScreen(){
-                $("#menu_screen i").toggleClass("glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open");
+                $('#menu_screen i').toggleClass('glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open');
             }
             function whenClickExit(){
             }
@@ -56,6 +56,37 @@
                 document.getElementById('input_message').value = '';
                 document.getElementById('output_message').value = output_message;
                 }
+            }
+            function whenClickEdit(){
+                var title;
+                var description;
+
+                title = $('#title').html();
+                description = $('#description').html();
+
+                $('#edit_title').attr("placeholder", title);
+                $('#edit_description').attr("placeholder", description);
+
+            }
+            function whenClickEditSave(){
+                var title;
+                var description;
+                var edit_title;
+                var edit_description;
+
+
+                //value initializing
+                title = $('#title').html();
+                description = $('#description').html();
+
+                edit_title = $('#edit_title').val();
+                edit_description = $('#edit_description').val();
+
+                console.log(edit_title);
+                if(edit_title !== '')
+                    $('#title').html(edit_title);
+                if(edit_description !== '')
+                    $('#description').html(edit_description);
             }
             //Initalizing JScrollpane
             $(document).ready(function(){
@@ -103,36 +134,52 @@
             </div>
         </div>
 
-
         <div class="main_content col-lg-8">
             <div class="header">
                 <table width="100%">
                     <tbody>
                         <tr>
                             <td>
-                                <a id="title" href="#">
-                                    <h2 style="text-align:left">The title</h2>
-                                </a>
-                                <a id="title_decription" href="#">
-                                    <h3 style="text-align:left">The layout of the video chat room...</h3>
-                                </a>
-
- 
-<!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3 id="myModalLabel">Modal header</h3>
-  </div>
-  <div class="modal-body">
-    <p>One fine body</p>
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
-</div>
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
+                                <h2 id="title" style="text-align:left">The title</h2>
+                                <h3 id="description" style="text-align:left">The layout of the video chat room...
+                                    <a data-toggle="modal" href="#myModal" onclick="whenClickEdit()">
+                                        <i class="glyphicon glyphicon-link"></i>
+                                    </a>
+                                </h3>
+                                <div class="modal fade" id="myModal">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                <h4 class="modal-title">Modal title</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table>
+                                                    <tr>
+                                                        <td>
+                                                            Title : 
+                                                        </td>
+                                                        <td width="80%">
+                                                            <input type="text" id="edit_title" class="form-control" placeholder="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Description : 
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="edit_description" class="form-control" placeholder="">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary" onclick="whenClickEditSave()">Save changes</button>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
                             </td>
                             <td align="right">
                                 <table>
@@ -168,7 +215,7 @@
             </div>
         </div>
 
-
+</div>
         <div class="tail_content">
             <div class="container" align="center">
                 <p>
