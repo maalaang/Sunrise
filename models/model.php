@@ -143,14 +143,26 @@ abstract class Model {
      * @param db    PDO handle
      * @return  the number of records 
      */
-    public static function getRecordNum() {
+    public static function getRecordNum($filter) {
         $db = sr_pdo();
 
         $called_class = get_called_class();
 
         $table = $called_class::getTableName();
 
-        $stmt = $db->prepare("SELECT COUNT(*) FROM $table");
+        $where = '';
+        $index = 0;
+
+        foreach ($filter as $field => $value) {
+            if ($index++ == 0) {
+                $where .= 'WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= $field . '=' . $value;
+        }
+
+        $stmt = $db->prepare("SELECT COUNT(*) FROM $table $where");
 
         $stmt->execute();
 
