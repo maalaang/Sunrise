@@ -14,7 +14,7 @@
                 $('#filter_authorized, #filter_admin').click(function () {
                     setTimeout(function () { loadData('filter') }, 0);
                 });
-                $('#sr_page li'.click(function () {
+                $('#sr_page li').click(function () {
                     if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
                         loadData(this.id);
                     }
