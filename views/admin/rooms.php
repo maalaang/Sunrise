@@ -10,8 +10,21 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <style>
+            #sr_filter {
+                padding-top: 0px;
+            }
+            #sr_table {
+                margin-bottom: 0px;
+            }
             #sr_table * {
                 text-align: center;
+            }
+            #sr_page {
+                margin-top: 0px;
+                margin-bottom: 5px;
+            }
+            #sr_page li {
+                cursor: pointer;
             }
         </style>
     </head>
@@ -49,18 +62,10 @@
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a>
-                        </li>
-                        <li class="active">
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a>
-                        </li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a></li>
+                        <li class="active"><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a></li>
                     </ul>
                 </div>
                 <div class="span9" id="content">
@@ -69,8 +74,17 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Currently Opened Rooms</div>
-                                <div class="pull-right"><span class="badge badge-info">1,234</span></div>
+                                <div class="muted pull-left">
+                                    <h4>Currently Opened Rooms</h4>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
+                                        <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
+                                        <button class="btn btn-small" id="t1_filter_public">Public</button>
+                                        <button class="btn btn-small" id="t1_filter_private">Private</button>
+                                    </div>
+                                    <button class="btn btn-small btn-info disabled" id="t1_record_number" disabled></button>
+                                </div>
                             </div>
                             <div class="block-content collapse in">
                                 <table class="table table-striped" id="sr_table">
@@ -87,18 +101,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                        </tr>
+                                        <tr id="t1_tr0"> </tr>
+                                        <tr id="t1_tr1"> </tr>
+                                        <tr id="t1_tr2"> </tr>
+                                        <tr id="t1_tr3"> </tr>
+                                        <tr id="t1_tr4"> </tr>
+                                        <tr id="t1_tr5"> </tr>
+                                        <tr id="t1_tr6"> </tr>
+                                        <tr id="t1_tr7"> </tr>
+                                        <tr id="t1_tr8"> </tr>
+                                        <tr id="t1_tr9"> </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="navbar navbar-inner block-header">
+                                <div class="pagination pagination-right" id="sr_page">
+                                    <ul>
+                                        <li id="t1_begin"><a>&laquo;</a></li>
+                                        <li id="t1_prev"><a>&lsaquo;</a></li>
+                                        <li id="t1_1st"><a id="t1_1st_a"></a></li>
+                                        <li id="t1_2nd"><a id="t1_2nd_a"></a></li>
+                                        <li id="t1_3rd"><a id="t1_3rd_a"></a></li>
+                                        <li id="t1_4th"><a id="t1_4th_a"></a></li>
+                                        <li id="t1_5th"><a id="t1_5th_a"></a></li>
+                                        <li id="t1_next"><a>&rsaquo;</a></li>
+                                        <li id="t1_end"><a>&raquo;</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -107,8 +136,17 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Room History</div>
-                                <div class="pull-right"><span class="badge badge-info">1,234</span></div>
+                                <div class="muted pull-left">
+                                    <h4>Room History</h4>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
+                                        <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
+                                        <button class="btn btn-small" id="t2_filter_public">Public</button>
+                                        <button class="btn btn-small" id="t2_filter_private">Private</button>
+                                    </div>
+                                    <button class="btn btn-small btn-info disabled" id="t2_record_number" disabled></button>
+                                </div>
                             </div>
                             <div class="block-content collapse in">
                                 <table class="table table-striped" id="sr_table">
@@ -125,18 +163,33 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                            <td>Test</td>
-                                        </tr>
+                                        <tr id="t2_tr0"> </tr>
+                                        <tr id="t2_tr1"> </tr>
+                                        <tr id="t2_tr2"> </tr>
+                                        <tr id="t2_tr3"> </tr>
+                                        <tr id="t2_tr4"> </tr>
+                                        <tr id="t2_tr5"> </tr>
+                                        <tr id="t2_tr6"> </tr>
+                                        <tr id="t2_tr7"> </tr>
+                                        <tr id="t2_tr8"> </tr>
+                                        <tr id="t2_tr9"> </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="navbar navbar-inner block-header">
+                                <div class="pagination pagination-right" id="sr_page">
+                                    <ul>
+                                        <li id="t2_begin"><a>&laquo;</a></li>
+                                        <li id="t2_prev"><a>&lsaquo;</a></li>
+                                        <li id="t2_1st"><a id="t2_1st_a"></a></li>
+                                        <li id="t2_2nd"><a id="t2_2nd_a"></a></li>
+                                        <li id="t2_3rd"><a id="t2_3rd_a"></a></li>
+                                        <li id="t2_4th"><a id="t2_4th_a"></a></li>
+                                        <li id="t2_5th"><a id="t2_5th_a"></a></li>
+                                        <li id="t2_next"><a>&rsaquo;</a></li>
+                                        <li id="t2_end"><a>&raquo;</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
