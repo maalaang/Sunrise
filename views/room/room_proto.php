@@ -100,62 +100,45 @@
                         </ul>
                     </form>
                 </div>
-                                        <!--Button Ver.-->
-<!--                <div class="nav-collapse collapse">
-                    <form class="navbar-form form-inline pull-right" name="option_form" id="option_form">
-                        <button type="button" class="btn btn-primary" id="btn_video" onclick="whenClickVideo()">
-                            <i class="glyphicon glyphicon-eye-open"></i>
-                        </button>
-                        <button type="button" class="btn btn-primary" id="btn_speaker" onclick="whenClickSpeaker()">
-                            <i class="glyphicon glyphicon-volume-up"></i>
-                        </button>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                            <i class="glyphicon glyphicon-link"></i>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Facebook</a></li>
-                                <li><a href="#">Twitter</a></li>
-                                <li><a href="#">Google+</a></li>
-                            </ul>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="btn_exit">
-                            <i class="glyphicon glyphicon-remove"></i>
-                        </button>
-                    </form>
-                </div>-->
             </div>
         </div>
 
 
         <div class="main_content col-lg-8">
             <div class="header">
-                <span class="sns_btn">Invite People 
-                <table>
-                    <tr>
-                        <td><a id="sns_facebook" href="#"/>face</td>
-                        <td><a id="sns_twit" href="#"/>Twit</td>
-                    </tr>
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a id="title" href="#">
+                                    <h2 style="text-align:left">The title</h2>
+                                </a>
+                                <a id="title_decription" href="#">
+                                    <h3 style="text-align:left">The layout of the video chat room...</h3>
+                                </a>
+                            </td>
+                            <td align="right">
+                                <table>
+                                    <td><span id="invite_label" class="label label-important">Invite People </td>
+                                    <td><a id="invite_email" href="#"/>Email</td>
+                                    <td><a id="invite_facebook" href="#"/>face</td>
+                                    <td><a id="invite_twit" href="#"/>Twit</td>
+                                    <td><a id="invite_url" href="#"/>Link</td>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
-                </span>
-                    <span>
-                        <h1>Design team weekly meeting<a id="title" href="#" />
-                            <i class="glyphicon glyphicon-pencil"></i>
-                        </h1>
-                    </span>
-                    <span>
-                        <h3>The layout of the video chat room...<a id="title_description" href="#" style="color:gray;"/>
-                            <i class="glyphicon glyphicon-pencil"></i>
-                        </h3>
-                    </span>
             </div>
         </div>
 
+        <div class="title_inputform">
+            
+        </div>
 
         <div class="side_content col-lg-4">
             <h1>Side_Content</h1>
-            <div class="chat-form">
+            <div class="chat-form" style="padding-bottom:40px;">
                 <div class="form-group">
                     <textarea class="form-control" id="output_message" rows="20" text="asdfae"></textarea>
                     <form class="form-inline">
