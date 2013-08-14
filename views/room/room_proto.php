@@ -62,6 +62,9 @@
                 var title;
                 var description;
 
+                $('#edit_title').val('');
+                $('#edit_description').val('');
+
                 title = $('#title').html();
                 description = $('#description').html();
 
@@ -88,16 +91,13 @@
                 if(edit_description !== '')
                     $('#description').html(edit_description);
             }
-            function whenClickEditClose(){
-                console.log("11111");
-                $('#edit_title').html('');
-                $('#edit_description').html('');
-                console.log($('#edit_title').html());
-                console.log("22222");
-            }
             //Initalizing JScrollpane
             $(document).ready(function(){
                 $('.scroll-pane').jScrollPane();
+            });
+
+            $(document).ready(function($){
+                $('.nav-pills').tab();
             });
         </script>
     </head>
@@ -176,8 +176,6 @@
                     <textarea class="form-control" id="output_message" rows="20" text="asdfae"></textarea>
                     <form class="form-inline">
                         <button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickSend()">Send</button>
-                        <!--Send message to server-->
-                        <!--<button type="button" class="btn btn-primary" style="float:right; width:20%;">Send</button>-->
                         <input type="text" class="form-control" id="input_message" placeholder="Input your message" style="width:80%;">
                     </form>
                 </div>
@@ -222,7 +220,7 @@
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" onclick="whenClickEditClose()" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" onclick="whenClickEditSave()">Save changes</button>
                     </div>
                 </div><!-- /.modal-content -->
@@ -237,31 +235,26 @@
                         <h4 class="modal-title">Invite People</h4>
                     </div>
                     <div class="modal-body">
-                            <div class="row"> 
-                                <div class="col-lg-2">  
-                                    <ul class="nav nav-pills nav-stacked" id="inviteTab" style="text-align:left;">
-                                        <li class="active"><a href="#Email">Email</a></li>     
-                                        <li><a href="#Facebook">Facebook</a></li>  
-                                        <li><a href="#Twitter">Twitter</a></li>   
-                                        <li><a href="#URL">URL</a></li>   
+                            <div class="row">
+                                    <ul class="nav nav-pills col-lg-2" id="inviteTab" style="text-align:left;">
+                                        <li class="active"><a href="#Email" data-toggle="tab">Email</a></li>     
+                                        <li><a href="#Facebook" data-toggle="tab">Facebook</a></li>  
+                                        <li><a href="#Twitter" data-toggle="tab">Twitter</a></li>   
+                                        <li><a href="#URL" data-toggle="tab">URL</a></li>   
                                     </ul>
-                                </div>
-                                <div class="col-lg-10">
-                                    1111111111
-                                </div>
+                                    <div class="tab-content col-lg-10">
+                                        <div class="tab-pane active" id="Email">
+                                            <h1>AAA</h1>
+                                        <div>
+                                        <div class="tab-pane" id="Facebook">
+                                            <h1>BBB</h1>
+                                        <div>
+                                        <div class="tab-pane" id="Twitter"><div>
+                                        <div class="tab-pane" id="URL"><div>            
+                                    </div>
                             </div>  
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="tab-content">
-            <div class="tab-pane active" id="Email"><div>
-            <div class="tab-pane" id="Facebook"><div>
-            <div class="tab-pane" id="Twitter"><div>
-            <div class="tab-pane" id="URL"><div>
-            
-        </div>
-    </body>
-
-            
+</body>
