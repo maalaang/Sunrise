@@ -1,6 +1,8 @@
 <?php
 
 require_once (dirname(__FILE__) . '/../models/user.php');
+require_once (dirname(__FILE__) . '/../models/room.php');
+require_once (dirname(__FILE__) . '/../models/participant.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 
 /**
@@ -30,7 +32,42 @@ function dashboard() {
 
 
 function rooms() {
-    sr_response('views/admin/rooms.php', null);
+    // Show Rooms Page
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        $db = sr_pdo();
+
+        $stmt = $db->prepare('SELECT * FROM room LIMIT 10');
+        $stmt->execute();
+
+        $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
+
+        $stmt = $db->prepare('SELECT * FROM participant LIMIT 10');
+        $stmt->execute();
+
+        // TODO: Room History Data
+        $history_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'History');
+
+        $context = array(
+            'room_list' => $room_list,
+            'history_list' => $history_list
+        );
+
+        sr_response('views/admin/rooms.php', $context);
+
+    // Handling Ajax Request
+    } else {
+        // Pagination or Filtering
+        if ($_POST['type'] == 'pagination') {
+            // TODO: Pagination Response
+
+
+        // Close Room Request
+        } else {
+            // TODO: Close Room Response
+
+
+        }
+    }
 }
 
 
@@ -51,8 +88,9 @@ function users() {
         sr_response('views/admin/users.php', $context);
 
     // Handling Ajax Request
+        //
     } else {
-        // Pagination
+        // Pagination or Filtering
         if ($_POST['type'] == 'pagination') {
             try {
                 $db = sr_pdo();
