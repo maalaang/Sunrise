@@ -9,21 +9,45 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#t1_sr_filter > *').click(function () {
+                    if (!$(this).attr('class').match('disabled')) {
+                        setTimeout(function () { loadData('t1', 'filter') }, 0);
+                    }
+                });
+                $('#t2_sr_filter > *').click(function () {
+                    if (!$(this).attr('class').match('disabled')) {
+                        setTimeout(function () { loadData('t2', 'filter') }, 0);
+                    }
+                });
+                $('#t1_sr_page li').click(function () {
+                    if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
+                        loadData('t1', this.id);
+                    }
+                });
+                $('#t2_sr_page li').click(function () {
+                    if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
+                        loadData('t2', this.id);
+                    }
+                });
+            });
+        </script>
         <style>
-            #sr_filter {
+            #t1_sr_filter, #t2_sr_filter {
                 padding-top: 0px;
             }
-            #sr_table {
+            #t1_sr_table, #t2_sr_table {
                 margin-bottom: 0px;
             }
-            #sr_table * {
+            #t1_sr_table *, #t2_sr_table * {
                 text-align: center;
             }
-            #sr_page {
+            #t1_sr_page, #t2_sr_page {
                 margin-top: 0px;
                 margin-bottom: 5px;
             }
-            #sr_page li {
+            #t1_sr_page li, #t2_sr_page li {
                 cursor: pointer;
             }
         </style>
@@ -78,8 +102,9 @@
                                     <h4>Currently Opened Rooms</h4>
                                 </div>
                                 <div class="pull-right">
-                                    <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
+                                    <div class="btn-group" data-toggle="buttons-radio" id="t1_sr_filter">
                                         <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
+                                        <button class="btn btn-small active" id="t1_filter_all">All</button>
                                         <button class="btn btn-small" id="t1_filter_public">Public</button>
                                         <button class="btn btn-small" id="t1_filter_private">Private</button>
                                     </div>
@@ -87,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="block-content collapse in">
-                                <table class="table table-striped" id="sr_table">
+                                <table class="table table-striped" id="t1_sr_table">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -97,7 +122,7 @@
                                             <th>Start Time</th>
                                             <th>Is Open</th>
                                             <th>Participants</th>
-                                            <th>Close Session</th>
+                                            <th>Close Room</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -115,17 +140,17 @@
                                 </table>
                             </div>
                             <div class="navbar navbar-inner block-header">
-                                <div class="pagination pagination-right" id="sr_page">
+                                <div class="pagination pagination-right" id="t1_sr_page">
                                     <ul>
-                                        <li id="t1_begin"><a>&laquo;</a></li>
-                                        <li id="t1_prev"><a>&lsaquo;</a></li>
-                                        <li id="t1_1st"><a id="t1_1st_a"></a></li>
-                                        <li id="t1_2nd"><a id="t1_2nd_a"></a></li>
-                                        <li id="t1_3rd"><a id="t1_3rd_a"></a></li>
-                                        <li id="t1_4th"><a id="t1_4th_a"></a></li>
-                                        <li id="t1_5th"><a id="t1_5th_a"></a></li>
-                                        <li id="t1_next"><a>&rsaquo;</a></li>
-                                        <li id="t1_end"><a>&raquo;</a></li>
+                                        <li id="begin"><a>&laquo;</a></li>
+                                        <li id="prev"><a>&lsaquo;</a></li>
+                                        <li id="1st"><a id="1st_a"></a></li>
+                                        <li id="2nd"><a id="2nd_a"></a></li>
+                                        <li id="3rd"><a id="3rd_a"></a></li>
+                                        <li id="4th"><a id="4th_a"></a></li>
+                                        <li id="5th"><a id="5th_a"></a></li>
+                                        <li id="next"><a>&rsaquo;</a></li>
+                                        <li id="end"><a>&raquo;</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -140,8 +165,9 @@
                                     <h4>Room History</h4>
                                 </div>
                                 <div class="pull-right">
-                                    <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
+                                    <div class="btn-group" data-toggle="buttons-radio" id="t2_sr_filter">
                                         <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
+                                        <button class="btn btn-small active" id="t2_filter_all">All</button>
                                         <button class="btn btn-small" id="t2_filter_public">Public</button>
                                         <button class="btn btn-small" id="t2_filter_private">Private</button>
                                     </div>
@@ -149,7 +175,7 @@
                                 </div>
                             </div>
                             <div class="block-content collapse in">
-                                <table class="table table-striped" id="sr_table">
+                                <table class="table table-striped" id="t2_sr_table">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -177,17 +203,17 @@
                                 </table>
                             </div>
                             <div class="navbar navbar-inner block-header">
-                                <div class="pagination pagination-right" id="sr_page">
+                                <div class="pagination pagination-right" id="t2_sr_page">
                                     <ul>
-                                        <li id="t2_begin"><a>&laquo;</a></li>
-                                        <li id="t2_prev"><a>&lsaquo;</a></li>
-                                        <li id="t2_1st"><a id="t2_1st_a"></a></li>
-                                        <li id="t2_2nd"><a id="t2_2nd_a"></a></li>
-                                        <li id="t2_3rd"><a id="t2_3rd_a"></a></li>
-                                        <li id="t2_4th"><a id="t2_4th_a"></a></li>
-                                        <li id="t2_5th"><a id="t2_5th_a"></a></li>
-                                        <li id="t2_next"><a>&rsaquo;</a></li>
-                                        <li id="t2_end"><a>&raquo;</a></li>
+                                        <li id="begin"><a>&laquo;</a></li>
+                                        <li id="prev"><a>&lsaquo;</a></li>
+                                        <li id="1st"><a id="1st_a"></a></li>
+                                        <li id="2nd"><a id="2nd_a"></a></li>
+                                        <li id="3rd"><a id="3rd_a"></a></li>
+                                        <li id="4th"><a id="4th_a"></a></li>
+                                        <li id="5th"><a id="5th_a"></a></li>
+                                        <li id="next"><a>&rsaquo;</a></li>
+                                        <li id="end"><a>&raquo;</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -209,5 +235,183 @@
                 </p>
             </div>
         </div>
+
+        <!---------- Part 4 ---------->
+        <script>
+            $.ajaxSetup({
+                url: "<?= $GLOBALS['sr_root'] ?>/controllers/admin.php",
+                type: 'POST',
+                error: function (jqXHR, textStatus, errorThrown) { alert('Ajax Error: ' + textStatus); },
+            });
+
+            function closeRoom() {
+                /* TODO: Handling Close Room
+                
+                $.ajax({
+                    data: { page: 'rooms', type: 'closeRoom' }
+                });
+
+                */
+            }
+
+            function loadData(table, selected_btn) {
+                // TODO: Load Data
+                var id = '';
+                var pnum = '';
+
+                var filter_arr = new Object();
+                filter_arr['is_open'] = $('#' + table + '_sr_filter .active').text();
+
+                switch (selected_btn) {
+                case 'begin':
+                    pnum = Number('1');
+                    break;
+                case 'prev':
+                    id = $('#' + table + '_sr_page li.active').attr('id'); 
+                    pnum = Number($('#' + table + '_sr_page #' + id + '_a').text()) - 1;
+                    break;
+                case 'next':
+                    id = $('#' + table + '_sr_page li.active').attr('id'); 
+                    pnum = Number($('#' + table + '_sr_page #' + id + '_a').text()) + 1;
+                    break;
+                case 'end':
+                    pnum = Number('-1');
+                    break;
+                case 'filter':
+                    pnum = Number('1');
+                    break;
+                default:
+                    pnum = Number($('#' + table + '_sr_page #' + selected_btn + '_a').text());
+                    break;
+                }
+
+                $.ajax({
+                    data: { page: 'rooms',
+                            type: 'pagination',
+                            table: table,
+                            filter: JSON.stringify(filter_arr),
+                            page_number: pnum
+                    },
+                    dataType: 'JSON',
+                    success: function (data) {
+                        if (selected_btn == 'end') {
+                            pnum = parseInt(data['total_record_number'] / 10 + 1);
+                        }
+                        updateTable(table, data['record_list']);
+                        updatePage(table, pnum, data['total_record_number']);
+                    }
+                });
+            }
+
+            function updateTable(table, data_list) {
+                // TODO: Update Table t1 & t2
+
+                /*
+
+                var id = '';
+                var temp = '';
+                var tags = '';
+                var indexNum = 0;
+                var checkbox = '<input type="checkbox" ';
+
+                $.each(user_list, function(index, user) {
+                    id = '';
+                    tags = '';
+
+                    $.each(user, function(key, val) {
+                        if (key != 'password') {
+                            switch (key) {
+                            case 'is_authorized':
+                                temp = checkbox;
+                                temp += 'class="authorized" id="' + id + '" ';
+                                if (val == '1') temp += 'checked '; 
+                                temp += '/>';
+                                val = temp;
+                                break;
+                            case 'is_admin':
+                                temp = checkbox;
+                                temp += 'class="admin" id="' + id + '" ';
+                                if (val == '1') temp += 'checked '; 
+                                temp += '/>';
+                                val = temp;
+                                break;
+                            case 'id':
+                                id = val;
+                                break;
+                            }
+                            tags += '<td>' + val + '</td>';
+                            indexNum++;
+                        }
+                    });
+                    $('#tr' + index).html(tags);
+                });
+
+                indexNum /= user_list.length;
+
+                if (user_list.length < 10) {
+                    tags = '<td>-</td>';
+                    for (var i = 0; i < indexNum-1; i++) {
+                        tags += '<td></td>';
+                    }
+                    for (var i = user_list.length; i < 10; i++) {
+                        $('#tr' + i).html(tags);
+                    }
+                }
+
+                $('.authorized').click(checkAuthorized);
+                $('.admin').click(checkAdmin);
+
+                */
+            }
+
+            function updatePage(table, current_page, total_record_number) {
+                // TODO: Update Pagination t1 & t2
+
+                /*
+
+                var last_page = parseInt(total_record_number / 10 + 1);
+                var first_page_in_view = parseInt((current_page - 1) / 5) * 5 + 1;
+                var selected_button = (current_page - 1) % 5 + 1;
+
+                var ordinal = [ '', '1st', '2nd', '3rd', '4th', '5th' ];
+
+                $('#record_number').html('Total: ' + total_record_number);
+
+                for (var btn = 1; btn <= 5; btn++) {
+                    $('#' + ordinal[btn] + '_a').text(first_page_in_view + btn - 1);
+                }
+
+                $('#sr_page li').attr('class', '');
+                $('#' + ordinal[selected_button]).attr('class', 'active');
+
+                if (current_page == 1) {
+                    $('#begin, #prev').attr('class', 'disabled');
+                } else {
+                    $('#begin, #prev').attr('class', '');
+                }
+
+                if (current_page == last_page) {
+                    $('#next, #end').attr('class', 'disabled');
+                } else {
+                    $('#next, #end').attr('class', '');
+                }
+
+                if (last_page - first_page_in_view < 4) {
+                    for (var btn = (last_page - 1) % 5 + 2; btn <= 5; btn++) {
+                        $('#' + ordinal[btn]).attr('class', 'disabled');
+                    }
+                }
+
+                */
+
+            }
+
+            // TODO: Room History Data
+            // Initialize table
+            updateTable('t1', <?= json_encode($context['room_list']) ?>);
+            updateTable('t2', <?= json_encode($context['history_list']) ?>);
+            updatePage('t1', 1, <?= Room::getRecordNum(array()) ?>);
+            updatePage('t2', 1, <?= History::getRecordNum(array()) ?>);
+        </script>
     </body>
 </html>

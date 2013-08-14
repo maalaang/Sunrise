@@ -11,8 +11,10 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script>
             $(document).ready(function () {
-                $('#filter_authorized, #filter_admin').click(function () {
-                    setTimeout(function () { loadData('filter') }, 0);
+                $('#sr_filter > *').click(function () {
+                    if (!$(this).attr('class').match('disabled')) {
+                        setTimeout(function () { loadData('filter') }, 0);
+                    }
                 });
                 $('#sr_page li').click(function () {
                     if ($(this).attr('class') != 'active' && $(this).attr('class') != 'disabled') {
@@ -90,7 +92,7 @@
                                     <h4>Registered Users</h4>
                                 </div>
                                 <div class="pull-right">
-                                    <div class="btn-group" data-toggle="button-checkbox" id="sr_filter">
+                                    <div class="btn-group" data-toggle="buttons-checkbox" id="sr_filter">
                                         <button class="btn btn-small btn-inverse disabled" disabled>Filter <i class="icon-check icon-white"></i></button>
                                         <button class="btn btn-small" id="filter_authorized">Authorize</button>
                                         <button class="btn btn-small" id="filter_admin">Admin</button>
