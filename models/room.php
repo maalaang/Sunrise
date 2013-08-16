@@ -30,9 +30,6 @@ class Room extends Model {
     /** Flag for public or private room */
     public $is_open;
 
-    /** Participants of this room */
-    public $participants;
-
     public function open($db) {
         $this->start_time = Model::getCurrentTime();
         $this->channel_token = Model::getUniqueId('c');

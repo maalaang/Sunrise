@@ -61,16 +61,16 @@
                 <h1>Welcome to Sunrise</h1>
                 <p>Sunrise is an open video conference solution based on HTML5 WebRTC. You can use this software for online meeting at your company or for talking to your friends. Moreover, you may provide more enhanced customer service using video chat. Enjoy the next generation of the Web with Sunrise. It is an open source sofrware licensed under Apache License Version 2.0.</p>
                 <hr/>
-                <form>
+                <form action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
                     <fieldset>
                         <table align="center" class="roomInfo">
                             <tr>
                                 <td><label for="room_name">Room Name :</label></td>
-                                <td><input id="room_name" type="text" placeholder="ex.Sunrise Meeting" /></td>
+                                <td><input id="room_name" name="room_name" type="text" placeholder="ex.Sunrise Meeting" /></td>
                             </tr>
                             <tr>
                                 <td><label for="your_name">Your Name :</label></td>
-                                <td><input id="your_name" type="text" placeholder="ex.Steve Kim" /></td>
+                                <td><input id="your_name" name="user_name" type="text" placeholder="ex.Steve Kim" /></td>
                             </tr>
                         </table>
                         <p style="text-align:center; margin: 10px">

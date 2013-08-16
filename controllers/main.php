@@ -47,9 +47,9 @@ function signin() {
 
                     // Successfully signed in & Session start
                     session_start();
-                    $_SESSION['isLogged'] = true;
-                    $_SESSION['email'] = $user->email;
-                    $_SESSION['name'] = $user->first_name . ' ' . $user->last_name;
+                    $_SESSION['is_logged'] = true;
+                    $_SESSION['user_email'] = $user->email;
+                    $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
                 }
 
             } catch (PDOException $e) {
@@ -136,18 +136,17 @@ function signup() {
 
 
 function signout() {
-    session_start();
     $context = array();
 
-    if ($_SESSION['isLogged']) {
+    if ($_SESSION['is_logged']) {
         $context['result'] = 0;
-        $context['msg'] = 'Email: ' . $_SESSION['email'] .
-                    '<br />Name:' . $_SESSION['name'] .
+        $context['msg'] = 'Email: ' . $_SESSION['user_email'] .
+                    '<br />Name:' . $_SESSION['user_name'] .
                     '<br />Successfully signed out';
 
-        unset($_SESSION['isLogged']);
-        unset($_SESSION['email']);
-        unset($_SESSION['name']);
+        unset($_SESSION['is_logged']);
+        unset($_SESSION['user_email']);
+        unset($_SESSION['user_name']);
         session_destroy();
 
     } else {
@@ -158,6 +157,28 @@ function signout() {
     // TODO: What page will be shown up after signout?
     // Show signout result
     sr_response('views/main/signout.php', $context);
+}
+
+function goto_room() {
+    global $sr_root;
+
+    if ($room_name = $_GET['room_name']) {
+        $room_name = str_replace(' ', '_', $room_name);
+    } else {
+        $room_name = uniqid('r');
+    }
+
+    session_start();
+
+    if (!isset($_SESSION['user_name'])) {
+        if (isset($_GET['user_name'])) {
+            $_SESSION['user_name'] = $_GET['user_name'];
+        } else {
+            $_SESSION['user_name'] = 'Anonymous';
+        }
+    }
+
+    header('Location: ' . $sr_root . '/d/room/temp/?name=' . $room_name);
 }
 
 ?>

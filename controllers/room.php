@@ -230,4 +230,72 @@ function room_init() {
     }
 }
 
+function room_temp() {
+    $db = sr_pdo();
+
+    if (isset($_GET['name']) && strlen($_GET['name']) > 0) {
+        try {
+            $context = array();
+
+            // check if the room with the specified name exists
+            $stmt = $db->prepare('SELECT * FROM room WHERE name = :name');
+            $stmt->bindParam(':name', $_GET['name']);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Room');
+            $stmt->execute();
+
+            $room = $stmt->fetch();
+
+            if ($room === False) {
+                // room doesn't exist. create a room using the requested name
+                $room = new Room();
+                $room->name = $_GET['name'];
+                $room->title = '';
+                $room->description = '';
+                $room->password = '';
+                $room->is_open = 1;
+
+                $room->open($db);
+            }
+
+            /* 
+             * TODO
+             * This should be updated after user room logic is implemented.
+             */
+//            $p = new Participant();
+//            $p->room_id = $room->id;
+//            $p->is_registered_user = 0;
+//            $p->name = 'anonymous';
+//            $p->user_id = null;
+//            $p->ip_address = $_SERVER['REMOTE_ADDR'];
+
+//            $p->joinRoom($db);
+
+        } catch (PDOException $e) {
+            echo "<br/>";
+            echo "<br/>";
+            echo "<br/>";
+            echo "<br/>";
+            echo "<br/>";
+            echo $e;
+            if ($e->errorInfo[1] == 1062) {
+                // the name of the room is in use.
+//                sr_response('views/lobby/main.php', null);
+            } else {
+                // other database exception
+//                sr_response('views/lobby/main.php', null);
+            }
+        }
+
+        $context['room'] = $room;
+//        $context['participant'] = $p;
+        $context['room_link'] = sr_current_url();
+        $context['user_name'] = 'Anonymous';
+
+        sr_response('views/room/room_temp.php', $context);
+
+    } else {
+        sr_response_error(400);
+    }
+}
+
 ?>

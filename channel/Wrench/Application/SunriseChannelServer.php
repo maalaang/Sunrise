@@ -4,7 +4,7 @@ namespace Wrench\Application;
 
 use Wrench\Application\Application;
 use Wrench\Application\NamedApplication;
-use Wrench\Exception\SocketException;
+use Wrench\Exception;
 
 /**
  * Sunrise channel server for signaling and chattting.
@@ -29,8 +29,7 @@ class SunriseChannelServer extends Application {
     public function onData($data, $client) {
         try {
             $msg = json_decode($data);
-            $msg['sender'] = $client->getId();
-
+            $msg->sender = $client->getId(); 
             switch ($msg->type) {
             case 'channel':
                 $this->onChannelMessage($client, $msg);
@@ -66,26 +65,50 @@ class SunriseChannelServer extends Application {
         $channel = $this->channels[$client->getChannelToken()];
         $data = json_encode($msg);
 
-        foreach ($channel as $sendto) {
-            if ($sendto !== $client) {
+        if ($msg->recipient == 'ns') {
+            // no recipient is specified
+            foreach ($channel as $sendto) {
+                if ($sendto && $sendto !== $client) {
+                    try {
+                        $sendto->send($data);
+                    } catch (Exception $e) {
+                        $sendto->log('send chat message: ' . $e, 'err');
+                    }
+                }
+            }
+        } else {
+            // send the message to the specified recipient
+            if ($sendto = $channel[$msg->recipient]) {
                 try {
                     $sendto->send($data);
-                } catch (SocketException $e) {
-                    $sendto->log('send chat message: ' . $e, 'err');
+                } catch (Exception $e) {
+                    $sendto->log('send signaling message: ' . $e, 'err');
                 }
             }
         }
     }
 
-    private function onSignalingMessage($data, $client, $msg) {
+    private function onSignalingMessage($client, $msg) {
         $channel = $this->channels[$client->getChannelToken()];
         $data = json_encode($msg);
 
-        foreach ($channel as $sendto) {
-            if ($sendto !== $client) {
+        if ($msg->recipient == 'ns') {
+            // no recipient is specified
+            foreach ($channel as $sendto) {
+                if ($sendto && $sendto !== $client) {
+                    try {
+                        $sendto->send($data);
+                    } catch (Exception $e) {
+                        $sendto->log('send signaling message: ' . $e, 'err');
+                    }
+                }
+            }
+        } else {
+            // send the message to the specified recipient
+            if ($sendto = $channel[$msg->recipient]) {
                 try {
                     $sendto->send($data);
-                } catch (SocketException $e) {
+                } catch (Exception $e) {
                     $sendto->log('send signaling message: ' . $e, 'err');
                 }
             }
@@ -162,13 +185,15 @@ class SunriseChannelServer extends Application {
         $response = array();
         $response['type'] = 'channel';
         $response['subtype'] = 'open';
-        $response['participant_cnt'] = count($this->channels[$msg->channel_token]);
+        $response['participant_cnt'] = count($this->channels[$msg->channel_token]) - 1;
 
         $participant_list = array();
         foreach ($this->channels[$msg->channel_token] as $participant) {
-            $participant_list[$participant->getId()] = array(
-                "name" => $participant->getName(),
-            );
+            if ($participant->getId() !== $client->getId()) {
+                $participant_list[$participant->getId()] = array(
+                    "name" => $participant->getName(),
+                );
+            }
         }
         $response['participant_list'] = $participant_list;
 
@@ -221,10 +246,10 @@ class SunriseChannelServer extends Application {
         $msg_json = json_encode($msg);
 
         foreach ($channel as $sendto) {
-            if ($sendto !== $client) {
+            if ($sendto && $sendto !== $client) {
                 try {
                     $sendto->send($msg_json);
-                } catch (SocketException $e) {
+                } catch (Exception $e) {
                     $sendto->log('failed to send channel bye message - ' . $e, 'err');
                 }
             }
@@ -248,7 +273,7 @@ class SunriseChannelServer extends Application {
 
         try {
             $client->send(json_encode($response));
-        } catch (SocketException $e) {
+        } catch (Exception $e) {
             $client->log('channel close: failed to send response - ' . $e, 'err');
         }
 

@@ -1,7 +1,6 @@
   a:link { color: #ffffff; }
   a:visited {color: #ffffff; }
   html, body {
-    background-color: #000000;
     height: 100%;
     font-family: Verdana, Arial, Helvetica, sans-serif;
   }
@@ -10,11 +9,11 @@
     padding: 0;
   }
   #container {
-    background-color: #000000;
     position: absolute;
     height: 100%;
     width: 100%;
-    margin: 0px auto;
+    padding: 60px 10px 10px 10px;
+    text-align: center;
     -webkit-perspective: 1000;
   }
   #card {
@@ -43,27 +42,27 @@
     -webkit-transform: scale(-1, 1);
     opacity: 1.0;
   }
-  #localVideo {
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 2s;
-  }
-  #remoteVideo {
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 2s;
-  }
-  #miniVideo {
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 2s;
-  }
+/*  #localVideo {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    opacity: 0;*/
+/*    -webkit-transition-property: opacity;*/
+/*    -webkit-transition-duration: 2s;*/
+/*  }*/
+/*  #largeVideo {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    opacity: 0;*/
+/*    -webkit-transition-property: opacity;*/
+/*    -webkit-transition-duration: 2s;*/
+/*  }*/
+/*  #smallVideo {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    opacity: 0;*/
+/*    -webkit-transition-property: opacity;*/
+/*    -webkit-transition-duration: 2s;*/
+/*  }*/
   #footer {
     position: absolute;
     bottom: 0;
@@ -92,4 +91,19 @@
     position: absolute;
     float: right;
     opacity: 0.5;
+  }
+
+  .largeVideo {
+      width: 600px;
+      opacity: 1;
+      -webkit-transition-property: opacity;
+      -webkit-transition-duration: 2s;
+  }
+
+  .smallVideo {
+      width: 200px;
+      margin: 10px;
+      opacity: 1;
+      -webkit-transition-property: opacity;
+      -webkit-transition-duration: 2s;
   }
