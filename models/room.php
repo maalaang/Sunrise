@@ -6,10 +6,10 @@ require_once (dirname(__FILE__) . '/model.php');
  * A video conference room.
  */
 class Room extends Model {
-    /** Primary key */
+    /** Room ID. Primary key */
     public $id;
 
-    /** Room name. Unique */
+    /** Room name. Unique key */
     public $name;
 
     /** Room title */
@@ -18,7 +18,7 @@ class Room extends Model {
     /** Room description */
     public $description;
 
-    /** Sunrise channel token */
+    /** Sunrise channel token. Unique key */
     public $channel_token;
 
     /** Start time of this room */
@@ -29,6 +29,9 @@ class Room extends Model {
 
     /** Flag for public or private room */
     public $is_open;
+
+    /** Participants of this room */
+    public $participants;
 
     public function open($db) {
         $this->start_time = Model::getCurrentTime();

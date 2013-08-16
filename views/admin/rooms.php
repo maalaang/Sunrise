@@ -142,15 +142,15 @@
                             <div class="navbar navbar-inner block-header">
                                 <div class="pagination pagination-right" id="t1_sr_page">
                                     <ul>
-                                        <li id="begin"><a>&laquo;</a></li>
-                                        <li id="prev"><a>&lsaquo;</a></li>
-                                        <li id="1st"><a id="1st_a"></a></li>
-                                        <li id="2nd"><a id="2nd_a"></a></li>
-                                        <li id="3rd"><a id="3rd_a"></a></li>
-                                        <li id="4th"><a id="4th_a"></a></li>
-                                        <li id="5th"><a id="5th_a"></a></li>
-                                        <li id="next"><a>&rsaquo;</a></li>
-                                        <li id="end"><a>&raquo;</a></li>
+                                        <li id="t1_begin"><a>&laquo;</a></li>
+                                        <li id="t1_prev"><a>&lsaquo;</a></li>
+                                        <li id="t1_1st"><a id="t1_1st_a"></a></li>
+                                        <li id="t1_2nd"><a id="t1_2nd_a"></a></li>
+                                        <li id="t1_3rd"><a id="t1_3rd_a"></a></li>
+                                        <li id="t1_4th"><a id="t1_4th_a"></a></li>
+                                        <li id="t1_5th"><a id="t1_5th_a"></a></li>
+                                        <li id="t1_next"><a>&rsaquo;</a></li>
+                                        <li id="t1_end"><a>&raquo;</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -205,15 +205,15 @@
                             <div class="navbar navbar-inner block-header">
                                 <div class="pagination pagination-right" id="t2_sr_page">
                                     <ul>
-                                        <li id="begin"><a>&laquo;</a></li>
-                                        <li id="prev"><a>&lsaquo;</a></li>
-                                        <li id="1st"><a id="1st_a"></a></li>
-                                        <li id="2nd"><a id="2nd_a"></a></li>
-                                        <li id="3rd"><a id="3rd_a"></a></li>
-                                        <li id="4th"><a id="4th_a"></a></li>
-                                        <li id="5th"><a id="5th_a"></a></li>
-                                        <li id="next"><a>&rsaquo;</a></li>
-                                        <li id="end"><a>&raquo;</a></li>
+                                        <li id="t2_begin"><a>&laquo;</a></li>
+                                        <li id="t2_prev"><a>&lsaquo;</a></li>
+                                        <li id="t2_1st"><a id="t2_1st_a"></a></li>
+                                        <li id="t2_2nd"><a id="t2_2nd_a"></a></li>
+                                        <li id="t2_3rd"><a id="t2_3rd_a"></a></li>
+                                        <li id="t2_4th"><a id="t2_4th_a"></a></li>
+                                        <li id="t2_5th"><a id="t2_5th_a"></a></li>
+                                        <li id="t2_next"><a>&rsaquo;</a></li>
+                                        <li id="t2_end"><a>&raquo;</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -245,43 +245,47 @@
             });
 
             function closeRoom() {
-                /* TODO: Handling Close Room
-                
                 $.ajax({
-                    data: { page: 'rooms', type: 'closeRoom' }
+                    data: { page: 'rooms', type: 'closeRoom', id: this.id },
+                    success: function () {
+                        loadData('t1', $('#t1_sr_page li.active').attr('id'));
+                    }
                 });
-
-                */
             }
 
             function loadData(table, selected_btn) {
-                // TODO: Load Data
                 var id = '';
                 var pnum = '';
 
                 var filter_arr = new Object();
-                filter_arr['is_open'] = $('#' + table + '_sr_filter .active').text();
+                var selected_filter = $('#' + table + '_sr_filter .active').text();
+
+                switch (selected_filter) {
+                case 'All': break;
+                case 'Public': filter_arr['is_open'] = '1'; break;
+                case 'Private': filter_arr['is_open'] = '2'; break;
+                }
 
                 switch (selected_btn) {
-                case 'begin':
+                case table + '_begin':
                     pnum = Number('1');
                     break;
-                case 'prev':
+                case table + '_prev':
                     id = $('#' + table + '_sr_page li.active').attr('id'); 
-                    pnum = Number($('#' + table + '_sr_page #' + id + '_a').text()) - 1;
+                    pnum = Number($('#' + id + '_a').text()) - 1;
                     break;
-                case 'next':
+                case table + '_next':
                     id = $('#' + table + '_sr_page li.active').attr('id'); 
-                    pnum = Number($('#' + table + '_sr_page #' + id + '_a').text()) + 1;
+                    pnum = Number($('#' + id + '_a').text()) + 1;
                     break;
-                case 'end':
+                case table + '_end':
                     pnum = Number('-1');
                     break;
                 case 'filter':
                     pnum = Number('1');
                     break;
                 default:
-                    pnum = Number($('#' + table + '_sr_page #' + selected_btn + '_a').text());
+                    pnum = Number($('#' + selected_btn + '_a').text());
                     break;
                 }
 
@@ -294,7 +298,7 @@
                     },
                     dataType: 'JSON',
                     success: function (data) {
-                        if (selected_btn == 'end') {
+                        if (selected_btn == table + '_end') {
                             pnum = parseInt(data['total_record_number'] / 10 + 1);
                         }
                         updateTable(table, data['record_list']);
@@ -303,110 +307,94 @@
                 });
             }
 
-            function updateTable(table, data_list) {
-                // TODO: Update Table t1 & t2
-
-                /*
-
+            function updateTable(table, record_list) {
                 var id = '';
-                var temp = '';
                 var tags = '';
                 var indexNum = 0;
-                var checkbox = '<input type="checkbox" ';
 
-                $.each(user_list, function(index, user) {
+                $.each(record_list, function(index, record) {
                     id = '';
                     tags = '';
 
-                    $.each(user, function(key, val) {
-                        if (key != 'password') {
-                            switch (key) {
-                            case 'is_authorized':
-                                temp = checkbox;
-                                temp += 'class="authorized" id="' + id + '" ';
-                                if (val == '1') temp += 'checked '; 
-                                temp += '/>';
-                                val = temp;
-                                break;
-                            case 'is_admin':
-                                temp = checkbox;
-                                temp += 'class="admin" id="' + id + '" ';
-                                if (val == '1') temp += 'checked '; 
-                                temp += '/>';
-                                val = temp;
-                                break;
-                            case 'id':
+                    $.each(record, function(key, val) {
+                        if (key != 'password' && key != 'channel_token') {
+                            if (key == 'id') {
                                 id = val;
-                                break;
+                            }
+                            if (key == 'is_open') {
+                                if (val == 1) {
+                                    val = 'Public';
+                                } else {
+                                    val = 'Private';
+                                }
                             }
                             tags += '<td>' + val + '</td>';
                             indexNum++;
                         }
                     });
-                    $('#tr' + index).html(tags);
+
+                    if (table == 't1') {
+                        tags += '<td><button class="btn btn-mini closeRoom" id="' + id + '">Close</button></td>';
+                        indexNum++;
+                    }
+
+                    $('#' + table + '_tr' + index).html(tags);
                 });
 
-                indexNum /= user_list.length;
+                indexNum /= record_list.length;
 
-                if (user_list.length < 10) {
+                if (isNaN(indexNum)) {
+                    indexNum = 8;
+                }
+
+                if (record_list.length < 10) {
                     tags = '<td>-</td>';
                     for (var i = 0; i < indexNum-1; i++) {
                         tags += '<td></td>';
                     }
-                    for (var i = user_list.length; i < 10; i++) {
-                        $('#tr' + i).html(tags);
+                    for (var i = record_list.length; i < 10; i++) {
+                        $('#' + table + '_tr' + i).html(tags);
                     }
                 }
 
-                $('.authorized').click(checkAuthorized);
-                $('.admin').click(checkAdmin);
-
-                */
+                $('.closeRoom').click(closeRoom);
             }
 
             function updatePage(table, current_page, total_record_number) {
-                // TODO: Update Pagination t1 & t2
-
-                /*
-
                 var last_page = parseInt(total_record_number / 10 + 1);
                 var first_page_in_view = parseInt((current_page - 1) / 5) * 5 + 1;
                 var selected_button = (current_page - 1) % 5 + 1;
 
                 var ordinal = [ '', '1st', '2nd', '3rd', '4th', '5th' ];
 
-                $('#record_number').html('Total: ' + total_record_number);
-
                 for (var btn = 1; btn <= 5; btn++) {
-                    $('#' + ordinal[btn] + '_a').text(first_page_in_view + btn - 1);
+                    $('#' + table + '_' + ordinal[btn] + '_a').text(first_page_in_view + btn - 1);
                 }
 
-                $('#sr_page li').attr('class', '');
-                $('#' + ordinal[selected_button]).attr('class', 'active');
+                $('#' + table + '_record_number').html('Total: ' + total_record_number);
+
+                $('#' + table + '_sr_page li').attr('class', '');
+                $('#' + table + '_' + ordinal[selected_button]).attr('class', 'active');
 
                 if (current_page == 1) {
-                    $('#begin, #prev').attr('class', 'disabled');
+                    $('#' + table + '_begin, #' + table + '_prev').attr('class', 'disabled');
                 } else {
-                    $('#begin, #prev').attr('class', '');
+                    $('#' + table + '_begin, #' + table + '_prev').attr('class', '');
                 }
 
                 if (current_page == last_page) {
-                    $('#next, #end').attr('class', 'disabled');
+                    $('#' + table + '_next, #' + table + '_end').attr('class', 'disabled');
                 } else {
-                    $('#next, #end').attr('class', '');
+                    $('#' + table + '_next, #' + table + '_end').attr('class', '');
                 }
 
                 if (last_page - first_page_in_view < 4) {
                     for (var btn = (last_page - 1) % 5 + 2; btn <= 5; btn++) {
-                        $('#' + ordinal[btn]).attr('class', 'disabled');
+                        $('#' + table + '_' + ordinal[btn]).attr('class', 'disabled');
                     }
                 }
-
-                */
-
             }
 
-            // TODO: Room History Data
             // Initialize table
             updateTable('t1', <?= json_encode($context['room_list']) ?>);
             updateTable('t2', <?= json_encode($context['history_list']) ?>);
