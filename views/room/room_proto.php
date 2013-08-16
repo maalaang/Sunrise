@@ -91,13 +91,11 @@
                 if(edit_description !== '')
                     $('#description').html(edit_description);
             }
-            //Initalizing JScrollpane
+            function whenClickEmailAdd(){
+                var group = document.createElement('input-group');
+            }
             $(document).ready(function(){
                 $('.scroll-pane').jScrollPane();
-            });
-
-            $(document).ready(function($){
-                $('.nav-pills').tab();
             });
         </script>
     </head>
@@ -228,31 +226,47 @@
         </div><!-- /.modal -->
         
         <div class="modal fade" id="inviteModal">
-            <div class="modal-dialog" id="inviteModalForm">
+            <div class="modal-dialog" id="inviteModalForm" style="height:500px;">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">Invite People</h4>
                     </div>
                     <div class="modal-body">
-                            <div class="row">
-                                    <ul class="nav nav-pills col-lg-2" id="inviteTab" style="text-align:left;">
-                                        <li class="active"><a href="#Email" data-toggle="tab">Email</a></li>     
-                                        <li><a href="#Facebook" data-toggle="tab">Facebook</a></li>  
-                                        <li><a href="#Twitter" data-toggle="tab">Twitter</a></li>   
-                                        <li><a href="#URL" data-toggle="tab">URL</a></li>   
-                                    </ul>
-                                    <div class="tab-content col-lg-10">
-                                        <div class="tab-pane active" id="Email">
-                                            <h1>AAA</h1>
-                                        <div>
-                                        <div class="tab-pane" id="Facebook">
-                                            <h1>BBB</h1>
-                                        <div>
-                                        <div class="tab-pane" id="Twitter"><div>
-                                        <div class="tab-pane" id="URL"><div>            
-                                    </div>
-                            </div>  
+                        <div class="row">
+                            <ul class="nav nav-pills nav-stacked col-lg-2" id="inviteTab" style="text-align:left;">
+                                <li class="active"><a href="#Email" data-toggle="tab">Email</a></li>                                           
+                                <li><a href="#Facebook" data-toggle="tab">Facebook</a></li>  
+                                <li><a href="#Twitter" data-toggle="tab">Twitter</a></li>   
+                                <li><a href="#URL" data-toggle="tab">URL</a></li>   
+                            </ul>
+                            <div class="tab-content col-lg-8">
+                                <div class="tab-pane active" id="Email">
+                                    <table>
+                                        <tr>
+                                            <td>Send invitation by E-mail</td>
+                                        </tr>
+                                        <tr>
+                                            <div id="email_set">
+                                            </div> 
+                                        </tr>
+                                        <tr>
+                                            <td><input type="text" id="email" class="form-control"></td>
+                                            <td><button type="button" class="btn btn-default" id="btn_add" onclick="whenClickEmailAdd()">Add</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button type="button" class="btn btn-primary" id="btn_send">Send Invitation</button></td>
+                                        </tr>
+                                    </table>
+                                
+                                </div>
+                                <div class="tab-pane" id="Facebook">
+                                    <h1>BBB</h1>
+                                </div>
+                                <div class="tab-pane" id="Twitter"></div>
+                                <div class="tab-pane" id="URL"></div>            
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
