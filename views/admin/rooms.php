@@ -247,8 +247,7 @@
             function closeRoom() {
                 $.ajax({
                     data: { page: 'rooms', type: 'closeRoom', id: this.id },
-                    success: function (data) {
-                        alert('Closed the room successfully');
+                    success: function () {
                         loadData('t1', $('#t1_sr_page li.active').attr('id'));
                     }
                 });
@@ -273,11 +272,11 @@
                     break;
                 case table + '_prev':
                     id = $('#' + table + '_sr_page li.active').attr('id'); 
-                    pnum = Number($('#' + table + '_' + id + '_a').text()) - 1;
+                    pnum = Number($('#' + id + '_a').text()) - 1;
                     break;
                 case table + '_next':
                     id = $('#' + table + '_sr_page li.active').attr('id'); 
-                    pnum = Number($('#' + table + '_' + id + '_a').text()) + 1;
+                    pnum = Number($('#' + id + '_a').text()) + 1;
                     break;
                 case table + '_end':
                     pnum = Number('-1');
@@ -299,7 +298,7 @@
                     },
                     dataType: 'JSON',
                     success: function (data) {
-                        if (selected_btn == 'end') {
+                        if (selected_btn == table + '_end') {
                             pnum = parseInt(data['total_record_number'] / 10 + 1);
                         }
                         updateTable(table, data['record_list']);
@@ -323,7 +322,7 @@
                                 id = val;
                             }
                             if (key == 'is_open') {
-                                if (val = 1) {
+                                if (val == 1) {
                                     val = 'Public';
                                 } else {
                                     val = 'Private';
