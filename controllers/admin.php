@@ -2,6 +2,7 @@
 
 require_once (dirname(__FILE__) . '/../models/user.php');
 require_once (dirname(__FILE__) . '/../models/room.php');
+require_once (dirname(__FILE__) . '/../models/history.php');
 require_once (dirname(__FILE__) . '/../models/participant.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 
@@ -41,10 +42,9 @@ function rooms() {
 
         $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
 
-        $stmt = $db->prepare('SELECT * FROM participant LIMIT 10');
+        $stmt = $db->prepare('SELECT * FROM history LIMIT 10');
         $stmt->execute();
 
-        // TODO: Room History Data
         $history_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'History');
 
         $context = array(
@@ -58,14 +58,77 @@ function rooms() {
     } else {
         // Pagination or Filtering
         if ($_POST['type'] == 'pagination') {
-            // TODO: Pagination Response
+            try {
+                $db = sr_pdo();
 
+                $json = $_POST['filter'];
+                $json = stripslashes($json);
+                $filter = json_decode($json);
+
+                $where = '';
+                $index = 0;
+                foreach ($filter as $field => $value) {
+                    if ($index++ == 0) {
+                        $where .= 'WHERE ';
+                    } else {
+                        $where .= ' AND ';
+                    }
+                    $where .= $field . '=' . $value;
+                }
+
+                if ($_POST['table'] == 't1') {
+                    $total_record_number = Room::getRecordNum($filter);
+                } else {
+                    $total_record_number = History::getRecordNum($filter);
+                }
+
+                if ($_POST['page_number'] == -1) {
+                    $beginRecordNum = (int)($total_record_number / 10) * 10 + 1;
+                } else {
+                    $beginRecordNum = ($_POST['page_number'] - 1) * 10;
+                }
+
+                if ($_POST['table'] == 't1') {
+                    $stmt = $db->prepare("SELECT * FROM room $where LIMIT $beginRecordNum, 10");
+                    $stmt->execute();
+
+                    $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
+                } else {
+                    $stmt = $db->prepare("SELECT * FROM history $where LIMIT $beginRecordNum, 10");
+                    $stmt->execute();
+
+                    $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'History');
+                }
+
+                $result = array(
+                    'record_list' => $record_list,
+                    'total_record_number' => $total_record_number
+                );
+
+                echo json_encode($result);
+
+            } catch (PDOException $e) {
+
+            }
 
         // Close Room Request
         } else {
-            // TODO: Close Room Response
+            // TODO: Write History
+            try {
+                $db = sr_pdo();
 
+                $stmt = $db->prepare('SELECT * FROM room WHERE id = :id');
+                $stmt->bindParam(':id', $_POST['id']);
+                $stmt->setFetchMode(PDO::FETCH_CLASS, 'Room');
+                $stmt->execute();
 
+                $user = $stmt->fetch();
+
+                $result = $user->close($db);
+
+            } catch (PDOException $e) {
+
+            }
         }
     }
 }
