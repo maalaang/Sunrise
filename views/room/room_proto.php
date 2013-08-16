@@ -92,7 +92,10 @@
                     $('#description').html(edit_description);
             }
             function whenClickEmailAdd(){
-                var group = document.createElement('input-group');
+                $('<span></span>').addClass('image').css({
+                    'width':100,
+                    'height':60
+                }).appendTo('#email_set');
             }
             $(document).ready(function(){
                 $('.scroll-pane').jScrollPane();
@@ -248,6 +251,18 @@
                                         </tr>
                                         <tr>
                                             <div id="email_set">
+        <ul>
+            <li>
+                                                    <div class="input-group" style="width:50px;">
+                                                        <input type="text" class="form-control">
+                                                        <span class="input-group-addon">X</span>
+                                                    </div>
+                                                    <div class="input-group" style="width:50px;">
+                                                        <input type="text" class="form-control">
+                                                        <span class="input-group-addon">X</span>
+                                                    </div>
+    </li>
+</ul>
                                             </div> 
                                         </tr>
                                         <tr>
