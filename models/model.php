@@ -18,7 +18,9 @@ abstract class Model {
         $table = $this->getTableName();
 
         $attrs = get_class_vars(get_class($this));
-        unset($attrs['id']);
+        if (!$this->id) {
+            unset($attrs['id']);
+        }
         $attrs = array_keys($attrs);
 
         $cols = implode(',', $attrs);
@@ -37,7 +39,9 @@ abstract class Model {
 
         $stmt->execute();
 
-        $this->id = $db->lastInsertId();
+        if (!$this->id) {
+            $this->id = $db->lastInsertId();
+        }
 
         return $this->id;
     }
@@ -52,7 +56,6 @@ abstract class Model {
         $table = $this->getTableName();
 
         $attrs = get_class_vars(get_class($this));
-        unset($attrs['id']);
         $attrs = array_keys($attrs);
 
         $placeholders = implode('=?,', $attrs);
@@ -107,14 +110,27 @@ abstract class Model {
         $db = sr_pdo();
 
         $called_class = get_called_class();
-
         $table = $called_class::getTableName();
 
-        $stmt = $db->prepare("TRUNCATE $table");
-
+        // "DELETE FROM" clause was used instead of "TRUNCATE"
+        // because the table should retain the last value of auto incremented primary key
+        // for data integrity
+        $stmt = $db->prepare("DELETE FROM $table");
         $stmt->execute();
 
         return $stmt->rowCount();
+    }
+
+    public static function fetchAll() {
+        $db = sr_pdo();
+
+        $called_class = get_called_class();
+        $table = $called_class::getTableName();
+
+        $stmt = $db->prepare("SELECT * FROM $table");
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_CLASS, $called_class);
     }
 
     /**

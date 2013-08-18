@@ -31,8 +31,9 @@ class Room extends Model {
     public $is_open;
 
     public function open($db) {
-        $this->start_time = Model::getCurrentTime();
-        $this->channel_token = Model::getUniqueId('c');
+        $this->id = Room::getUniqueId('r');
+        $this->start_time = Room::getCurrentTime();
+        $this->channel_token = Room::getUniqueId('h');
 
         $this->add($db);
     }
