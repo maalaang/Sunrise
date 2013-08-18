@@ -136,6 +136,7 @@ function signup() {
 
 
 function signout() {
+    session_start();
     $context = array();
 
     if ($_SESSION['is_logged']) {
