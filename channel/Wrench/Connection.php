@@ -160,7 +160,7 @@ class Connection extends Configurable
         $this->port = $this->socket->getPort();
 
         // Use uniqueid() instead of configureClientId()
-        $this->id = uniqid('u');
+        $this->id = uniqid('c');
     }
 
     /**

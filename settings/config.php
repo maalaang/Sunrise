@@ -12,17 +12,14 @@ $sr_db_charset      = 'utf8';
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/husky/Sunrise';
+$sr_root        = '/workspace/blackhat/Sunrise';
+
+$sr_channel_server  = 'ws://dev.maalaang.com:8889/sunrise/channel/';
 
 /**
- * Message server configuration.
+ * Channel server configuration.
  */
-$sr_rest_server                 = 'http://localhost' . $sr_root;
-$sr_rest_room_open              = '/d/room/open/';
-$sr_rest_room_close             = '/d/room/close/';
-$sr_rest_room_join              = '/d/room/join/';
-$sr_rest_room_exit              = '/d/room/exit/';
-$sr_rest_room_init              = '/d/room/init/';
+$sr_channel_event_rest          = 'http://localhost' . $sr_root . '/d/channel/';
 
 /**
  * Regular expressions for validation.

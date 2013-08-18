@@ -13,10 +13,11 @@ class SunriseChannelServer extends Application {
     protected $clients = array();
     protected $config = null;
     protected $channels = array();
+    protected $channel_close_pending = array();
 
     public function __construct($config) {
         $this->config = $config;
-        $this->initDatabase();
+        $this->sendChannelEvent('server_start', null);
     }
 
     public function onConnect($client) {
@@ -24,6 +25,25 @@ class SunriseChannelServer extends Application {
     }
 
     public function onUpdate() {
+        foreach ($this->channels as $token => $channel) {
+            if (count($channel) > 0) {
+                $this->channel_close_pending[$token] = 0;
+            } else {
+                if (isset($this->channel_close_pending[$token])) {
+                    if (++$this->channel_close_pending[$token] > 100) {
+                        echo "channel closed: " . $token . "\n";
+                        unset($this->channel_close_pending[$token]);
+                        unset($this->channels[$token]);
+
+                        $data = array();
+                        $data['channel_token'] = $token;
+                        $this->sendChannelEvent('channel_destroyed', $data);
+                    }
+                } else {
+                    $this->channel_close_pending[$token] = 1;
+                }
+            }
+        }
     }
 
     public function onData($data, $client) {
@@ -121,7 +141,6 @@ class SunriseChannelServer extends Application {
 
         // remove the client from the socket list
         unset($this->clients[$client->getId()]);
-
     }
 
     private function printStatus() {
@@ -185,6 +204,7 @@ class SunriseChannelServer extends Application {
         $response = array();
         $response['type'] = 'channel';
         $response['subtype'] = 'open';
+        $response['participant_id'] = $client->getId();
         $response['participant_cnt'] = count($this->channels[$msg->channel_token]) - 1;
 
         $participant_list = array();
@@ -198,36 +218,6 @@ class SunriseChannelServer extends Application {
         $response['participant_list'] = $participant_list;
 
         $client->send(json_encode($response));
-
-//        global $sr_rest_server;
-//        global $sr_rest_room_join;
-
-//        if ($client->getParticipantId() !== null) {
-//            $response = array();
-//            $response['type'] = 'room';
-//            $response['subtype'] = 'join';
-//            $response['result'] = 1;
-//            $response['msg'] = 'You are in the other room. Please close the other room before joining to a new room';
-//            $client->send(json_encode($response));
-//            return;
-//        }
-
-        // send room join request to the Sunrise VC server
-        /*
-        $url = $sr_rest_server . $sr_rest_room_join;
-        $params = array();
-        $params['room_id'] = $msg->room_id;
-        $params['is_registered_user'] = $msg->is_registered_user;
-        $params['user_name'] = $msg->user_name;
-        $params['user_id'] = $msg->user_id;
-        $params['ip_address'] = $client->getIp();
-
-        $this->sendRequestAsync($url, $params, 'POST');
-        */
-
-        // store room information
-//        $client->setRoomId($msg->room_id);
-//        $client->setParticipantId($msg->participant_id);
     }
 
     private function closeChannel($client) {
@@ -258,11 +248,6 @@ class SunriseChannelServer extends Application {
         // close the connection between the client and the channel
         unset($this->channels[$client->getChannelToken()][$client->getId()]);
 
-        // remove the channel if there is no client connected to the channel
-        if (count($this->channels[$client->getChannelToken()]) == 0) {
-            unset($this->channels[$client->getChannelToken()]);
-        }
-
         $client->setChannelToken(null);
 
         // send response
@@ -277,37 +262,17 @@ class SunriseChannelServer extends Application {
             $client->log('channel close: failed to send response - ' . $e, 'err');
         }
 
-//        global $sr_rest_server;
-//        global $sr_rest_room_exit;
-
-        // send room exit request to the Sunrise VC server
-//        $url = $sr_rest_server . $sr_rest_room_exit;
-//        $params['participant_id'] = $client->getParticipantId();
-//        $this->sendRequestAsync($url, $params, 'POST');
-
-        // close the connection
-//        $client->setRoomId(null);
-//        $client->setParticipantId(null);
+        $data = array();
+        $data['client_id'] = $client->getId();
+        $data['channel_token'] = $client->getChannelToken();
+        $this->sendChannelEvent('client_disconnected', $data);
     }
 
-    private function closeRoom($client) {
-        global $sr_rest_server;
-        global $sr_rest_room_close;
-
-        unset($this->channels[$client->getRoomId()]);
-
-        $url = $sr_rest_server . $sr_rest_room_close;
-
-        $params['room_id'] = $client->getRoomId();
-        $this->sendRequestAsync($url, $params, 'POST');
-    }
-
-    private function initDatabase() {
-        global $sr_rest_server;
-        global $sr_rest_room_init;
-
-        // send message to initialize database for room information
-        $url = $sr_rest_server . $sr_rest_room_init;
-        $this->sendRequestAsync($url, null, 'POST');
+    private function sendChannelEvent($type, $data) {
+        if (!$data) {
+            $data = array();
+        }
+        $data['type'] = $type;
+        $this->sendRequestAsync($this->config['rest_server'], $data, 'POST');
     }
 }

@@ -25,6 +25,9 @@ function sr_response_error($error) {
     case 404:
         header('HTTP/1.0 404 Not Found');
         sr_response('views/errors/404.php', null);
+    case 500:
+        header('HTTP/1.0 500 Internal Server Error');
+        sr_response('views/errors/500.php', null);
     }
     exit(0);
 }

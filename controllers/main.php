@@ -47,6 +47,7 @@ function signin() {
 
                     // Successfully signed in & Session start
                     session_start();
+                    $_SESSION['user_id'] = $user->id;
                     $_SESSION['is_logged'] = true;
                     $_SESSION['user_email'] = $user->email;
                     $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
@@ -147,6 +148,7 @@ function signout() {
         unset($_SESSION['is_logged']);
         unset($_SESSION['user_email']);
         unset($_SESSION['user_name']);
+        unset($_SESSION['user_id']);
         session_destroy();
 
     } else {
@@ -178,7 +180,7 @@ function goto_room() {
         }
     }
 
-    header('Location: ' . $sr_root . '/d/room/temp/?name=' . $room_name);
+    header('Location: ' . $sr_root . '/d/room/?name=' . $room_name);
 }
 
 ?>

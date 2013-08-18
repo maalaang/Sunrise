@@ -8,6 +8,7 @@ var offerConstraints = {"optional": [], "mandatory": {}};
 var mediaConstraints = {"audio": true, "video": {"mandatory": {}, "optional": []}};
 var sdpConstraints = {'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true }};
 var stereo = false;
+var participant_id = null;
 
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
@@ -23,6 +24,9 @@ function onChannelOpened(msg) {
         connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true);
         connections[p].maybeStart();
     }
+
+    participant_id = msg.participant_id;
+    roomJoin();
 }
 
 function onChannelBye(msg) {
@@ -85,9 +89,41 @@ function initializeChannel() {
 function addSmallVideo() {
 }
 
-window.onbeforeunload = function() {
-    channel.sendMessage({type: 'channel', subtype: 'close'});
+function roomJoin() {
+    var params = {};
+    params.participant_id = participant_id;
+    params.room_id = roomId;
+    params.is_registered_user = isRegisteredUser;
+    params.user_name = userName;
+    params.user_id = userId;
+
+    $.post(roomApi + '/d/room/join/', params, function (data) {
+        var json = $.parseJSON(data);
+        if (json.result === 0) {
+            console.log('done: room-join');
+        } else {
+            console.log('error on room-join: failed to get participant_id');
+        }
+    });
 }
+
+function roomExit() {
+    var params = {};
+    params.participant_id = participant_id;
+
+    $.post(roomApi + '/d/room/exit/', params, function (data) {
+        var json = $.parseJSON(data);
+        if (json.result === 0) {
+            console.log('done: room-exit');
+        } else {
+            console.log('error on room-join: failed to get participant_id');
+        }
+    });
+}
+
+//window.onbeforeunload = function() {
+//    channel.sendMessage({type: 'channel', subtype: 'close'});
+//}
 
 // Set the video diplaying in the center of window.
 window.onresize = function() {

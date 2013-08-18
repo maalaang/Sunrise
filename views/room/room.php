@@ -16,16 +16,16 @@
 
     <body>
         <script type="text/javascript">
-            var channelServer = "ws://dev.maalaang.com:8889/sunrise/channel/";
+            var channelServer = '<?= $context['channel_server'] ?>';
             var channelToken = '<?= $context['room']->channel_token ?>';
+            var roomId = '<?= $context['room']->id ?>';
             var roomLink = '<?= $context['room_link'] ?>';
             var roomName = '<?= $context['room']->name ?>';
+            var roomApi = '<?= $context['room_api'] ?>';
+            var isRegisteredUser = <?= $context['is_registered_user'] ?>;
             var userName = '<?= $context['user_name'] ?>';
-//            var roomId = '<?= $context['room']->id ?>';
-//            var participantId = '<?= $context['participant']->id ?>';
-//            var initiator = <?= $context['initiator'] ?>;
-//            var isRegisteredUser = 0;
-//            setTimeout(initialize, 1);
+            var userId = <?= $context['user_id'] ?>;
+
         </script>
         <div class="header">
             <div class="navbar navbar-inverse navbar-fixed-top">
