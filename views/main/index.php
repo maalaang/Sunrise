@@ -59,7 +59,13 @@
 
             <div class="jumbotron">
                 <h1>Welcome to Sunrise</h1>
-                <p>Sunrise is an open video conference solution based on HTML5 WebRTC. You can use this software for online meeting at your company or for talking to your friends. Moreover, you may provide more enhanced customer service using video chat. Enjoy the next generation of the Web with Sunrise. It is an open source sofrware licensed under Apache License Version 2.0.</p>
+                <p>
+                    Sunrise is an open video conference solution based on HTML5 WebRTC.
+                    You can use this software for online meeting at your company or for talking to your friends.
+                    Moreover, you may provide more enhanced customer service using video chat.
+                    Enjoy the next generation of the Web with Sunrise.
+                    It is an open source sofrware licensed under Apache License Version 2.0.
+                </p>
                 <hr/>
                 <form action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
                     <fieldset>

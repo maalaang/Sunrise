@@ -21,14 +21,14 @@ class Room extends Model {
     /** Sunrise channel token. Unique key */
     public $channel_token;
 
+    /** Flag for public or private room */
+    public $is_open;
+
     /** Start time of this room */
     public $start_time;
 
     /** Password */
     public $password;
-
-    /** Flag for public or private room */
-    public $is_open;
 
     public function open($db) {
         $this->id = Room::getUniqueId('r');

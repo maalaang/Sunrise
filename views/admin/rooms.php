@@ -119,9 +119,8 @@
                                             <th>Name</th>
                                             <th>Title</th>
                                             <th>Description</th>
-                                            <th>Start Time</th>
                                             <th>Is Open</th>
-                                            <th>Participants</th>
+                                            <th>Start Time</th>
                                             <th>Close Room</th>
                                         </tr>
                                     </thead>
@@ -179,13 +178,13 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Room ID</td>
                                             <th>Name</th>
                                             <th>Title</th>
                                             <th>Description</th>
+                                            <th>Is Open</th>
                                             <th>Start Time</th>
                                             <th>End Time</th>
-                                            <th>Is Open</th>
-                                            <th>Participants</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -397,9 +396,9 @@
 
             // Initialize table
             updateTable('t1', <?= json_encode($context['room_list']) ?>);
-            updateTable('t2', <?= json_encode($context['history_list']) ?>);
+            updateTable('t2', <?= json_encode($context['room_log_list']) ?>);
             updatePage('t1', 1, <?= Room::getRecordNum(array()) ?>);
-            updatePage('t2', 1, <?= History::getRecordNum(array()) ?>);
+            updatePage('t2', 1, <?= RoomLog::getRecordNum(array()) ?>);
         </script>
     </body>
 </html>
