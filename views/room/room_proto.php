@@ -36,14 +36,20 @@
         </style>
 
         <script>
+            var email_cnt = 0;
+
+
             function whenClickMic(){
                 $('#menu_mic i').toggleClass('glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up');
             }
+
             function whenClickScreen(){
                 $('#menu_screen i').toggleClass('glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open');
             }
+
             function whenClickExit(){
             }
+
             function whenClickSend(){
                 var input_message;
                 var output_message;
@@ -58,6 +64,7 @@
                 document.getElementById('output_message').value = output_message;
                 }
             }
+
             function whenClickEdit(){
                 var title;
                 var description;
@@ -72,6 +79,8 @@
                 $('#edit_description').attr("placeholder", description);
 
             }
+
+
             function whenClickEditSave(){
                 var title;
                 var description;
@@ -91,7 +100,8 @@
                 if(edit_description !== '')
                     $('#description').html(edit_description);
             }
-            function whenClickEmailAdd(){
+
+            function whenClickAddEmail(){
                 var group = document.createElement("span");
                 var txt = document.createElement("input");
                 var btn_span = document.createElement("span");
@@ -99,18 +109,26 @@
                 var panel = document.getElementById("email_set");
                 var email = $('#email').val();
 
-                group.setAttribute('class', 'input-group');
+                if(CheckEmailForm(email) === false){
+                    console.log("Empty");
+                    return;
+                }
 
-                txt.setAttribute('type', 'text');
-                txt.setAttribute('class', 'form-control');
-                txt.setAttribute('value', email);
-                txt.setAttribute('style', 'padding:2px 2px 2px 2px');
-                txt.setAttribute('overflow', 'visible');
+                group.setAttribute("class", "input-group");
+                group.setAttribute("id","Test");
 
-                btn_span.setAttribute('class', 'input-group-btn');
-                btn.setAttribute('class', 'btn-default');
-                btn.setAttribute('type', 'button');
-                btn.setAttribute('value', '1111');
+                txt.setAttribute("type", "text");
+                txt.setAttribute("class", "form-control");
+                txt.setAttribute("value", email);
+                txt.setAttribute("id", email_cnt);
+
+                btn_span.setAttribute("class", "input-group-btn");
+
+                btn.setAttribute("class", "btn-default");
+                btn.setAttribute("type", "button");
+                btn.setAttribute("onclick", "whenClickDelEmail(this)");
+                btn.setAttribute("id", email_cnt);
+                btn.innerHTML = "&times";
 
                 btn_span.appendChild(btn);
 
@@ -118,10 +136,37 @@
                 group.appendChild(btn_span);
 
                 panel.appendChild(group);
+                email_cnt++;
             }
-            $(document).ready(function(){
-                $('.scroll-pane').jScrollPane();
-            });
+
+            function whenClickDelEmail(obj){
+                var output = obj.id;
+                console.log(output);
+                $('#'+output).remove();
+                $('#'+output).remove();
+                email_cnt--;
+            }
+
+            function CheckEmailForm(obj){
+                var obj_len = obj.length;
+                console.log(obj[0]);
+
+                for(var i = 0; i < obj_len; i++){
+                    if(obj[i] === " ")
+                        return false;
+        
+                    if(obj[i] === "@")
+                        break;
+                }
+                
+                if(obj.length === 0)
+                    return false;
+                else if(i === obj.length)
+                    return false;
+                else
+                    return true;
+                
+            }
         </script>
     </head>
 
@@ -277,7 +322,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" id="email" class="form-control"></td>
-                                            <td><button type="button" class="btn btn-default" id="btn_add" onclick="whenClickEmailAdd()">Add</button></td>
+                                            <td><button type="button" class="btn btn-default" id="btn_add" onclick="whenClickAddEmail()">Add</button></td>
                                         </tr>
                                         <tr>
                                             <td><button type="button" class="btn btn-primary" id="btn_send">Send Invitation</button></td>
