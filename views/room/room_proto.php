@@ -91,7 +91,7 @@
                 if(edit_description !== '')
                     $('#description').html(edit_description);
             }
-            function whenClickEmailAdd(){
+            function whenClickAddEmail(){
                 var group = document.createElement("span");
                 var txt = document.createElement("input");
                 var btn_span = document.createElement("span");
@@ -99,18 +99,23 @@
                 var panel = document.getElementById("email_set");
                 var email = $('#email').val();
 
-                group.setAttribute('class', 'input-group');
+                if(email === ""){
+                    console.log("Empty");
+                    return;
+                }
 
-                txt.setAttribute('type', 'text');
-                txt.setAttribute('class', 'form-control');
-                txt.setAttribute('value', email);
-                txt.setAttribute('style', 'padding:2px 2px 2px 2px');
-                txt.setAttribute('overflow', 'visible');
+                group.setAttribute("class", "input-group");
 
-                btn_span.setAttribute('class', 'input-group-btn');
-                btn.setAttribute('class', 'btn-default');
-                btn.setAttribute('type', 'button');
-                btn.setAttribute('value', '1111');
+                txt.setAttribute("type", "text");
+                txt.setAttribute("class", "form-control");
+                txt.setAttribute("value", email);
+
+                btn_span.setAttribute("class", "input-group-btn");
+
+                btn.setAttribute("class", "btn-default");
+                btn.setAttribute("type", "button");
+                btn.setAttribute("onclick", "whenClickDelEmail()");
+                btn.innerHTML = "&times";
 
                 btn_span.appendChild(btn);
 
@@ -119,9 +124,11 @@
 
                 panel.appendChild(group);
             }
-            $(document).ready(function(){
-                $('.scroll-pane').jScrollPane();
-            });
+
+            function whenClickDelEmail(){
+                var test = $(this).innerHTML;
+                console.log(test);
+            }
         </script>
     </head>
 
@@ -277,7 +284,7 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" id="email" class="form-control"></td>
-                                            <td><button type="button" class="btn btn-default" id="btn_add" onclick="whenClickEmailAdd()">Add</button></td>
+                                            <td><button type="button" class="btn btn-default" id="btn_add" onclick="whenClickAddEmail()">Add</button></td>
                                         </tr>
                                         <tr>
                                             <td><button type="button" class="btn btn-primary" id="btn_send">Send Invitation</button></td>
