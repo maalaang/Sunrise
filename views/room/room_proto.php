@@ -92,10 +92,32 @@
                     $('#description').html(edit_description);
             }
             function whenClickEmailAdd(){
-                $('<span></span>').addClass('image').css({
-                    'width':100,
-                    'height':60
-                }).appendTo('#email_set');
+                var group = document.createElement("span");
+                var txt = document.createElement("input");
+                var btn_span = document.createElement("span");
+                var btn = document.createElement("button");
+                var panel = document.getElementById("email_set");
+                var email = $('#email').val();
+
+                group.setAttribute('class', 'input-group');
+
+                txt.setAttribute('type', 'text');
+                txt.setAttribute('class', 'form-control');
+                txt.setAttribute('value', email);
+                txt.setAttribute('style', 'padding:2px 2px 2px 2px');
+                txt.setAttribute('overflow', 'visible');
+
+                btn_span.setAttribute('class', 'input-group-btn');
+                btn.setAttribute('class', 'btn-default');
+                btn.setAttribute('type', 'button');
+                btn.setAttribute('value', '1111');
+
+                btn_span.appendChild(btn);
+
+                group.appendChild(txt);
+                group.appendChild(btn_span);
+
+                panel.appendChild(group);
             }
             $(document).ready(function(){
                 $('.scroll-pane').jScrollPane();
@@ -251,18 +273,6 @@
                                         </tr>
                                         <tr>
                                             <div id="email_set">
-        <ul>
-            <li>
-                                                    <div class="input-group" style="width:50px;">
-                                                        <input type="text" class="form-control">
-                                                        <span class="input-group-addon">X</span>
-                                                    </div>
-                                                    <div class="input-group" style="width:50px;">
-                                                        <input type="text" class="form-control">
-                                                        <span class="input-group-addon">X</span>
-                                                    </div>
-    </li>
-</ul>
                                             </div> 
                                         </tr>
                                         <tr>
