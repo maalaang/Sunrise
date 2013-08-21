@@ -9,6 +9,11 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
+        <style>
+            .sr_num_info * {
+                width: 230px;
+            }
+        </style>
     </head>
     <body>
         <!---------- Part 1 ---------->
@@ -44,18 +49,10 @@
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-                        <li class="active">
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a>
-                        </li>
-                        <li>
-                            <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a>
-                        </li>
+                        <li class="active"><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon-chevron-right"></i> Users</a></li>
+                        <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon-chevron-right"></i> Settings</a></li>
                     </ul>
                 </div>
                 <div class="span9" id="content">
@@ -64,12 +61,25 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Room Opened</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
+                                <div class="muted pull-left">
+                                    <h4>Room Opened</h4>
+                                </div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
-                                    <div id="hero-graph-1" style="height: 230px;"></div>
+                                    <div id="g1_sr_graph" style="height: 300px;"></div>
+                                </div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <div class="pull-left sr_num_info">
+                                    <button class="btn disabled" disabled>Total Rooms: 1,234</button>
+                                    <button class="btn disabled" disabled>Currently Opened: 12</button>
+                                </div>
+                                <div class="pull-right sr_page">
+                                    <div class="btn-group sr_page">
+                                        <button class="btn"><i class="icon-arrow-left"></i></button>
+                                        <button class="btn"><i class="icon-arrow-right"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -79,12 +89,25 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">Participants</div>
-                                <div class="pull-right"><span class="badge badge-warning">View More</span></div>
+                                <div class="muted pull-left">
+                                    <h4>Participants</h4>
+                                </div>
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
-                                    <div id="hero-graph-2" style="height: 230px;"></div>
+                                    <div id="g2_sr_graph" style="height: 300px;"></div>
+                                </div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <div class="pull-left sr_num_info">
+                                    <button class="btn disabled" disabled>Total Participants: 31,234</button>
+                                    <button class="btn disabled" disabled>Current Participants: 122</button>
+                                </div>
+                                <div class="pull-right sr_page">
+                                    <div class="btn-group">
+                                        <button class="btn"><i class="icon-arrow-left"></i></button>
+                                        <button class="btn"><i class="icon-arrow-right"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,26 +135,27 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>
         <script>
         // Graph 1
-        var tax_data_1 = [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
+        var room_data = [
+            {"period": "2013-08", "visits": 2407, "signups": 660},
+            {"period": "2013-07", "visits": 3351, "signups": 729},
+            {"period": "2013-06", "visits": 2469, "signups": 1318},
+            {"period": "2013-05", "visits": 2246, "signups": 461},
+            {"period": "2013-04", "visits": 3171, "signups": 1676},
+            {"period": "2013-03", "visits": 2155, "signups": 681},
+            {"period": "2013-02", "visits": 1226, "signups": 620},
+            {"period": "2013-01", "visits": 2245, "signups": 500}
         ];
         Morris.Line({
-            element: 'hero-graph-1',
-            data: tax_data_1,
+            element: 'g1_sr_graph',
+            data: room_data,
             xkey: 'period',
-            xLabels: "month",
+            xLabels: 'month',
             ykeys: ['visits', 'signups'],
             labels: ['Visits', 'User signups']
         });
+
         // Graph 2
-        var tax_data_2 = [
+        var participant_data= [
             {"period": "2013-04", "visits": 2407, "signups": 660},
             {"period": "2013-03", "visits": 3351, "signups": 729},
             {"period": "2013-02", "visits": 2469, "signups": 1318},
@@ -142,8 +166,8 @@
             {"period": "2012-09", "visits": 2245, "signups": 500}
         ];
         Morris.Line({
-            element: 'hero-graph-2',
-            data: tax_data_2,
+            element: 'g2_sr_graph',
+            data: participant_data,
             xkey: 'period',
             xLabels: "month",
             ykeys: ['visits', 'signups'],
