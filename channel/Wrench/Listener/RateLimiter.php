@@ -29,6 +29,13 @@ class RateLimiter extends Configurable implements Listener
     protected $requests = array();
 
     /**
+     * Logger
+     *
+     * @var log4php/Logger
+     */
+    protected $logger = null;
+
+    /**
      * Constructor
      *
      * @param array $options
@@ -50,6 +57,8 @@ class RateLimiter extends Configurable implements Listener
         ), $options);
 
         parent::configure($options);
+
+        $this->logger = $options->logger;
     }
 
     /**
@@ -133,7 +142,7 @@ class RateLimiter extends Configurable implements Listener
         $ip = $connection->getIp();
 
         if (!$ip) {
-            $this->log('Cannot check connections per IP', 'warning');
+            $this->logger->warn('Cannot check connections per IP');
             return;
         }
 
@@ -161,7 +170,7 @@ class RateLimiter extends Configurable implements Listener
         $ip = $connection->getIp();
 
         if (!$ip) {
-            $this->log('Cannot release connection', 'warning');
+            $this->logger->warn('Cannot release connection');
             return;
         }
 
@@ -208,23 +217,12 @@ class RateLimiter extends Configurable implements Listener
      */
     protected function limit($connection, $limit)
     {
-        $this->log(sprintf(
+        $this->logger->info(sprintf(
             'Limiting connection %s: %s',
             $connection->getIp(),
             $limit
-        ), 'notice');
+        ));
 
         $connection->close(new RateLimiterException($limit));
-    }
-
-    /**
-     * Logger
-     *
-     * @param string $message
-     * @param string $priority
-     */
-    public function log($message, $priority = 'info')
-    {
-        $this->server->log('RateLimiter: ' . $message, $priority);
     }
 }

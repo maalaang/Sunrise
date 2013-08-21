@@ -42,6 +42,12 @@ class ConnectionManager extends Configurable implements Countable
     protected $resources = array();
 
     /**
+     * Logger
+     * @var log4php/Logger
+     */
+    protected $logger;
+
+    /**
      * Constructor
      *
      * @param Server $server
@@ -50,6 +56,7 @@ class ConnectionManager extends Configurable implements Countable
     public function __construct(Server $server, array $options = array())
     {
         $this->server = $server;
+        $this->logger = $options['logger'];
 
         parent::__construct($options);
     }
@@ -186,7 +193,7 @@ class ConnectionManager extends Configurable implements Countable
         try {
             $new = $this->socket->accept();
         } catch (Exception $e) {
-            $this->server->log('Socket error: ' . $e, 'err');
+            $this->logger->error('Socket error', $e);
             return;
         }
 
@@ -237,17 +244,17 @@ class ConnectionManager extends Configurable implements Countable
         $connection = $this->getConnectionForClientSocket($socket);
 
         if (!$connection) {
-            $this->log('No connection for client socket', 'warning');
+            $this->logger->warn('No connection for client socket');
             return;
         }
 
         try {
             $connection->process();
         } catch (CloseException $e) {
-            $this->log('Client connection closed: ' . $e, 'notice');
+            $this->logger->error('Client connection closed', $e);
             $connection->close($e);
         } catch (WrenchException $e) {
-            $this->log('Error on client socket: ' . $e, 'warning');
+            $this->logger->error('Error on client socket', $e);
             $connection->close($e);
         }
     }
@@ -280,21 +287,6 @@ class ConnectionManager extends Configurable implements Countable
     }
 
     /**
-     * Logs a message
-     *
-     * @param string $message
-     * @param string $priority
-     */
-    public function log($message, $priority = 'info')
-    {
-        $this->server->log(sprintf(
-            '%s: %s',
-            __CLASS__,
-            $message
-        ), $priority);
-    }
-
-    /**
      * @return \Wrench\Server
      */
     public function getServer()
@@ -318,7 +310,7 @@ class ConnectionManager extends Configurable implements Countable
         }
 
         if (!$index) {
-            $this->log('Could not remove connection: not found', 'warning');
+            $this->logger->warn('Could not remove connection: not found');
         }
 
         unset($this->connections[$index]);
@@ -328,5 +320,12 @@ class ConnectionManager extends Configurable implements Countable
             Server::EVENT_SOCKET_DISCONNECT,
             array($connection->getSocket(), $connection)
         );
+    }
+
+    /**
+     * Returns logger
+     */
+    public function getLogger() {
+        return $this->logger;
     }
 }

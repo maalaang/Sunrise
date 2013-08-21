@@ -14,11 +14,14 @@ $sr_db_charset      = 'utf8';
  */
 $sr_root        = '/workspace/husky/Sunrise';
 
-$sr_channel_server  = 'ws://dev.maalaang.com:8889/sunrise/channel/';
-
 /**
  * Channel server configuration.
  */
+$sr_channel_server_key = 'sunrise/channel/';
+$sr_channel_server_port = '8889';
+$sr_channel_server_uri  = 'ws://dev.maalaang.com:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
+$sr_channel_server_uri_internal = 'ws://172.27.254.4:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
+
 $sr_channel_event_rest          = 'http://localhost' . $sr_root . '/d/channel/';
 
 /**
@@ -27,5 +30,30 @@ $sr_channel_event_rest          = 'http://localhost' . $sr_root . '/d/channel/';
 $sr_regex_name      = '/^[a-zA-Z]+$/';
 $sr_regex_email     = '/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/';
 $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
+
+/**
+ * Logger configuration - Apache log4php
+ */
+$sr_channel_logger_config = array(
+    'appenders' => array(
+        'default' => array(
+            'class' => 'LoggerAppenderRollingFile',
+            'layout' => array(
+                'class' => 'LoggerLayoutPattern',
+                'params' => array(
+                    'conversionPattern' => '%date %logger %-5level %location%newline%msg%newline%ex%newline',
+                ),
+            ),
+            'params' => array(
+                'file' => '/var/log/sunrise/sunrise-channel.log',
+                'maxFileSize' => '1MB',
+                'maxBackupIndex' => 5,
+            ),
+        ),
+    ),
+    'rootLogger' => array(
+        'appenders' => array('default'),
+    ),
+);
 
 ?>

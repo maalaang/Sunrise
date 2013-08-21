@@ -7,7 +7,7 @@ require_once (dirname(__FILE__) . '/../include/utils.php');
 
 function room() {
     global $sr_root;
-    global $sr_channel_server;
+    global $sr_channel_server_uri;
     
     $db = sr_pdo();
 
@@ -39,7 +39,7 @@ function room() {
             sr_response_error(500);
         }
 
-        $context['channel_server'] = $sr_channel_server;
+        $context['channel_server'] = $sr_channel_server_uri;
         $context['room'] = $room;
         $context['room_link'] = sr_current_url();
         $context['room_api'] = $sr_root;

@@ -49,13 +49,8 @@ class Server extends Configurable
     protected $options = array();
 
     /**
-     * A logging callback
-     *
-     * The default callback simply prints to stdout. You can pass your own logger
-     * in the options array. It should take a string message and string priority
-     * as parameters.
-     *
-     * @var Closure
+     * Logger
+     * @var log4php/Logger
      */
     protected $logger;
 
@@ -95,7 +90,7 @@ class Server extends Configurable
 
         parent::__construct($options);
 
-        $this->log('Server initialized', 'info');
+        $this->logger->info('Server initialized');
     }
 
     /**
@@ -132,9 +127,8 @@ class Server extends Configurable
     {
         // Default logger
         if (!isset($this->options['logger'])) {
-            $this->options['logger'] = function ($message, $priority = 'info') {
-                printf("%s: %s%s", $priority, $message, PHP_EOL);
-            };
+            printf("Error: Logger must be configured");
+            exit(1);
         }
         $this->setLogger($this->options['logger']);
     }
@@ -177,8 +171,8 @@ class Server extends Configurable
      */
     public function setLogger($logger)
     {
-        if (!is_callable($logger)) {
-            throw new \InvalidArgumentException('Logger must be callable');
+        if (!$logger) {
+            throw new \InvalidArgumentException('Logger must be specified');
         }
         $this->logger = $logger;
     }
@@ -209,22 +203,6 @@ class Server extends Configurable
                 }
             }
         }
-    }
-
-    /**
-     * Logs a message to the server log
-     *
-     * The default logger simply prints the message to stdout. You can provide
-     * a logging closure. This is useful, for instance, if you've daemonized
-     * and closed STDOUT.
-     *
-     * @param string $message Message to display.
-     * @param string $type Type of message.
-     * @return void
-     */
-    public function log($message, $priority = 'info')
-    {
-        call_user_func($this->logger, $message, $priority);
     }
 
     /**
@@ -299,5 +277,12 @@ class Server extends Configurable
     public function registerApplication($key, $application)
     {
         $this->applications[$key] = $application;
+    }
+
+    /**
+     * Returns logger
+     */
+    public function getLogger() {
+        return $this->logger;
     }
 }

@@ -43,7 +43,7 @@ class ServerTimeApplication extends Application
                     $sendto->send($data);
                 }
             } catch (Exception $e) {
-                $client->log('Data send failed: ' . $e, 'err');
+                $client->logger->error('Data send failed', $e);
             }
         }
     }
