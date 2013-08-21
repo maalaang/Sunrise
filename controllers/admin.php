@@ -2,7 +2,7 @@
 
 require_once (dirname(__FILE__) . '/../models/user.php');
 require_once (dirname(__FILE__) . '/../models/room.php');
-require_once (dirname(__FILE__) . '/../models/history.php');
+require_once (dirname(__FILE__) . '/../models/room_log.php');
 require_once (dirname(__FILE__) . '/../models/participant.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 
@@ -42,14 +42,14 @@ function rooms() {
 
         $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
 
-        $stmt = $db->prepare('SELECT * FROM history LIMIT 10');
+        $stmt = $db->prepare('SELECT * FROM room_log LIMIT 10');
         $stmt->execute();
 
-        $history_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'History');
+        $room_log_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'RoomLog');
 
         $context = array(
             'room_list' => $room_list,
-            'history_list' => $history_list
+            'room_log_list' => $room_log_list
         );
 
         sr_response('views/admin/rooms.php', $context);
@@ -79,7 +79,7 @@ function rooms() {
                 if ($_POST['table'] == 't1') {
                     $total_record_number = Room::getRecordNum($filter);
                 } else {
-                    $total_record_number = History::getRecordNum($filter);
+                    $total_record_number = RoomLog::getRecordNum($filter);
                 }
 
                 if ($_POST['page_number'] == -1) {
@@ -94,10 +94,10 @@ function rooms() {
 
                     $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
                 } else {
-                    $stmt = $db->prepare("SELECT * FROM history $where LIMIT $beginRecordNum, 10");
+                    $stmt = $db->prepare("SELECT * FROM room_log $where LIMIT $beginRecordNum, 10");
                     $stmt->execute();
 
-                    $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'History');
+                    $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'RoomLog');
                 }
 
                 $result = array(

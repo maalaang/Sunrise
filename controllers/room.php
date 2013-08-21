@@ -44,7 +44,7 @@ function room() {
         $context['room_link'] = sr_current_url();
         $context['room_api'] = $sr_root;
 
-        if ($_SESSIOIN['is_logged'] === true) {
+        if ($_SESSION['is_logged'] === true) {
             $context['user_name'] = $_SESSION['user_name'];
             $context['user_id'] = $_SESSION['user_id'];
             $context['is_registered_user'] = 'true';

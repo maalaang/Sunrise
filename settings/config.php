@@ -12,7 +12,7 @@ $sr_db_charset      = 'utf8';
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/blackhat/Sunrise';
+$sr_root        = '/workspace/husky/Sunrise';
 
 $sr_channel_server  = 'ws://dev.maalaang.com:8889/sunrise/channel/';
 

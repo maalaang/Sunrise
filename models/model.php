@@ -156,7 +156,7 @@ abstract class Model {
     /**
      * Returns the number of records of the table associated with this model.
      *
-     * @param db    PDO handle
+     * @param filter    array of filter (ex. array( 'is_open' => '1', 'is_authorized' => '0' ) )
      * @return  the number of records 
      */
     public static function getRecordNum($filter) {
