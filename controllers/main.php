@@ -4,12 +4,12 @@ require_once (dirname(__FILE__) . '/../models/user.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 require_once (dirname(__FILE__) . '/../settings/config.php');
 
-function main() {
+function main_welcome() {
     sr_response('views/main/index.php', null);
 }
 
 
-function signin() {
+function main_signin() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         global $sr_regex_email;
@@ -68,7 +68,7 @@ function signin() {
 }
 
 
-function signup() {
+function main_signup() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         global $sr_regex_name;
@@ -136,7 +136,7 @@ function signup() {
 }
 
 
-function signout() {
+function main_signout() {
     session_start();
     $context = array();
 
@@ -162,7 +162,7 @@ function signout() {
     sr_response('views/main/signout.php', $context);
 }
 
-function goto_room() {
+function main_goto_room() {
     global $sr_root;
 
     if ($room_name = $_GET['room_name']) {

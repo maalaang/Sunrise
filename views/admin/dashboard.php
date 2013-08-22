@@ -1,4 +1,3 @@
-<? require_once (dirname(__FILE__) . '/../../include/user_session.php'); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,7 +26,7 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav pull-right">
                             <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?= $userName ?> <i class="caret"></i></a>
+                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?= $user_name ?> <i class="caret"></i></a>
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a tabindex="-1" href="#">Profile</a>
@@ -134,44 +133,28 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>
         <script>
+
+        var room_log_data = <?= json_encode($context['room_log_data']) ?>;
+        var participant_log_data = <?= json_encode($context['participant_log_data']) ?>;
+
         // Graph 1
-        var room_data = [
-            {"period": "2013-08", "visits": 2407, "signups": 660},
-            {"period": "2013-07", "visits": 3351, "signups": 729},
-            {"period": "2013-06", "visits": 2469, "signups": 1318},
-            {"period": "2013-05", "visits": 2246, "signups": 461},
-            {"period": "2013-04", "visits": 3171, "signups": 1676},
-            {"period": "2013-03", "visits": 2155, "signups": 681},
-            {"period": "2013-02", "visits": 1226, "signups": 620},
-            {"period": "2013-01", "visits": 2245, "signups": 500}
-        ];
         Morris.Line({
             element: 'g1_sr_graph',
-            data: room_data,
+            data: room_log_data,
             xkey: 'period',
             xLabels: 'month',
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
+            ykeys: ['total', 'public', 'private'],
+            labels: ['Total', 'Public', 'Private']
         });
 
         // Graph 2
-        var participant_data= [
-            {"period": "2013-04", "visits": 2407, "signups": 660},
-            {"period": "2013-03", "visits": 3351, "signups": 729},
-            {"period": "2013-02", "visits": 2469, "signups": 1318},
-            {"period": "2013-01", "visits": 2246, "signups": 461},
-            {"period": "2012-12", "visits": 3171, "signups": 1676},
-            {"period": "2012-11", "visits": 2155, "signups": 681},
-            {"period": "2012-10", "visits": 1226, "signups": 620},
-            {"period": "2012-09", "visits": 2245, "signups": 500}
-        ];
         Morris.Line({
             element: 'g2_sr_graph',
-            data: participant_data,
+            data: participant_log_data,
             xkey: 'period',
             xLabels: "month",
-            ykeys: ['visits', 'signups'],
-            labels: ['Visits', 'User signups']
+            ykeys: ['total', 'non-member', 'member'],
+            labels: ['Total', 'Non-member', 'Member']
         });
         </script>
     </body>

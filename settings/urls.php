@@ -11,22 +11,22 @@ require_once (dirname(__FILE__) . '/../controllers/channel.php');
  * URL patterns and the associated controllers that are provided to the URL dispatcher.
  */
 $url_patterns = array (
-    "#^/$#" => main,
-    "#^/main/$#" => main,
-    "#^/main/signup/$#" => signup,
-    "#^/main/signin/$#" => signin,
-    "#^/main/signout/$#" => signout,
-    "#^/main/room/$#" => goto_room,
-    "#^/room/$#" => room,
-    "#^/room/join/$#" => room_join,
-    "#^/channel/$#" => channel_event,
-    "#^/admin/dashboard/$#" => dashboard,
-    "#^/admin/rooms/$#" => rooms,
-    "#^/admin/users/$#" => users,
-    "#^/admin/settings/$#" => settings,
-    "#^/admin/room/list/$#" => admin_room_list,
-    "#^/message/demo/$#" => message_demo,
-    "#^/sns/test/$#" => sns_test,
+    "#^/$#"                 => main_welcome,
+    "#^/main/$#"            => main_welcome,
+    "#^/main/signup/$#"     => main_signup,
+    "#^/main/signin/$#"     => main_signin,
+    "#^/main/signout/$#"    => main_signout,
+    "#^/main/room/$#"       => main_goto_room,
+    "#^/room/$#"            => room,
+    "#^/room/join/$#"       => room_join,
+    "#^/channel/$#"         => channel_event,
+    "#^/admin/fetch/$#"     => admin_ajax_dispatcher,
+    "#^/admin/dashboard/$#" => admin_dashboard,
+    "#^/admin/rooms/$#"     => admin_rooms,
+    "#^/admin/users/$#"     => admin_users,
+    "#^/admin/settings/$#"  => admin_settings,
+    "#^/message/demo/$#"    => message_demo,
+    "#^/sns/test/$#"        => sns_test,
 );
 
 ?>
