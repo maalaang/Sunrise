@@ -1,12 +1,11 @@
   a:link { color: #ffffff; }
-  a:visited {color: #ffffff; }
+  a:visited {color: purple; }
   html, body {
     height: 100%;
     font-family: Verdana, Arial, Helvetica, sans-serif;
   }
   body {
-    margin: 0;
-    padding: 0;
+    padding-top: 40px;
   }
   #container {
     position: absolute;
@@ -32,6 +31,11 @@
     width: 100%;
     -webkit-transform: rotateY(180deg);
     -webkit-backface-visibility: hidden;
+  }
+
+  #inviteModalForm{
+    width:50%;
+    margin-left: -25%;
   }
   #mini {
     position: absolute;
