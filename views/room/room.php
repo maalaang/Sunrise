@@ -9,9 +9,13 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-channel.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-connection.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
+        
+
 
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room-temp.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-glyphicons.css">
     </head>
 
     <body>
@@ -32,9 +36,40 @@
                 <div class="container">
                     <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>
                     <div class="nav-collapse collapse">
-                        <form class="navbar-form form-inline pull-right" name="option_form" id="option_form">
+<!--                        <form class="navbar-form form-inline pull-right" name="option_form" id="option_form">
                             <input type="text" class="form-control">
-                        </form>
+                        </form>-->
+                        
+                    <form class="navbar-form form-inline pull-right" name"option_form" id="option_form">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a id="menu_screen" href="#" onclick="whenClickScreen()">
+                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a id="menu_mic" href="#" onclick="whenClickMic()">
+                                    <i class="glyphicon glyphicon-volume-up"></i>
+                                </a>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" id="menu_sns" href="#">
+                                    <i class="glyphicon glyphicon-link"></i>
+                                    <span class="caret"></span>
+                                </a> 
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Facebook</a></li>
+                                    <li><a href="#">Twitter</a></li>
+                                    <li><a href="#">Google+</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a id="menu_exit" href="#" onclick="whenClickExit()">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </form>
                     </div>
                 </div>
             </div>
