@@ -6,12 +6,6 @@ require_once (dirname(__FILE__) . '/../models/room_log.php');
 require_once (dirname(__FILE__) . '/../models/participant.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 
-session_start();
-
-if (!$_SESSION['is_logged']) {
-    sr_response('views/main/signin.php', null);
-}
-
 /**
  * Ajax request dispatcher 
  */
@@ -36,6 +30,15 @@ function admin_ajax_dispatcher() {
 function admin_dashboard() {
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        session_start();
+
+        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+            $context = array();
+            $context['error'] = 0;
+            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+            sr_response('views/main/signin.php', $context);
+        }
+
         try {
             $db = sr_pdo();
 
@@ -116,6 +119,15 @@ function admin_dashboard() {
 function admin_rooms() {
     // Show Rooms Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        session_start();
+
+        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+            $context = array();
+            $context['error'] = 0;
+            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+            sr_response('views/main/signin.php', $context);
+        }
+
         $db = sr_pdo();
 
         $stmt = $db->prepare('SELECT * FROM room LIMIT 10');
@@ -218,6 +230,15 @@ function admin_rooms() {
 function admin_users() {
     // Show Users Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        session_start();
+
+        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+            $context = array();
+            $context['error'] = 0;
+            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+            sr_response('views/main/signin.php', $context);
+        }
+
         $db = sr_pdo();
 
         $stmt = $db->prepare('SELECT * FROM user LIMIT 10');
@@ -232,7 +253,6 @@ function admin_users() {
         sr_response('views/admin/users.php', $context);
 
     // Handling Ajax Request
-        //
     } else {
         // Pagination or Filtering
         if ($_POST['type'] == 'pagination') {
@@ -314,6 +334,15 @@ function admin_users() {
 
 
 function admin_settings() {
+    session_start();
+
+    if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+        $context = array();
+        $context['error'] = 0;
+        $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+        sr_response('views/main/signin.php', $context);
+    }
+
     sr_response('views/admin/settings.php', null);
 }
 
