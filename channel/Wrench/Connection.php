@@ -96,6 +96,12 @@ class Connection extends Configurable
     protected $channel_token;
 
     /**
+     * Logger
+     * @var log4php/Logger
+     */
+    protected $logger;
+
+    /**
      * Constructor
      *
      * @param Server $server
@@ -110,6 +116,7 @@ class Connection extends Configurable
     ) {
         $this->manager = $manager;
         $this->socket = $socket;
+        $this->logger = $manager->getLogger();
 
 
         parent::__construct($options);
@@ -117,7 +124,7 @@ class Connection extends Configurable
         $this->configureClientInformation();
         $this->configurePayloadHandler();
 
-        $this->log('Connected');
+        $this->logger->info('Connected');
     }
 
     /**
@@ -246,13 +253,13 @@ class Connection extends Configurable
 
             $this->handshaked = true;
 
-            $this->log(sprintf(
+            $this->logger->info(sprintf(
                 'Handshake successful: %s:%d (%s) connected to %s',
                 $this->getIp(),
                 $this->getPort(),
                 $this->getId(),
                 $path
-            ), 'info');
+            ));
 
             $this->manager->getServer()->notify(
                 Server::EVENT_HANDSHAKE_SUCCESSFUL,
@@ -263,7 +270,7 @@ class Connection extends Configurable
                 $this->application->onConnect($this);
             }
         } catch (WrenchException $e) {
-            $this->log('Handshake failed: ' . $e, 'err');
+            $this->logger->error('Handshake failed', $e);
             $this->close($e);
         }
     }
@@ -310,7 +317,7 @@ class Connection extends Configurable
     {
         $app = $this->getClientApplication();
 
-        $this->log('Handling payload: ' . $payload->getPayload(), 'debug');
+        $this->logger->debug('Handling payload: ' . $payload->getPayload());
 
         switch ($type = $payload->getType()) {
             case Protocol::TYPE_TEXT:
@@ -328,9 +335,9 @@ class Connection extends Configurable
             break;
 
             case Protocol::TYPE_PING:
-                $this->log('Ping received', 'notice');
+                $this->logger->info('Ping received');
                 $this->send($payload->getPayload(), Protocol::TYPE_PONG);
-                $this->log('Pong!', 'debug');
+                $this->logger->debug('Pong!');
             break;
 
             /**
@@ -339,13 +346,13 @@ class Connection extends Configurable
              * frame is not expected.
              */
             case Protocol::TYPE_PONG:
-                $this->log('Received unsolicited pong', 'info');
+                $this->logger->info('Received unsolicited pong');
             break;
 
             case Protocol::TYPE_CLOSE:
-                $this->log('Close frame received', 'notice');
+                $this->logger->info('Close frame received');
                 $this->close();
-                $this->log('Disconnected', 'info');
+                $this->logger->info('Disconnected');
             break;
 
             default:
@@ -374,7 +381,7 @@ class Connection extends Configurable
         $payload->encode($data, $type, false);
 
         if (!$payload->sendToSocket($this->socket)) {
-            $this->log('Could not send payload to client', 'warn');
+            $this->logger->warn('Could not send payload to client');
             throw new ConnectionException('Could not send data to connection: ' . $this->socket->getLastError());
         }
 
@@ -432,7 +439,7 @@ class Connection extends Configurable
                 $this->socket->send($response);
             }
         } catch (Exception $e) {
-            $this->log('Unable to send close message', 'warning');
+            $this->logger->warn('Unable to send close message');
         }
 
         if ($this->application && method_exists($this->application, 'onDisconnect')) {
@@ -441,24 +448,6 @@ class Connection extends Configurable
 
         $this->socket->disconnect();
         $this->manager->removeConnection($this);
-    }
-
-    /**
-     * Logs a message
-     *
-     * @param string $message
-     * @param string $priority
-     */
-    public function log($message, $priority = 'info')
-    {
-        $this->manager->log(sprintf(
-            '%s: %s:%d (%s): %s',
-            __CLASS__,
-            $this->getIp(),
-            $this->getPort(),
-            $this->getId(),
-            $message
-        ), $priority);
     }
 
     /**

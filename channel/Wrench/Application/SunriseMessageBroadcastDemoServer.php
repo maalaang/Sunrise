@@ -32,7 +32,7 @@ class SunriseMessageBroadcastDemoServer extends Application
                     $sendto->send($data);
                 }
             } catch (Exception $e) {
-                $client->log('Data send failed: ' . $e, 'err');
+                $client->getLogger()->error('Data send failed', $e);
             }
         }
     }

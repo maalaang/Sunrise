@@ -14,10 +14,12 @@ class SunriseChannelServer extends Application {
     protected $config = null;
     protected $channels = array();
     protected $channel_close_pending = array();
+    protected $logger = null;
 
     public function __construct($config) {
         $this->config = $config;
         $this->sendChannelEvent('server_start', null);
+        $this->logger = $config['logger'];
     }
 
     public function onConnect($client) {
@@ -31,7 +33,7 @@ class SunriseChannelServer extends Application {
             } else {
                 if (isset($this->channel_close_pending[$token])) {
                     if (++$this->channel_close_pending[$token] > 100) {
-                        echo "channel closed: " . $token . "\n";
+                        $this->logger->debug('channel closed: ' . $token);
                         unset($this->channel_close_pending[$token]);
                         unset($this->channels[$token]);
 
@@ -64,18 +66,18 @@ class SunriseChannelServer extends Application {
             // debug
             $this->printStatus();
         } catch (Exception $e) {
-            $client->log('onData(): ' . $e, 'err');
+            $this->logger->error('Exception on processing data', $e);
         }
     }
 
     private function onChannelMessage($client, $msg) {
         switch ($msg->subtype) {
         case 'open':
-            $client->log('channel open: ' . $msg->channel_token . ': ' . $msg->user_name);
+            $this->logger->debug('Channel open: ' . $msg->channel_token . ': ' . $msg->user_name);
             $this->openChannel($msg, $client);
             break;
         case 'close':
-            $client->log('channel close: ' . $client->getChannelToken() . ': ' . $client->getName());
+            $this->logger->debug('Channel close: ' . $client->getChannelToken() . ': ' . $client->getName());
             $this->closeChannel($client);
             break;
         }
@@ -92,7 +94,7 @@ class SunriseChannelServer extends Application {
                     try {
                         $sendto->send($data);
                     } catch (Exception $e) {
-                        $sendto->log('send chat message: ' . $e, 'err');
+                        $this->logger->error('Failed to send chat message', $e);
                     }
                 }
             }
@@ -102,7 +104,7 @@ class SunriseChannelServer extends Application {
                 try {
                     $sendto->send($data);
                 } catch (Exception $e) {
-                    $sendto->log('send signaling message: ' . $e, 'err');
+                    $this->loggererror('Failed to send signaling message', $e);
                 }
             }
         }
@@ -119,7 +121,7 @@ class SunriseChannelServer extends Application {
                     try {
                         $sendto->send($data);
                     } catch (Exception $e) {
-                        $sendto->log('send signaling message: ' . $e, 'err');
+                        $this->logger->error('Failed to send signaling message', $e);
                     }
                 }
             }
@@ -129,7 +131,7 @@ class SunriseChannelServer extends Application {
                 try {
                     $sendto->send($data);
                 } catch (Exception $e) {
-                    $sendto->log('send signaling message: ' . $e, 'err');
+                    $this->logger->error('Failed to send signaling message', $e);
                 }
             }
         }
@@ -144,12 +146,20 @@ class SunriseChannelServer extends Application {
     }
 
     private function printStatus() {
+        $log = null;
+
         foreach ($this->channels as $token => $clients) {
-            echo "channel:" . $token. "\n";
+            if ($log === null) {
+                $log = '';
+            } else {
+                $log .= "\n";
+            }
+            $log .= "Channel: " . $token . ' - ';
             foreach ($clients as $c) {
-                echo "\t" . $c->getId() . "\n";
+                $log .= $c->getId() . " ";
             }
         }
+        $this->logger->debug($log);
     }
 
     private function sendRequestAsync($url, $params, $type='POST') {
@@ -240,7 +250,7 @@ class SunriseChannelServer extends Application {
                 try {
                     $sendto->send($msg_json);
                 } catch (Exception $e) {
-                    $sendto->log('failed to send channel bye message - ' . $e, 'err');
+                    $this->logger->error('Failed to send channel bye message', $e);
                 }
             }
         }
@@ -259,7 +269,7 @@ class SunriseChannelServer extends Application {
         try {
             $client->send(json_encode($response));
         } catch (Exception $e) {
-            $client->log('channel close: failed to send response - ' . $e, 'err');
+            $this->logger->error('Failed to send response for channel close message', $e);
         }
 
         $data = array();
