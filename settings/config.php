@@ -12,7 +12,7 @@ $sr_db_charset      = 'utf8';
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/husky/Sunrise';
+$sr_root        = '/workspace/blackhat/Sunrise';
 
 /**
  * Channel server configuration.
@@ -37,7 +37,7 @@ $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
 /**
  * Logger configuration - Apache log4php
  */
-$sr_channel_log_file = '/var/log/sunrise/sunrise-channel-blackhat.log';
+$sr_channel_log_file = '/var/log/sunrise/sunrise-channel.log';
 $sr_channel_logger_config = array(
     'appenders' => array(
         'default' => array(
