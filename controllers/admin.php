@@ -28,7 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 function dashboard() {
-    sr_response('views/admin/dashboard.php', null);
+    global $sr_channel_server_uri;
+    $context = array();
+    $context['sr_channel_server_uri'] = $sr_channel_server_uri;
+    sr_response('views/admin/dashboard.php', $context);
 }
 
 

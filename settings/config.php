@@ -12,7 +12,7 @@ $sr_db_charset      = 'utf8';
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/husky/Sunrise';
+$sr_root        = '/workspace/blackhat/Sunrise';
 
 /**
  * Channel server configuration.
@@ -45,7 +45,7 @@ $sr_channel_logger_config = array(
                 ),
             ),
             'params' => array(
-                'file' => '/var/log/sunrise/sunrise-channel.log',
+                'file' => '/var/log/sunrise/sunrise-channel-blackhat.log',
                 'maxFileSize' => '1MB',
                 'maxBackupIndex' => 5,
             ),
