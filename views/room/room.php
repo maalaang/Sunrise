@@ -10,19 +10,12 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-channel.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-connection.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
-        
-
 
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room-temp.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-glyphicons.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css">
         
-        <style>
-            .sns btn{
-                float:right;
-            }
-        </style>
     </head>
 
     <body>
@@ -38,11 +31,11 @@
             var userId = <?= $context['user_id'] ?>;
             var email_cnt = 0;
 
-            function whenClickMic(){
+            function whenClickMicToggle(){
                 $('#menu_mic i').toggleClass('glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up');
             }
 
-            function whenClickScreen(){
+            function whenClickScreenToggle(){
                 $('#menu_screen i').toggleClass('glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open');
             }
 
@@ -50,21 +43,21 @@
             function whenClickExit(){
             }
 
-            function whenClickSend(){
+            function whenClickChatSend(){
                 var input_message;
                 var output_message;
 
-                input_message = document.getElementById('input_message').value;
-                output_message = document.getElementById('output_message').value;
+                input_message = document.getElementById('chat_input').value;
+                output_message = document.getElementById('chat_output').value;
 
                 if(input_message !== ''){                                                    
                     output_message += input_message+'\n';
-                    document.getElementById('input_message').value = '';
-                    document.getElementById('output_message').value = output_message;
+                    document.getElementById('chat_input').value = '';
+                    document.getElementById('chat_output').value = output_message;
                 }
             }
 
-            function whenClickEdit(){
+            function whenClickTitleEdit(){
                 var title;
                 var description;
 
@@ -78,7 +71,7 @@
                 $('#edit_description').attr("placeholder", description);
             }
 
-             function whenClickEditSave(){
+             function whenClickTitleSave(){
                  var title;
                  var description;
                  var edit_title;
@@ -108,7 +101,7 @@
                 var panel = document.getElementById("email_set");
                 var email = $('#email').val();
 
-                if(CheckEmailForm(email) === false){
+                if(checkEmailForm(email) === false){
                     console.log("Empty");
                     return;
                 }
@@ -151,20 +144,21 @@
                 var invite_type = obj.id;
                 
                 if(invite_type === "invite_email")
-                    $('#Email').addClass('active');
+                    $('#tab_email').addClass('active');
                 else if(invite_type === "invite_facebook")
-                    $('#Facebook').addClass('active');
-                else if(invite_type === "invite_twit")
-                    $('#Twitter').addClass('active');
+                    $('#tab_acebook').addClass('active');
+                else if(invite_type === "invite_twitter")
+                    $('#tab_twitter').addClass('active');
                 else if(invite_type === "invite_url")
-                    $('#URL').addClass('active');
+                    $('#tab_url').addClass('active');
             }
 
+            //Activating tab-pane make inactive.
             function whenClickInviteExit(){
                 $('.active.tab-pane').removeClass('active');
             }
 
-            function CheckEmailForm(obj){
+            function checkEmailForm(obj){
                 var obj_len = obj.length;
                 console.log(obj[0]);
 
@@ -192,12 +186,12 @@
                     <form class="navbar-form form-inline pull-right" name"option_form" id="option_form">
                         <ul class="nav navbar-nav">
                             <li>
-                                <a id="menu_screen" href="#" onclick="whenClickScreen()">
+                                <a id="menu_screen" href="#" onclick="whenClickScreenToggle()">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>
                             </li>
                             <li>
-                                <a id="menu_mic" href="#" onclick="whenClickMic()">
+                                <a id="menu_mic" href="#" onclick="whenClickMicToggle()">
                                     <i class="glyphicon glyphicon-volume-up"></i>
                                 </a>
                             </li>
@@ -243,7 +237,7 @@
                             <td>
                                 <h2 id="title" style="text-align:left">The title</h2>
                                 <h3 id="description" style="text-align:left">The layout of the video chat room...</h3>
-                                    <a data-toggle="modal" href="#editModal" onclick="whenClickEdit()">
+                                    <a data-toggle="modal" href="#editModal" onclick="whenClickTitleEdit()">
                                         <i class="glyphicon glyphicon-link"></i>
                                     </a>
                             </td>
@@ -261,7 +255,7 @@
                                         </a>
                                     </td>
                                     <td>
-                                        <a id="invite_twit" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
+                                        <a id="invite_twitter" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
                                             Twit
                                         </a>
                                     </td>
@@ -276,7 +270,7 @@
                     </tbody>
                 </table>
             </div>
-            <div id="container"> 
+            <div id="container">
                 <div id="largeVideoContainer">
                     <video id="focusedVideo" class="largeVideo" autoplay="autoplay" muted="true"/>
                 </div>
@@ -289,10 +283,10 @@
             <h1>Side_Content</h1>
             <div class="chat-form" style="padding-bottom:40px;">
                 <div class="form-group">
-                    <textarea class="form-control" id="output_message" rows="20" text="asdfae"></textarea>
+                    <textarea class="form-control" id="chat_output" rows="20" text="asdfae"></textarea>
                     <form class="form-inline">
-                        <button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickSend()">Send</button>
-                        <input type="text" class="form-control" id="input_message" placeholder="Input your message" style="width:80%;">
+                        <button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickChatSend()">Send</button>
+                        <input type="text" class="form-control" id="chat_input" placeholder="Input your message" style="width:80%;">
                     </form>
                 </div>
             </div>
@@ -338,7 +332,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="whenClickEditSave()">Save changes</button>
+                        <button type="button" class="btn btn-primary" onclick="whenClickTitleSave()">Save changes</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -355,13 +349,13 @@
                     <div class="modal-body">
                         <div class="row">
                             <ul class="nav nav-pills nav-stacked col-lg-2" id="inviteTab" style="text-align:left;">
-                                <li <a href="#Email" data-toggle="tab">Email</a></li>                                           
-                                <li><a href="#Facebook" data-toggle="tab">Facebook</a></li>  
-                                <li><a href="#Twitter" data-toggle="tab">Twitter</a></li>   
-                                <li><a href="#URL" data-toggle="tab">URL</a></li>   
+                                <li><a href="#tab_email" data-toggle="tab">Email</a></li>                                           
+                                <li><a href="#tab_facebook" data-toggle="tab">Facebook</a></li>  
+                                <li><a href="#tab_twitter" data-toggle="tab">Twitter</a></li>   
+                                <li><a href="#tab_url" data-toggle="tab">URL</a></li>   
                             </ul>
                             <div class="tab-content col-lg-8">
-                                <div class="tab-pane" id="Email">
+                                <div class="tab-pane" id="tab_email">
                                     <table>
                                         <tr>
                                             <td>Send invitation by E-mail</td>
@@ -372,14 +366,14 @@
                                         </tr>
                                         <tr>
                                             <td><input type="text" id="email" class="form-control"></td>
-                                            <td><button type="button" class="btn btn-default" id="btn_add" onclick="whenClickAddEmail()">Add</button></td>
+                                            <td><button type="button" class="btn btn-default" id="btn_addemail" onclick="whenClickAddEmail()">Add</button></td>
                                         </tr>
                                         <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn_send">Send Invitation</button></td>
+                                            <td><button type="button" class="btn btn-primary" id="btn_email">Send Invitation</button></td>
                                         </tr>
                                     </table>
                                 </div>
-                                <div class="tab-pane" id="Facebook">
+                                <div class="tab-pane" id="tab_facebook">
                                     <table width="100%">
                                         <tr>
                                             <td>Invite Facebook friends</td>
@@ -398,11 +392,11 @@
                                             <td><textarea class="form-control" id="face_message" rows="3"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn_face">Send Message</button></td>
+                                            <td><button type="button" class="btn btn-primary" id="btn_facebook">Send Message</button></td>
                                         </tr>
                                     </table>
                                 </div>
-                                <div class="tab-pane" id="Twitter">
+                                <div class="tab-pane" id="tab_twitter">
                                     <table width="100%">
                                         <tr>
                                             <td>Send a direct message to Twitter Friends</td>
@@ -411,21 +405,21 @@
                                             <td>Friends:</td>
                                         </tr>
                                         <tr>
-                                            <div id="twit_set">
+                                            <div id="twitter_set">
                                             </div> 
                                         </tr>
                                         <tr>    
                                             <td>Message:</td>
                                         </tr>
                                         <tr>
-                                            <td><textarea class="form-control" id="twit_message" rows="3"></textarea></td>
+                                            <td><textarea class="form-control" id="twitter_message" rows="3"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn_twit">Send Message</button></td>
+                                            <td><button type="button" class="btn btn-primary" id="btn_twitter">Send Message</button></td>
                                         </tr>
                                     </table>
                                 </div>
-                                <div class="tab-pane" id="URL">
+                                <div class="tab-pane" id="tab_url">
                                     <table width="100%">
                                         <tr>
                                             <td>Copy the following URL and share it to invite people</td>
