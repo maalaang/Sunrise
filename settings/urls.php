@@ -25,6 +25,9 @@ $url_patterns = array (
     "#^/admin/rooms/$#"     => admin_rooms,
     "#^/admin/users/$#"     => admin_users,
     "#^/admin/settings/$#"  => admin_settings,
+    "#^/admin/channel/start/$#" => admin_channel_start,
+    "#^/admin/channel/stop/$#" => admin_channel_stop,
+    "#^/admin/channel/restart/$#" => admin_channel_restart,
     "#^/message/demo/$#"    => message_demo,
     "#^/sns/test/$#"        => sns_test,
 );

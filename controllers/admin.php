@@ -29,6 +29,8 @@ function admin_ajax_dispatcher() {
 
 function admin_dashboard() {
     global $sr_channel_server_uri;
+    global $sr_root;
+    global $sr_channel_local_installation;
 
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -104,7 +106,9 @@ function admin_dashboard() {
             $context = array(
                 'room_log_data' => $room_log_data,
                 'participant_log_data' => $participant_log_data,
-                'sr_channel_server_uri' => $sr_channel_server_uri
+                'channel_server_uri' => $sr_channel_server_uri,
+                'channel_server_control_api' => $sr_root . '/d/admin/channel',
+                'show_channel_server_controls' => $sr_channel_local_installation,
             );
 
             sr_response('views/admin/dashboard.php', $context);
@@ -335,7 +339,6 @@ function admin_users() {
     }
 }
 
-
 function admin_settings() {
     session_start();
 
@@ -348,6 +351,87 @@ function admin_settings() {
 
     sr_response('views/admin/settings.php', null);
 }
+
+function admin_channel_start() {
+    global $sr_root;
+    global $sr_channel_run_script;
+    global $sr_channel_local_installation;
+    global $sr_channel_log_file;
+
+    $result = array();
+    if ($sr_channel_local_installation) {
+        $res = shell_exec('nohup php ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script . ' >> ' . $sr_channel_log_file . ' &');
+        $result['result'] = 0;
+
+    } else {
+        $result['result'] = 1;
+        $result['msg'] = 'You cannot start the channel server on the admin page.';
+    }
+    echo json_encode($result);
+}
+
+function admin_channel_stop() {
+    global $sr_root;
+    global $sr_channel_run_script;
+    global $sr_channel_local_installation;
+
+    if ($sr_channel_local_installation) {
+        exec('pgrep -fx "php ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script . '"', $pids);
+
+        $result = array();
+
+        if (count($pids) > 0) {
+            // channel server running
+            foreach ($pids as $pid) {
+                posix_kill($pid, 9);
+            }
+            $result['result'] = 0;
+
+        } else {
+            // channel server is not running 
+            $result['result'] = 2;
+            $result['msg'] = "Couldn't find the sunrise channel server process.";
+        }
+    } else {
+        $result['result'] = 1;
+        $result['msg'] = 'You cannot stop the channel server on the admin page.';
+    }
+
+    echo json_encode($result);
+}
+
+function admin_channel_restart() {
+    global $sr_root;
+    global $sr_channel_run_script;
+    global $sr_channel_local_installation;
+    global $sr_channel_log_file;
+
+    $result = array();
+    if ($sr_channel_local_installation) {
+        exec('pgrep -f ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script, $pids);
+
+        $cnt = count($pids);
+        $result = array();
+
+        if ($cnt > 1) {
+            // channel server running
+            for ($i = 0; $i < $cnt - 1; $i++) {
+                posix_kill($pids[$i], 9);
+            }
+        }
+
+        $res = shell_exec('nohup php ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script . ' >> ' . $sr_channel_log_file . ' &');
+        $result['result'] = 0;
+
+    } else {
+        $result['result'] = 1;
+        $result['msg'] = 'You cannot restart the channel server on the admin page.';
+    }
+
+    echo json_encode($result);
+}
+
+
 
 
 ?>

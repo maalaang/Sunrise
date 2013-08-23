@@ -15,7 +15,8 @@
             }
         </style>
         <script>
-            var channelServerUri = "<?= $context['sr_channel_server_uri'] ?>";
+            var channelServerUri = "<?= $context['channel_server_uri'] ?>";
+            var channelServerControlApi = "<?= $context['channel_server_control_api'] ?>";
             $(document).ready(initChannelStatus);
         </script>
     </head>
@@ -68,6 +69,21 @@
                                     <h4>Channel Server Status :: <span id="channel_server_status"></span></h4>
                                 </div>
                             </div>
+
+                            <?php
+                                if ($context['show_channel_server_controls']) {
+                            ?>
+                            <div class="block-content collapse in">
+                                <div class="pull-left">
+                                    <span class="label" style="line-height: 30px; padding: 0 10px 0 10px;">Channel Server Control: </span>
+                                    <button id="channel_server_start_btn" class="btn disabled" onclick="onChannelServerStart()">Start</button>
+                                    <button id="channel_server_restart_btn" class="btn disabled" onclick="onChannelServerRestart()">Restart</button>
+                                    <button id="channel_server_stop_btn" class="btn disabled" onclick="onChannelServerStop()">Stop</button>
+                                </div>
+                            </div>
+                            <?php
+                                }
+                            ?>
                             <div id="channel_server_status_content" class="block-content collapse in" style="display:none;">
                                 <div class="span12">
                                     <table class="table table-striped" id="t2_sr_table">
@@ -92,8 +108,8 @@
                                     <button class="btn disabled" disabled>Total Channels: <span id="channel_count"></span></button>
                                     <button class="btn disabled" disabled>Total Clients: <span id="client_count"></span></button>
                                 </div>
-                                <div class="pull-right sr_page">
-                                    <div class="btn-group sr_page">
+                                <div class="pull-right">
+                                    <div class="btn-group">
                                         <button class="btn" onclick="onChannelStatusRefresh()">Refresh</button>
                                     </div>
                                 </div>

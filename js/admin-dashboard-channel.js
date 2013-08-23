@@ -60,15 +60,6 @@ function getChannelStatus() {
     send({type:'channel', subtype:'status'});
 }
 
-function onChannelStatusRefresh() {
-    console.log("Refresh channel server status");
-    if (!socket || socket.readyState != 1) {
-        initChannelStatus();
-    } else {
-        getChannelStatus();
-    }
-}
-
 function updateChannelStatus(data, type) {
     switch (type) {
     case 'requesting':
@@ -77,6 +68,7 @@ function updateChannelStatus(data, type) {
         $('#channel_server_status').html('Requesting..');
         $('#channel_server_status_tbody').html('');
         break;
+
     case 'running':
         var clientCnt = 0;
         var channelCnt = 0;
@@ -118,15 +110,98 @@ function updateChannelStatus(data, type) {
             $('#channel_server_status_msg').css("display", "block");
             $('#channel_server_status_content').css("display", "none");
         }
+
+        enableChannelStartButton('disable');
         break;
+
     case 'stopped':
         $('#channel_count').html('-');
         $('#client_count').html('-');
         $('#channel_server_status').html('Stopped');
         $('#channel_server_status_tbody').html('');
         $('#channel_server_status_msg').css("display", "block");
-        $('#channel_server_status_msg').html('The sunrise channel server is not running.');
+        $('#channel_server_status_msg').html('the sunrise channel server is not running.');
         $('#channel_server_status_content').css("display", "none");
+
+        enableChannelStartButton('enable');
         break;
     }
 }
+
+function onChannelStatusRefresh() {
+    console.log("Refresh channel server status");
+    if (!socket || socket.readyState != 1) {
+        initChannelStatus();
+    } else {
+        getChannelStatus();
+    }
+}
+
+function onChannelServerStart() {
+    console.log("Start channel server");
+    var params = {};
+    $.post(channelServerControlApi + '/start/', params, function(data) {
+        var json = JSON.parse(data);
+        if (json.result === 0) {
+            enableChannelStartButton('disable-all');
+            onChannelStatusRefresh();
+        }
+    });
+}
+
+function onChannelServerRestart() {
+    console.log("Restart channel server");
+
+    if (socket && (socket.readyState == WebSocket.CLOSING || socket.readyState == WebSocket.CLOSED)) {
+        socket.close();
+    }
+    socket = null;
+
+    var params = {};
+    $.post(channelServerControlApi + '/restart/', params, function(data) {
+        var json = JSON.parse(data);
+        if (json.result === 0) {
+            updateChannelStatus(null, 'stopped');
+            enableChannelStartButton('disable-all');
+            onChannelStatusRefresh();
+        }
+    });
+}
+
+function onChannelServerStop() {
+    console.log("Stop channel sever");
+
+    if (socket && (socket.readyState == WebSocket.CLOSING || socket.readyState == WebSocket.CLOSED)) {
+        socket.close();
+    }
+    socket = null;
+
+    var params = {};
+    $.post(channelServerControlApi + '/stop/', params, function(data) {
+        var json = JSON.parse(data);
+        if (json.result === 0) {
+            updateChannelStatus(null, 'stopped');
+        }
+    });
+}
+
+function enableChannelStartButton(flag) {
+    switch (flag) {
+    case 'enable':
+        $('#channel_server_start_btn').removeClass('disabled');
+        $('#channel_server_stop_btn').addClass('disabled');
+        $('#channel_server_restart_btn').addClass('disabled');
+        break;
+    case 'disable':
+        $('#channel_server_start_btn').addClass('disabled');
+        $('#channel_server_stop_btn').removeClass('disabled');
+        $('#channel_server_restart_btn').removeClass('disabled');
+        break;
+    case 'disable-all':
+        $('#channel_server_start_btn').addClass('disabled');
+        $('#channel_server_stop_btn').addClass('disabled');
+        $('#channel_server_restart_btn').addClass('disabled');
+        break;
+    }
+}
+
