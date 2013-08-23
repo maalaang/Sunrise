@@ -9,32 +9,125 @@ require_once (dirname(__FILE__) . '/../include/utils.php');
 /**
  * Ajax request dispatcher 
  */
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+function admin_ajax_dispatcher() {
     switch ($_POST['page']) {
     case 'dashboard':
-        dashboard();
+        admin_dashboard();
         break;
     case 'rooms':
-        rooms();
+        admin_rooms();
         break;
     case 'users':
-        users();
+        admin_users();
         break;
     case 'settings':
-        settings();
+        admin_settings();
         break;
     }
 }
 
 
-function dashboard() {
-    sr_response('views/admin/dashboard.php', null);
+function admin_dashboard() {
+    // Show Dashboard Page
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        session_start();
+
+        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+            $context = array();
+            $context['error'] = 0;
+            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+            sr_response('views/main/signin.php', $context);
+        }
+
+        try {
+            $db = sr_pdo();
+
+            $room_log_data = array();
+
+            for ($i = 0; $i > -8; $i--) {
+                $date = date('Y-m', strtotime($i . ' month'));
+                $a_month_data = array();
+                $a_month_data['period'] = $date;
+
+                for ($j = 0; $j < 3; $j++) {
+                    $filter = 'is_open=' . $j . ' AND';
+                    if ($j == 0) {
+                        $filter = '';
+                    }
+
+                    $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
+                        WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                    $stmt->execute();
+
+                    $result = $stmt->fetch();
+
+                    switch ($j) {
+                    case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
+                    case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
+                    case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
+                    }
+                }
+
+                array_push($room_log_data, $a_month_data);
+            }
+
+            $participant_log_data = array();
+
+            for ($i = 0; $i > -8; $i--) {
+                $date = date('Y-m', strtotime($i . ' month'));
+                $a_month_data = array();
+                $a_month_data['period'] = $date;
+
+                for ($j = 0; $j < 3; $j++) {
+                    $filter = 'is_registered_user=' . $j . ' AND';
+                    if ($j == 2) {
+                        $filter = '';
+                    }
+
+                    $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
+                        WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                    $stmt->execute();
+
+                    $result = $stmt->fetch();
+
+                    switch ($j) {
+                    case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
+                    case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
+                    case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                    }
+                }
+
+                array_push($participant_log_data, $a_month_data);
+            }
+            $context = array(
+                'room_log_data' => $room_log_data,
+                'participant_log_data' => $participant_log_data
+            );
+
+            sr_response('views/admin/dashboard.php', $context);
+
+        } catch (PDOException $e) {
+
+        }
+    // Handling Ajax Request (Pagination)
+    } else {
+
+    }
 }
 
 
-function rooms() {
+function admin_rooms() {
     // Show Rooms Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        session_start();
+
+        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+            $context = array();
+            $context['error'] = 0;
+            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+            sr_response('views/main/signin.php', $context);
+        }
+
         $db = sr_pdo();
 
         $stmt = $db->prepare('SELECT * FROM room LIMIT 10');
@@ -83,7 +176,7 @@ function rooms() {
                 }
 
                 if ($_POST['page_number'] == -1) {
-                    $beginRecordNum = (int)($total_record_number / 10) * 10 + 1;
+                    $beginRecordNum = (int)($total_record_number / 10) * 10;
                 } else {
                     $beginRecordNum = ($_POST['page_number'] - 1) * 10;
                 }
@@ -134,9 +227,18 @@ function rooms() {
 }
 
 
-function users() {
+function admin_users() {
     // Show Users Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        session_start();
+
+        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+            $context = array();
+            $context['error'] = 0;
+            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+            sr_response('views/main/signin.php', $context);
+        }
+
         $db = sr_pdo();
 
         $stmt = $db->prepare('SELECT * FROM user LIMIT 10');
@@ -151,7 +253,6 @@ function users() {
         sr_response('views/admin/users.php', $context);
 
     // Handling Ajax Request
-        //
     } else {
         // Pagination or Filtering
         if ($_POST['type'] == 'pagination') {
@@ -176,7 +277,7 @@ function users() {
                 $total_record_number = User::getRecordNum($filter);
 
                 if ($_POST['page_number'] == -1) {
-                    $beginRecordNum = (int)($total_record_number / 10) * 10 + 1;
+                    $beginRecordNum = (int)($total_record_number / 10) * 10;
                 } else {
                     $beginRecordNum = ($_POST['page_number'] - 1) * 10;
                 }
@@ -232,27 +333,18 @@ function users() {
 }
 
 
-function settings() {
+function admin_settings() {
+    session_start();
+
+    if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+        $context = array();
+        $context['error'] = 0;
+        $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
+        sr_response('views/main/signin.php', $context);
+    }
+
     sr_response('views/admin/settings.php', null);
 }
 
-
-/**
- * Display room list.
- */
-function admin_room_list() {
-    $db = sr_pdo();
-
-    $stmt = $db->prepare('SELECT * FROM room');
-    $stmt->execute();
-
-    $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
-
-    $context = array(
-        'room_list' => $room_list,
-    );
-
-    sr_response('views/admin/room/room_list.php', $context);
-}
 
 ?>
