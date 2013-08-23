@@ -29,6 +29,8 @@ function admin_ajax_dispatcher() {
 
 
 function admin_dashboard() {
+    global $sr_channel_server_uri;
+
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         session_start();
@@ -111,6 +113,7 @@ function admin_dashboard() {
         );
 
         $context = array(
+            'sr_channel_server_uri' => $sr_channel_server_uri,
             'room_log_data' => $room_log_data,
             'room_num_data' => $room_num_data,
             'participant_log_data' => $participant_log_data,

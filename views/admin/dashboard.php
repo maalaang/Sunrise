@@ -11,7 +11,10 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/admin-dashboard-channel.js"></script>
         <script>
+            var channelServerUri = "<?= $context['sr_channel_server_uri'] ?>";
+            $(document).ready(initChannelStatus);
             $(document).ready(function () {
                 $('.sr_page button').click(function () {
                     if (!$(this).attr('class').match('disabled')) {
@@ -71,6 +74,46 @@
                     </ul>
                 </div>
                 <div class="span9" id="content">
+                    <!-- Channel Server Status -->
+                    <div class="row-fluid section">
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left">
+                                    <h4>Channel Server Status :: <span id="channel_server_status"></span></h4>
+                                </div>
+                            </div>
+                            <div id="channel_server_status_content" class="block-content collapse in" style="display:none;">
+                                <div class="span12">
+                                    <table class="table table-striped" id="t2_sr_table">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Channel Token</td>
+                                                <th>Client(Name)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="channel_server_status_tbody">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <p id="channel_server_status_msg" style="padding:20px 0 10px 10px;">
+                                <p>
+                            </div>
+                            <div class="block-content collapse in">
+                                <div class="pull-left sr_num_info">
+                                    <button class="btn disabled" disabled>Total Channels: <span id="channel_count"></span></button>
+                                    <button class="btn disabled" disabled>Total Clients: <span id="client_count"></span></button>
+                                </div>
+                                <div class="pull-right sr_page">
+                                    <div class="btn-group sr_page">
+                                        <button class="btn" onclick="onChannelStatusRefresh()">Refresh</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <!-- Graph 1 -->
                     <div class="row-fluid section">
