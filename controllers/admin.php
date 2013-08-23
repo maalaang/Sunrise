@@ -4,6 +4,7 @@ require_once (dirname(__FILE__) . '/../models/user.php');
 require_once (dirname(__FILE__) . '/../models/room.php');
 require_once (dirname(__FILE__) . '/../models/room_log.php');
 require_once (dirname(__FILE__) . '/../models/participant.php');
+require_once (dirname(__FILE__) . '/../models/participant_log.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 
 /**
@@ -39,79 +40,166 @@ function admin_dashboard() {
             sr_response('views/main/signin.php', $context);
         }
 
+        $db = sr_pdo();
+
+        $room_log_data = array();
+
+        for ($i = 0; $i > -8; $i--) {
+            $date = date('Y-m', strtotime($i . ' month'));
+            $a_month_data = array();
+            $a_month_data['period'] = $date;
+
+            for ($j = 0; $j < 3; $j++) {
+                $filter = 'is_open=' . $j . ' AND';
+                if ($j == 0) {
+                    $filter = '';
+                }
+
+                $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
+                    WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                $stmt->execute();
+
+                $result = $stmt->fetch();
+
+                switch ($j) {
+                case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
+                case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
+                case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
+                }
+            }
+
+            array_push($room_log_data, $a_month_data);
+        }
+
+        $participant_log_data = array();
+
+        for ($i = 0; $i > -8; $i--) {
+            $date = date('Y-m', strtotime($i . ' month'));
+            $a_month_data = array();
+            $a_month_data['period'] = $date;
+
+            for ($j = 0; $j < 3; $j++) {
+                $filter = 'is_registered_user=' . $j . ' AND';
+                if ($j == 2) {
+                    $filter = '';
+                }
+
+                $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
+                    WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                $stmt->execute();
+
+                $result = $stmt->fetch();
+
+                switch ($j) {
+                case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
+                case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
+                case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                }
+            }
+
+            array_push($participant_log_data, $a_month_data);
+        }
+
+        $room_num_data = array(
+            'total' => RoomLog::getRecordNum(array()),
+            'current' => Room::getRecordNum(array()),
+        );
+
+        $participant_num_data = array(
+            'total' => ParticipantLog::getRecordNum(array()),
+            'current' => Participant::getRecordNum(array()),
+        );
+
+        $context = array(
+            'room_log_data' => $room_log_data,
+            'room_num_data' => $room_num_data,
+            'participant_log_data' => $participant_log_data,
+            'participant_num_data' => $participant_num_data,
+        );
+
+        sr_response('views/admin/dashboard.php', $context);
+
+    // Handling Ajax Request (Pagination)
+    } else {
         try {
             $db = sr_pdo();
 
-            $room_log_data = array();
+            $log_data = array();
+
+            if ($_POST['selected_btn'] == 'prev') {
+                $base_date = date('Y-m', strtotime('6 month', strtotime($_POST['viewed_date_first'])));
+            } else {
+                $base_date = date('Y-m', strtotime('8 month', strtotime($_POST['viewed_date_first'])));
+            }
 
             for ($i = 0; $i > -8; $i--) {
-                $date = date('Y-m', strtotime($i . ' month'));
+                $date = date('Y-m', strtotime($i . ' month', strtotime($base_date)));
                 $a_month_data = array();
                 $a_month_data['period'] = $date;
 
                 for ($j = 0; $j < 3; $j++) {
-                    $filter = 'is_open=' . $j . ' AND';
-                    if ($j == 0) {
-                        $filter = '';
-                    }
+                    if ($_POST['graph'] == 'room') {
+                        $filter = 'is_open=' . $j . ' AND';
+                        if ($j == 0) {
+                            $filter = '';
+                        }
 
-                    $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
-                        WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
-                    $stmt->execute();
+                        $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
+                            WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                        $stmt->execute();
 
-                    $result = $stmt->fetch();
+                        $result = $stmt->fetch();
 
-                    switch ($j) {
-                    case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
-                    case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
-                    case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
-                    }
-                }
+                        switch ($j) {
+                        case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
+                        case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
+                        case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
+                        }
+                    } else {
+                        $filter = 'is_registered_user=' . $j . ' AND';
+                        if ($j == 2) {
+                            $filter = '';
+                        }
 
-                array_push($room_log_data, $a_month_data);
-            }
+                        $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
+                            WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                        $stmt->execute();
 
-            $participant_log_data = array();
+                        $result = $stmt->fetch();
 
-            for ($i = 0; $i > -8; $i--) {
-                $date = date('Y-m', strtotime($i . ' month'));
-                $a_month_data = array();
-                $a_month_data['period'] = $date;
-
-                for ($j = 0; $j < 3; $j++) {
-                    $filter = 'is_registered_user=' . $j . ' AND';
-                    if ($j == 2) {
-                        $filter = '';
-                    }
-
-                    $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
-                        WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
-                    $stmt->execute();
-
-                    $result = $stmt->fetch();
-
-                    switch ($j) {
-                    case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
-                    case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
-                    case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                        switch ($j) {
+                        case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
+                        case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
+                        case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                        }
                     }
                 }
 
-                array_push($participant_log_data, $a_month_data);
+                array_push($log_data, $a_month_data);
             }
-            $context = array(
-                'room_log_data' => $room_log_data,
-                'participant_log_data' => $participant_log_data
+
+            if ($_POST['graph'] == 'room') {
+                $num_data = array(
+                    'total' => RoomLog::getRecordNum(array()),
+                    'current' => Room::getRecordNum(array()),
+                );
+            } else {
+                $num_data = array(
+                    'total' => ParticipantLog::getRecordNum(array()),
+                    'current' => Participant::getRecordNum(array()),
+                );
+            }
+
+            $result = array(
+                'log_data' => $log_data,
+                'num_data' => $num_data,
             );
 
-            sr_response('views/admin/dashboard.php', $context);
+            echo json_encode($result);
 
         } catch (PDOException $e) {
 
         }
-    // Handling Ajax Request (Pagination)
-    } else {
-
     }
 }
 
