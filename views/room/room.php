@@ -216,19 +216,7 @@
                 </div>
             </div>
         </div>
-        <!-- div id="container" ondblclick="enterFullScreen()"> 
-            <div id="card">
-                <div id="local">
-                    <video id="localVideo" autoplay="autoplay" muted="true"/>
-                </div>
-                <div id="remote">
-                    <video id="largeVideo" autoplay="autoplay"></video>
-                    <div id="mini">
-                        <video id="smallVideo" autoplay="autoplay" muted="true"/></video>
-                    </div>
-                </div>
-            </div>
-        </div-->
+
         <div class="main_content col-lg-8">
             <div id="main_head">
                 <table width="100%">
@@ -280,28 +268,15 @@
             </div>
         </div>
         <div class="side_content col-lg-4">
-            <h1>Side_Content</h1>
-            <div class="chat-form" style="padding-bottom:40px;">
+            <div class="chat-form" >
                 <div class="form-group">
-                    <textarea class="form-control" id="chat_output" rows="20" text="asdfae"></textarea>
-                    <form class="form-inline">
-                        <button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickChatSend()">Send</button>
-                        <input type="text" class="form-control" id="chat_input" placeholder="Input your message" style="width:80%;">
-                    </form>
+                        <textarea class="form-control" id="chat_output" rows="20" text="asdfae"></textarea>
+                        <!--<button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickChatSend()">Send</button>-->
+                        <input type="text" class="form-control" id="chat_input" placeholder="Input your message" >
                 </div>
             </div>
         </div>
 
-        <div class="tail_content">
-            <div class="container" align="center">
-                <p>
-                    <a href="#" id="foot_link">Privacy Policy</a>
-                    <a href="#" id="foot_link">About Sunrise</a>
-                    <a href="#" id="foot_link">Admin Page</a>
-                    <a href="#" id="foot_link">Powered by Sunrise</a>
-                </p>
-            </div> 
-        </div>
 
         <div class="modal fade" id="editModal">
             <div class="modal-dialog" id="editModalForm">
