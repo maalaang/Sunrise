@@ -11,10 +11,7 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
         <script src="http://code.jquery.com/jquery-1.7.1.js"></script>
         <script src="/workspace/whale/Sunrise/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/workspace/whale/Sunrise/js/jquery.mousewheel.js"></script>
-        <script type="text/javascript" src="/workspace/whale/Sunrise/js/jquery.jscrollpane.min.js"></script>
 
-        <link type="text/css" href="/workspace/whale/Sunrise/css/jquery.jscrollpane.css" rel="stylesheet" media="all" />
         <link type="text/css" rel="stylesheet" href="/workspace/whale/Sunrise/css/bootstrap.css">
         <link type="text/css" rel="stylesheet" href="/workspace/whale/Sunrise/css/bootstrap-glyphicons.css">
         <link type="text/css" rel="stylesheet" href="/workspace/whale/Sunrise/css/docs.css">
@@ -142,9 +139,40 @@
             function whenClickDelEmail(obj){
                 var output = obj.id;
                 console.log(output);
+
+                //remove text and button
+                //text name and button name are same.
                 $('#'+output).remove();
                 $('#'+output).remove();
                 email_cnt--;
+            }
+
+            //This function is called when invite button click.
+            function whenClickInvite(obj){
+                var invite_type = obj.id;
+
+                if(invite_type === "invite_email")
+                    $('#Email').addClass('active');
+
+                else if(invite_type === "invite_facebook")
+                    $('#Facebook').addClass('active');
+
+                else if(invite_type === "invite_twit")
+                    $('#Twitter').addClass('active');
+
+                else if(invite_type === "invite_url")
+                    $('#URL').addClass('active');
+
+                else
+                    console.log("Error in invite type");
+                
+                console.log(obj.id);
+            }
+
+            //Make activating tab-pane inactivate.
+            function whenClickInviteExit(){
+                $('.active.tab-pane').removeClass('active');
+
             }
 
             function CheckEmailForm(obj){
@@ -223,11 +251,27 @@
                             </td>
                             <td align="right">
                                 <table>
-                                    <td><span id="invite_label" class="label label-important">Invite People </td>
-                                    <td><a id="invite_email" data-toggle="modal" href="#inviteModal"/>Email</td>
-                                    <td><a id="invite_facebook" href="#"/>face</td>
-                                    <td><a id="invite_twit" href="#"/>Twit</td>
-                                    <td><a id="invite_url" href="#"/>Link</td>
+                                    <td><span id="invite_label" class="label label-important">Invite People</span></td>
+                                    <td>
+                                        <a id="invite_email" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
+                                            <i class="glyphicon glyphicon-envelope"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a id="invite_facebook" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
+                                            face
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a id="invite_twit" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
+                                            Twit
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a id="invite_url" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
+                                            <i class="glyphicon glyphicon-link"></i>
+                                        </a>
+                                    </td>
                                 </table>
                             </td>
                         </tr>
@@ -299,26 +343,28 @@
             <div class="modal-dialog" id="inviteModalForm" style="height:500px;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="whenClickInviteExit()">&times;</button>
                         <h4 class="modal-title">Invite People</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <ul class="nav nav-pills nav-stacked col-lg-2" id="inviteTab" style="text-align:left;">
-                                <li class="active"><a href="#Email" data-toggle="tab">Email</a></li>                                           
-                                <li><a href="#Facebook" data-toggle="tab">Facebook</a></li>  
-                                <li><a href="#Twitter" data-toggle="tab">Twitter</a></li>   
-                                <li><a href="#URL" data-toggle="tab">URL</a></li>   
+                                <li><a href="#Email" id="email_pill" data-toggle="tab">Email</a></li>                                           
+                                <li><a href="#Facebook" id="face_pill" data-toggle="tab">Facebook</a></li>  
+                                <li><a href="#Twitter" id="twit_pill" data-toggle="tab">Twitter</a></li>   
+                                <li><a href="#URL" id="url_pill" data-toggle="tab">URL</a></li>   
                             </ul>
                             <div class="tab-content col-lg-8">
-                                <div class="tab-pane active" id="Email">
+                                <div class="tab-pane" id="Email">
                                     <table>
                                         <tr>
                                             <td>Send invitation by E-mail</td>
                                         </tr>
                                         <tr>
-                                            <div id="email_set">
-                                            </div> 
+                                            <td>
+                                                <div id="email_set">
+                                                </div> 
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><input type="text" id="email" class="form-control"></td>
@@ -331,10 +377,67 @@
                                 
                                 </div>
                                 <div class="tab-pane" id="Facebook">
-                                    <h1>BBB</h1>
+                                    <table width="100%">
+                                        <tr>
+                                            <td>Invite Facebook friends</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Friends:</td>
+                                        </tr>
+                                        <tr>
+                                            <div id="facebook_set">
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <td>Message:</td>
+                                        </tr>
+                                        <tr>
+                                            <td><textarea class="form-control" id="output_message" rows="3"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button type="button" class="btn btn-primary" id="btn_face">Send Message</button></td>
+                                        </tr>
+                                    </table>
                                 </div>
-                                <div class="tab-pane" id="Twitter"></div>
-                                <div class="tab-pane" id="URL"></div>            
+                                <div class="tab-pane" id="Twitter">
+                                    <table width="100%">
+                                        <tr>
+                                            <td>Send a direct message to Twitter Friends</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Friends:</td>
+                                        </tr>
+                                        <tr>
+                                            <div id="facebook_set">
+                                            </div>
+                                        </tr>
+                                        <tr>
+                                            <td>Message:</td>
+                                        </tr>
+                                        <tr>
+                                            <td><textarea class="form-control" id="output_message" rows="3"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button type="button" class="btn btn-primary" id="btn_twit">Send Message</button></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="URL">
+                                    <table width="100%">
+                                        <tr>
+                                            <td>Copy the following URL and share it to invite people</td>
+                                        </tr>
+                                        <tr>
+                                            <td>URL:</td>
+                                        </tr>
+                                        <tr>
+                                            <td><textarea class="form-control" id="output_message" rows="3"></textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td><button type="button" class="btn btn-primary" id="btn_url">Send Message</button></td>
+                                        </tr>
+                                    </table>
+                                </div>            
                             </div>
                         </div>
                     </div>

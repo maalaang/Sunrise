@@ -13,6 +13,9 @@ $sr_db_charset      = 'utf8';
  * Sunrise VC home directory from the web server root.
  */
 $sr_root        = '/workspace/whale/Sunrise';
+$sr_root        = '/workspace/blackhat/Sunrise';
+
+$sr_room_ui_title   = 'Sunrise - Video Conference Room';
 
 /**
  * Channel server configuration.
@@ -24,6 +27,9 @@ $sr_channel_server_uri_internal = 'ws://172.27.254.4:' . $sr_channel_server_port
 
 $sr_channel_event_rest          = 'http://localhost' . $sr_root . '/d/channel/';
 
+$sr_channel_local_installation  = true;
+$sr_channel_run_script          = '/run/sunrise_channel_server.php';
+
 /**
  * Regular expressions for validation.
  */
@@ -34,6 +40,7 @@ $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
 /**
  * Logger configuration - Apache log4php
  */
+$sr_channel_log_file = '/var/log/sunrise/sunrise-channel.log';
 $sr_channel_logger_config = array(
     'appenders' => array(
         'default' => array(
@@ -45,7 +52,7 @@ $sr_channel_logger_config = array(
                 ),
             ),
             'params' => array(
-                'file' => '/var/log/sunrise/sunrise-channel.log',
+                'file' => $sr_channel_log_file,
                 'maxFileSize' => '1MB',
                 'maxBackupIndex' => 5,
             ),

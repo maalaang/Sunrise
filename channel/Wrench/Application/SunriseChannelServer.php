@@ -80,6 +80,11 @@ class SunriseChannelServer extends Application {
             $this->logger->debug('Channel close: ' . $client->getChannelToken() . ': ' . $client->getName());
             $this->closeChannel($client);
             break;
+        case 'status':
+            $this->logger->debug('Channel status');
+            $this->responseCurrentStatus($client);
+            break;
+
         }
     }
 
@@ -215,17 +220,8 @@ class SunriseChannelServer extends Application {
         $response['type'] = 'channel';
         $response['subtype'] = 'open';
         $response['participant_id'] = $client->getId();
-        $response['participant_cnt'] = count($this->channels[$msg->channel_token]) - 1;
-
-        $participant_list = array();
-        foreach ($this->channels[$msg->channel_token] as $participant) {
-            if ($participant->getId() !== $client->getId()) {
-                $participant_list[$participant->getId()] = array(
-                    "name" => $participant->getName(),
-                );
-            }
-        }
-        $response['participant_list'] = $participant_list;
+        $response['participant_cnt'] = $this->getParticipantCount($this->channels[$msg->channel_token]);
+        $response['participant_list'] = $this->getParticipantList($this->channels[$msg->channel_token], $client);
 
         $client->send(json_encode($response));
     }
@@ -276,6 +272,45 @@ class SunriseChannelServer extends Application {
         $data['client_id'] = $client->getId();
         $data['channel_token'] = $client->getChannelToken();
         $this->sendChannelEvent('client_disconnected', $data);
+    }
+
+    private function responseCurrentStatus($client) {
+        $response = array();
+        $response['type'] = 'channel';
+        $response['subtype'] = 'status';
+        $response['result'] = 0;
+        $response['channel_list'] = $this->getChannelList();
+        $response['time'] = date('Y-m-d h:i:s A', time());
+
+        try {
+            $client->send(json_encode($response));
+        } catch (Exception $e) {
+            $this->logger->error('Failed to send response for channel close message', $e);
+        }
+    }
+
+    private function getParticipantCount($channel) {
+        return count($channel) - 1;
+    }
+
+    private function getParticipantList($channel, $client) {
+        $participant_list = array();
+        foreach ($channel as $participant) {
+            if (!$client || $participant->getId() !== $client->getId()) {
+                $participant_list[$participant->getId()] = array(
+                    "name" => $participant->getName(),
+                );
+            }
+        }
+        return $participant_list;
+    }
+
+    private function getChannelList() {
+        $channel_list = array();
+        foreach ($this->channels as $token => $channel) {
+            $channel_list[$token] = $this->getParticipantList($channel, null);
+        }
+        return $channel_list;
     }
 
     private function sendChannelEvent($type, $data) {

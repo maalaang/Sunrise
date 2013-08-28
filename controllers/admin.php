@@ -4,6 +4,7 @@ require_once (dirname(__FILE__) . '/../models/user.php');
 require_once (dirname(__FILE__) . '/../models/room.php');
 require_once (dirname(__FILE__) . '/../models/room_log.php');
 require_once (dirname(__FILE__) . '/../models/participant.php');
+require_once (dirname(__FILE__) . '/../models/participant_log.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
 
 /**
@@ -28,6 +29,10 @@ function admin_ajax_dispatcher() {
 
 
 function admin_dashboard() {
+    global $sr_channel_server_uri;
+    global $sr_root;
+    global $sr_channel_local_installation;
+
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         session_start();
@@ -39,79 +44,169 @@ function admin_dashboard() {
             sr_response('views/main/signin.php', $context);
         }
 
+        $db = sr_pdo();
+
+        $room_log_data = array();
+
+        for ($i = 0; $i > -8; $i--) {
+            $date = date('Y-m', strtotime($i . ' month'));
+            $a_month_data = array();
+            $a_month_data['period'] = $date;
+
+            for ($j = 0; $j < 3; $j++) {
+                $filter = 'is_open=' . $j . ' AND';
+                if ($j == 0) {
+                    $filter = '';
+                }
+
+                $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
+                    WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                $stmt->execute();
+
+                $result = $stmt->fetch();
+
+                switch ($j) {
+                case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
+                case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
+                case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
+                }
+            }
+
+            array_push($room_log_data, $a_month_data);
+        }
+
+        $participant_log_data = array();
+
+        for ($i = 0; $i > -8; $i--) {
+            $date = date('Y-m', strtotime($i . ' month'));
+            $a_month_data = array();
+            $a_month_data['period'] = $date;
+
+            for ($j = 0; $j < 3; $j++) {
+                $filter = 'is_registered_user=' . $j . ' AND';
+                if ($j == 2) {
+                    $filter = '';
+                }
+
+                $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
+                    WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                $stmt->execute();
+
+                $result = $stmt->fetch();
+
+                switch ($j) {
+                case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
+                case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
+                case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                }
+            }
+
+            array_push($participant_log_data, $a_month_data);
+        }
+
+        $room_num_data = array(
+            'total' => RoomLog::getRecordNum(array()),
+            'current' => Room::getRecordNum(array()),
+        );
+
+        $participant_num_data = array(
+            'total' => ParticipantLog::getRecordNum(array()),
+            'current' => Participant::getRecordNum(array()),
+        );
+
+        $context = array(
+            'room_log_data' => $room_log_data,
+            'room_num_data' => $room_num_data,
+            'participant_log_data' => $participant_log_data,
+            'participant_num_data' => $participant_num_data,
+            'channel_server_uri' => $sr_channel_server_uri,
+            'channel_server_control_api' => $sr_root . '/d/admin/channel',
+            'show_channel_server_controls' => $sr_channel_local_installation,
+        );
+
+        sr_response('views/admin/dashboard.php', $context);
+
+    // Handling Ajax Request (Pagination)
+    } else {
         try {
             $db = sr_pdo();
 
-            $room_log_data = array();
+            $log_data = array();
+
+            if ($_POST['selected_btn'] == 'prev') {
+                $base_date = date('Y-m', strtotime('6 month', strtotime($_POST['viewed_date_first'])));
+            } else {
+                $base_date = date('Y-m', strtotime('8 month', strtotime($_POST['viewed_date_first'])));
+            }
 
             for ($i = 0; $i > -8; $i--) {
-                $date = date('Y-m', strtotime($i . ' month'));
+                $date = date('Y-m', strtotime($i . ' month', strtotime($base_date)));
                 $a_month_data = array();
                 $a_month_data['period'] = $date;
 
                 for ($j = 0; $j < 3; $j++) {
-                    $filter = 'is_open=' . $j . ' AND';
-                    if ($j == 0) {
-                        $filter = '';
-                    }
+                    if ($_POST['graph'] == 'room') {
+                        $filter = 'is_open=' . $j . ' AND';
+                        if ($j == 0) {
+                            $filter = '';
+                        }
 
-                    $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
-                        WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
-                    $stmt->execute();
+                        $stmt = $db->prepare("SELECT COUNT(*) FROM room_log
+                            WHERE $filter DATE_FORMAT(start_time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                        $stmt->execute();
 
-                    $result = $stmt->fetch();
+                        $result = $stmt->fetch();
 
-                    switch ($j) {
-                    case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
-                    case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
-                    case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
-                    }
-                }
+                        switch ($j) {
+                        case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
+                        case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
+                        case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
+                        }
+                    } else {
+                        $filter = 'is_registered_user=' . $j . ' AND';
+                        if ($j == 2) {
+                            $filter = '';
+                        }
 
-                array_push($room_log_data, $a_month_data);
-            }
+                        $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
+                            WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
+                        $stmt->execute();
 
-            $participant_log_data = array();
+                        $result = $stmt->fetch();
 
-            for ($i = 0; $i > -8; $i--) {
-                $date = date('Y-m', strtotime($i . ' month'));
-                $a_month_data = array();
-                $a_month_data['period'] = $date;
-
-                for ($j = 0; $j < 3; $j++) {
-                    $filter = 'is_registered_user=' . $j . ' AND';
-                    if ($j == 2) {
-                        $filter = '';
-                    }
-
-                    $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
-                        WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
-                    $stmt->execute();
-
-                    $result = $stmt->fetch();
-
-                    switch ($j) {
-                    case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
-                    case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
-                    case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                        switch ($j) {
+                        case 0: $a_month_data['non-member'] = $result['COUNT(*)']; break;
+                        case 1: $a_month_data['member'] = $result['COUNT(*)']; break;
+                        case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
+                        }
                     }
                 }
 
-                array_push($participant_log_data, $a_month_data);
+                array_push($log_data, $a_month_data);
             }
-            $context = array(
-                'room_log_data' => $room_log_data,
-                'participant_log_data' => $participant_log_data
+
+            if ($_POST['graph'] == 'room') {
+                $num_data = array(
+                    'total' => RoomLog::getRecordNum(array()),
+                    'current' => Room::getRecordNum(array()),
+                );
+            } else {
+                $num_data = array(
+                    'total' => ParticipantLog::getRecordNum(array()),
+                    'current' => Participant::getRecordNum(array()),
+                );
+            }
+
+            $result = array(
+                'log_data' => $log_data,
+                'num_data' => $num_data,
             );
 
-            sr_response('views/admin/dashboard.php', $context);
+            echo json_encode($result);
 
         } catch (PDOException $e) {
 
         }
-    // Handling Ajax Request (Pagination)
-    } else {
-
     }
 }
 
@@ -332,7 +427,6 @@ function admin_users() {
     }
 }
 
-
 function admin_settings() {
     session_start();
 
@@ -346,5 +440,83 @@ function admin_settings() {
     sr_response('views/admin/settings.php', null);
 }
 
+function admin_channel_start() {
+    global $sr_root;
+    global $sr_channel_run_script;
+    global $sr_channel_local_installation;
+    global $sr_channel_log_file;
+
+    $result = array();
+    if ($sr_channel_local_installation) {
+        $res = shell_exec('nohup php ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script . ' >> ' . $sr_channel_log_file . ' &');
+        $result['result'] = 0;
+
+    } else {
+        $result['result'] = 1;
+        $result['msg'] = 'You cannot start the channel server on the admin page.';
+    }
+    echo json_encode($result);
+}
+
+function admin_channel_stop() {
+    global $sr_root;
+    global $sr_channel_run_script;
+    global $sr_channel_local_installation;
+
+    if ($sr_channel_local_installation) {
+        exec('pgrep -fx "php ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script . '"', $pids);
+
+        $result = array();
+
+        if (count($pids) > 0) {
+            // channel server running
+            foreach ($pids as $pid) {
+                posix_kill($pid, 9);
+            }
+            $result['result'] = 0;
+
+        } else {
+            // channel server is not running 
+            $result['result'] = 2;
+            $result['msg'] = "Couldn't find the sunrise channel server process.";
+        }
+    } else {
+        $result['result'] = 1;
+        $result['msg'] = 'You cannot stop the channel server on the admin page.';
+    }
+
+    echo json_encode($result);
+}
+
+function admin_channel_restart() {
+    global $sr_root;
+    global $sr_channel_run_script;
+    global $sr_channel_local_installation;
+    global $sr_channel_log_file;
+
+    $result = array();
+    if ($sr_channel_local_installation) {
+        exec('pgrep -f ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script, $pids);
+
+        $cnt = count($pids);
+        $result = array();
+
+        if ($cnt > 1) {
+            // channel server running
+            for ($i = 0; $i < $cnt - 1; $i++) {
+                posix_kill($pids[$i], 9);
+            }
+        }
+
+        $res = shell_exec('nohup php ' . $_SERVER['DOCUMENT_ROOT'] . $sr_root . $sr_channel_run_script . ' >> ' . $sr_channel_log_file . ' &');
+        $result['result'] = 0;
+
+    } else {
+        $result['result'] = 1;
+        $result['msg'] = 'You cannot restart the channel server on the admin page.';
+    }
+
+    echo json_encode($result);
+}
 
 ?>
