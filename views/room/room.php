@@ -16,6 +16,32 @@
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-glyphicons.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css">
         
+        <style>
+            .navbar-brand {
+                font-weight: bold;
+                font-size: 19pt;
+                -webkit-transition: all .3s linear;
+                -moz-transition: all .3s linear;
+                transition: all .3s linear;
+            }
+            .navbar-nav > li > a {
+                padding-top: 13px;
+                padding-bottom: 0px;
+                -webkit-transition: all .3s linear;
+                -moz-transition: all .3s linear;
+                transition: all .3s linear;
+            }
+            .glyphicon {
+                font-size: 22px;
+            }
+            .glyphicon-volume-off, .glyphicon-volume-up {
+                font-size: 23px;
+            }
+            .glyphicon-link {
+                font-size: 21px;
+            }
+        </style>
+        
     </head>
 
     <body>
