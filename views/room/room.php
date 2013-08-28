@@ -291,10 +291,7 @@
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
 
-=======
->>>>>>> 941c5ddbc16ca61b2917cf1670c8117899954826
         <div class="main_content col-lg-9">
             <div id="main_head">
                 <table width="100%">
@@ -346,13 +343,6 @@
             </div>
         </div>
         <div class="side_content col-lg-3">
-            <div class="chat-form" >
-                <div class="form-group">
-                    <p id="text">
-                        <textarea class="form-control" id="chat_output" rows="20" text="asdfae"></textarea>
-                        <input type="text" class="form-control" id="chat_input" placeholder="Input your message" >
-                    </p>
-                </div>
             <div class="chat_content_wrapper">
                 <textarea class="chat_content" id="chat_content" ></textarea>
             </div>

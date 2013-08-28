@@ -19,13 +19,6 @@
   .form-field{
       vertical-align:middle;
   }
-  #chat_output {
-      width:75%;
-      resize: none;
-  }
-  #chat_input {
-      width:75%;
-  }
   #container {
     position: absolute;
     height: 100%;
