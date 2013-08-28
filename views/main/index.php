@@ -38,6 +38,14 @@
                 top: -4px;
                 left: 10px;
             }
+            .navbar-brand {
+                text-align: left;
+                margin-left: 0;
+            }
+            .navbar-form {
+                text-align: right;
+                margin-right: 0;
+            }
         </style>
     </head>
     <body>
