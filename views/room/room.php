@@ -241,7 +241,7 @@
             </div>
         </div>
 
-        <div class="main_content col-lg-8">
+        <div class="main_content col-lg-9">
             <div id="main_head">
                 <table width="100%">
                     <tbody>
@@ -291,12 +291,13 @@
                 </div>
             </div>
         </div>
-        <div class="side_content col-lg-4">
+        <div class="side_content col-lg-3">
             <div class="chat-form" >
                 <div class="form-group">
+                    <p id="text">
                         <textarea class="form-control" id="chat_output" rows="20" text="asdfae"></textarea>
-                        <!--<button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickChatSend()">Send</button>-->
                         <input type="text" class="form-control" id="chat_input" placeholder="Input your message" >
+                    </p>
                 </div>
             </div>
         </div>
