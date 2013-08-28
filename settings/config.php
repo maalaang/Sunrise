@@ -14,6 +14,8 @@ $sr_db_charset      = 'utf8';
  */
 $sr_root        = '/workspace/blackhat/Sunrise';
 
+$sr_room_ui_title   = 'Sunrise - Video Conference Room';
+
 /**
  * Channel server configuration.
  */

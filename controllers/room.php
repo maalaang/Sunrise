@@ -8,6 +8,7 @@ require_once (dirname(__FILE__) . '/../include/utils.php');
 function room() {
     global $sr_root;
     global $sr_channel_server_uri;
+    global $sr_room_ui_title;
     
     $db = sr_pdo();
 
@@ -43,6 +44,7 @@ function room() {
         $context['room'] = $room;
         $context['room_link'] = sr_current_url();
         $context['room_api'] = $sr_root;
+        $context['room_ui_title'] = $sr_room_ui_title;
 
         if ($_SESSION['is_logged'] === true) {
             $context['user_name'] = $_SESSION['user_name'];

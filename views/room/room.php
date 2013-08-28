@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sunrise - Video Conference Room</title>
+        <title><?= $context['room_ui_title'] ?></title>
 
         <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
     
@@ -182,37 +182,35 @@
         <div class="header">
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>
-                <div class="nav-collapse collapse">
-                    <form class="navbar-form form-inline pull-right" name"option_form" id="option_form">
-                        <ul class="nav navbar-nav">
-                            <li>
-                                <a id="menu_screen" href="#" onclick="whenClickScreenToggle()">
-                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a id="menu_mic" href="#" onclick="whenClickMicToggle()">
-                                    <i class="glyphicon glyphicon-volume-up"></i>
-                                </a>
-                            </li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" id="menu_sns" href="#">
-                                    <i class="glyphicon glyphicon-link"></i>
-                                    <span class="caret"></span>
-                                </a> 
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Facebook</a></li>
-                                    <li><a href="#">Twitter</a></li>
-                                    <li><a href="#">Google+</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a id="menu_exit" href="#" onclick="whenClickExit()">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </form>
+                <div class="nav-collapse collapse pull-right">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a id="menu_screen" href="#" onclick="whenClickScreenToggle()">
+                                <i class="glyphicon glyphicon-eye-open"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a id="menu_mic" href="#" onclick="whenClickMicToggle()">
+                                <i class="glyphicon glyphicon-volume-up"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" id="menu_sns" href="#">
+                                <i class="glyphicon glyphicon-link"></i>
+                                <span class="caret"></span>
+                            </a> 
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Facebook</a></li>
+                                <li><a href="#">Twitter</a></li>
+                                <li><a href="#">Google+</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="menu_exit" href="#" onclick="whenClickExit()">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
