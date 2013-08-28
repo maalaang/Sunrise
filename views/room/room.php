@@ -17,15 +17,23 @@
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css">
         
         <style>
+            html, body {
+                height: 100%;
+            }
+            .navbar {
+                height: 42px;
+                padding-right: 0;
+            }
             .navbar-brand {
                 font-weight: bold;
                 font-size: 19pt;
+                padding-top: 10px;
                 -webkit-transition: all .3s linear;
                 -moz-transition: all .3s linear;
                 transition: all .3s linear;
             }
             .navbar-nav > li > a {
-                padding-top: 13px;
+                padding-top: 10px;
                 padding-bottom: 0px;
                 -webkit-transition: all .3s linear;
                 -moz-transition: all .3s linear;
@@ -39,6 +47,41 @@
             }
             .glyphicon-link {
                 font-size: 21px;
+            }
+            .side_content {
+                height: 100%;
+                padding-right: 8px;
+            }
+            .chat_content_wrapper {
+                height: 90%;
+                padding-top: 8px;
+                padding-bottom: 4px;
+            }
+            .chat_input_wrapper {
+                height: 10%;
+                padding-bottom: 4px;
+            }
+            .chat_content {
+                height: 100%;
+                resize: none;
+                font-size: 10pt;
+                line-height: normal;
+                text-indent: 0px;
+                text-shadow: none;
+                text-align: start;
+                cursor: auto;
+                padding: 6px;
+            }
+            .chat_input {
+                height: 100%;
+                resize: none;
+                font-size: 10pt;
+                line-height: normal;
+                text-indent: 0px;
+                text-shadow: none;
+                text-align: start;
+                cursor: auto;
+                padding: 6px;
             }
         </style>
         
@@ -74,12 +117,12 @@
                 var output_message;
 
                 input_message = document.getElementById('chat_input').value;
-                output_message = document.getElementById('chat_output').value;
+                output_message = document.getElementById('chat_content').value;
 
                 if(input_message !== ''){                                                    
-                    output_message += input_message+'\n';
+                    output_message += input_message + '\n';
                     document.getElementById('chat_input').value = '';
-                    document.getElementById('chat_output').value = output_message;
+                    document.getElementById('chat_content').value = output_message;
                 }
             }
 
@@ -204,6 +247,14 @@
                     return true;
 
             }
+            $(document).ready(function() {
+                $('#chat_input').bind('keypress', function(e) {
+                    if(e.which == 13) {
+                        e.preventDefault();
+                        whenClickChatSend();
+                    }
+                });
+            });
         </script>
         <div class="header">
             <div class="navbar navbar-inverse navbar-fixed-top">
@@ -240,7 +291,10 @@
                 </div>
             </div>
         </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 941c5ddbc16ca61b2917cf1670c8117899954826
         <div class="main_content col-lg-9">
             <div id="main_head">
                 <table width="100%">
@@ -299,9 +353,14 @@
                         <input type="text" class="form-control" id="chat_input" placeholder="Input your message" >
                     </p>
                 </div>
+            <div class="chat_content_wrapper">
+                <textarea class="chat_content" id="chat_content" ></textarea>
+            </div>
+            <div class="chat_input_wrapper">
+                <!--button type="button" class="btn btn-primary" style="float:right; width:20%;" onclick="whenClickChatSend()">Send</button-->
+                <textarea class="chat_input" id="chat_input" placeholder=""></textarea>
             </div>
         </div>
-
 
         <div class="modal fade" id="editModal">
             <div class="modal-dialog" id="editModalForm">
