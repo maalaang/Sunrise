@@ -1,4 +1,4 @@
-  a:link { color: #ffffff; }
+  a:link { color: gray; }
   a:visited {color: purple; }
   html, body {
     height: 100%;
@@ -6,6 +6,25 @@
   }
   body {
     padding-top: 40px;
+  }
+  .navbar {
+    height: 50px;
+  }
+  .navbar-nav>li>a {
+      font-size: 18px;
+  }
+  .chat-form {
+      padding-top:11px;
+  }
+  .form-field{
+      vertical-align:middle;
+  }
+  #chat_output {
+      width:75%;
+      resize: none;
+  }
+  #chat_input {
+      width:75%;
   }
   #container {
     position: absolute;

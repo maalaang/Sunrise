@@ -291,19 +291,6 @@
                 </div>
             </div>
         </div>
-        <!-- div id="container" ondblclick="enterFullScreen()"> 
-            <div id="card">
-                <div id="local">
-                    <video id="localVideo" autoplay="autoplay" muted="true"/>
-                </div>
-                <div id="remote">
-                    <video id="largeVideo" autoplay="autoplay"></video>
-                    <div id="mini">
-                        <video id="smallVideo" autoplay="autoplay" muted="true"/></video>
-                    </div>
-                </div>
-            </div>
-        </div-->
         <div class="main_content col-lg-9">
             <div id="main_head">
                 <table width="100%">
