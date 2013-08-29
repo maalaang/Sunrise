@@ -12,6 +12,7 @@ var participant_id = null;
 var email_cnt = 0;
 var participant_names = null;
 var isAudioMuted = false;
+var isVideoMuted = false;
 
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
@@ -173,34 +174,6 @@ window.onresize = function() {
 //    containerDiv.style.top = (innerHeight - videoHeight) / 2 + 'px';
 }
 
-//function toggleVideoMute() {
-//     Call the getVideoTracks method via adapter.js.
-//    videoTracks = localStream.getVideoTracks();
-
-//    if (videoTracks.length === 0) {
-//        console.log('No local video available.');
-//        return;
-//    }
-
-//    if (isVideoMuted) {
-//        for (i = 0; i < videoTracks.length; i++) {
-//            videoTracks[i].enabled = true;
-//        }
-//        console.log('Video unmuted.');
-//    } else {
-//        for (i = 0; i < videoTracks.length; i++) {
-//            videoTracks[i].enabled = false;
-//        }
-//        console.log('Video muted.');
-//    }
-
-//    isVideoMuted = !isVideoMuted;
-//}
-
-//function toggleAudioMute() {
-//     Call the getAudioTracks method via adapter.js.
-//}
-
 // Ctrl-D: toggle audio mute; Ctrl-E: toggle video mute.
 // On Mac, Command key is instead of Ctrl.
 // Return false to screen out original Chrome shortcuts.
@@ -253,6 +226,27 @@ function whenClickMicToggle(){
 
 function whenClickScreenToggle(){
     $('#menu_screen i').toggleClass('icon-large icon-eye-close icon-large icon-eye-open');
+
+    var videoTracks = localStream.getVideoTracks();
+
+    if (videoTracks.length === 0) {
+        console.log('No local video available.');
+        return;
+    }
+
+    if (isVideoMuted) {
+        for (i = 0; i < videoTracks.length; i++) {
+            videoTracks[i].enabled = true;
+        }
+        console.log('Video unmuted.');
+    } else {
+        for (i = 0; i < videoTracks.length; i++) {
+            videoTracks[i].enabled = false;
+        }
+        console.log('Video muted.');
+    }
+
+    isVideoMuted = !isVideoMuted;
 }
 
 function whenClickExit(){
