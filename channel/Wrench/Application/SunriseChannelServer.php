@@ -4,6 +4,7 @@ namespace Wrench\Application;
 
 use Wrench\Application\Application;
 use Wrench\Application\NamedApplication;
+use Wrench\Exception\ConnectionException;
 
 /**
  * Sunrise channel server for signaling and chattting.
@@ -252,6 +253,8 @@ class SunriseChannelServer extends Application {
             if ($sendto && $sendto !== $client) {
                 try {
                     $sendto->send($msg_json);
+                } catch (ConnectionException $e) {
+                    $this->logger->error('Failed to send channel bye message', $e);
                 } catch (Exception $e) {
                     $this->logger->error('Failed to send channel bye message', $e);
                 }
@@ -271,6 +274,8 @@ class SunriseChannelServer extends Application {
 
         try {
             $client->send(json_encode($response));
+        } catch (ConnectionException $e) {
+            $this->logger->error('Failed to send response for channel close message', $e);
         } catch (Exception $e) {
             $this->logger->error('Failed to send response for channel close message', $e);
         }
