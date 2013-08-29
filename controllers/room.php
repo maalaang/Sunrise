@@ -47,14 +47,15 @@ function room() {
         $context['room_ui_title'] = $sr_room_ui_title;
 
         if ($_SESSION['is_logged'] === true) {
-            $context['user_name'] = $_SESSION['user_name'];
             $context['user_id'] = $_SESSION['user_id'];
             $context['is_registered_user'] = 'true';
         } else {
-            $context['user_name'] = 'Anonymous';
             $context['user_id'] = 0;
             $context['is_registered_user'] = 'false';
         }
+
+        $context['user_name'] = $_SESSION['user_name'];
+        $context['chat_name'] = $_SESSION['chat_name'];
 
         sr_response('views/room/room.php', $context);
 

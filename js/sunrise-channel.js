@@ -1,11 +1,11 @@
 // Sunrise Channel Client
-function SunriseChannel(channelServer, channelToken, userName) {
+function SunriseChannel(_channelServer, _channelToken, _userName) {
     var socket = null;
     var channel = this;
 
-    var channelServer = channelServer;
-    var channelToken = channelToken;
-    var userName = userName;
+    var channelServer = _channelServer;
+    var channelToken = _channelToken;
+    var userName = _userName;
 
     this.isReady = false;
 
@@ -16,6 +16,7 @@ function SunriseChannel(channelServer, channelToken, userName) {
     this.onChannelMessage = null;
     this.onChannelDisconnected = null;
     this.onChannelError = null;
+    this.onChannelChat = null;
 
     this.open = function() {
         console.log('Open sunrise channel');
@@ -84,6 +85,10 @@ function SunriseChannel(channelServer, channelToken, userName) {
                 break;
             }
             return;
+
+        } else if (msg.type === 'chat') {
+            channel._onChannelChat(msg);
+            return;
         }
 
         if (typeof channel.onChannelMessage === 'function') {
@@ -131,6 +136,14 @@ function SunriseChannel(channelServer, channelToken, userName) {
 
         if (typeof channel.onChannelError === 'function') {
             channel.onChannelError();
+        }
+    }
+
+    this._onChannelChat = function(msg) {
+        console.log('Chat message');
+
+        if (typeof channel.onChannelChat === 'function') {
+            channel.onChannelChat(msg);
         }
     }
 }

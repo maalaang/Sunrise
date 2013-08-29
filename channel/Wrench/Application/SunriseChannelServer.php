@@ -4,7 +4,6 @@ namespace Wrench\Application;
 
 use Wrench\Application\Application;
 use Wrench\Application\NamedApplication;
-use Wrench\Exception;
 
 /**
  * Sunrise channel server for signaling and chattting.
@@ -117,6 +116,10 @@ class SunriseChannelServer extends Application {
 
     private function onSignalingMessage($client, $msg) {
         $channel = $this->channels[$client->getChannelToken()];
+        if ($msg->type === 'offer') {
+            $msg->name = $client->getName();
+        }
+
         $data = json_encode($msg);
 
         if ($msg->recipient == 'ns') {
@@ -144,7 +147,11 @@ class SunriseChannelServer extends Application {
 
     public function onDisconnect($client) {
         // if the client is still connected with the channel, close the connection
-        $this->closeChannel($client);
+        try {
+            $this->closeChannel($client);
+        } catch (Exception $e) {
+            $this->logger->warn('Exception on closing connection', $e);
+        }
 
         // remove the client from the socket list
         unset($this->clients[$client->getId()]);

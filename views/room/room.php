@@ -15,9 +15,7 @@
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-glyphicons.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room.css">
-    </head>
 
-    <body>
         <script type="text/javascript">
             var channelServer = '<?= $context['channel_server'] ?>';
             var channelToken = '<?= $context['room']->channel_token ?>';
@@ -26,170 +24,13 @@
             var roomName = '<?= $context['room']->name ?>';
             var roomApi = '<?= $context['room_api'] ?>';
             var isRegisteredUser = <?= $context['is_registered_user'] ?>;
-            var userName = '<?= $context['user_name'] ?>';
             var userId = <?= $context['user_id'] ?>;
-            var email_cnt = 0;
-
-            function whenClickMicToggle(){
-                $('#menu_mic i').toggleClass('glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up');
-            }
-
-            function whenClickScreenToggle(){
-                $('#menu_screen i').toggleClass('glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open');
-            }
-
-
-            function whenClickExit(){
-            }
-
-            function whenClickChatSend(){
-                var input_message;
-                var output_message;
-
-                input_message = document.getElementById('chat_input').value;
-                output_message = document.getElementById('chat_content').value;
-
-                if(input_message !== ''){                                                    
-                    output_message += input_message + '\n';
-                    document.getElementById('chat_input').value = '';
-                    document.getElementById('chat_content').value = output_message;
-                }
-            }
-
-            function whenClickTitleEdit(){
-                var title;
-                var description;
-
-                $('#edit_title').val('');
-                $('#edit_description').val('');
-
-                title = $('#title').html();
-                description = $('#description').html();
-
-                $('#edit_title').attr("placeholder", title);
-                $('#edit_description').attr("placeholder", description);
-            }
-
-             function whenClickTitleSave(){
-                 var title;
-                 var description;
-                 var edit_title;
-                 var edit_description;
-
-
-                 //value initializing
-                
-                 title = $('#title').html();
-                 description = $('#description').html();
-                                                 
-                 edit_title = $('#edit_title').val();
-                 edit_description = $('#edit_description').val();
-
-                 if(edit_title !== '')
-                     $('#title').html(edit_title);
-
-                 if(edit_description !== '')
-                     $('#description').html(edit_description);
-             }
-
-            function whenClickAddEmail(){
-                var group = document.createElement("span"); 
-                var txt = document.createElement("input");
-                var btn_span = document.createElement("span");
-                var btn = document.createElement("button");
-                var panel = document.getElementById("email_set");
-                var email = $('#email').val();
-
-                if(checkEmailForm(email) === false){
-                    console.log("Empty");
-                    return;
-                }
-
-                group.setAttribute("class", "input-group");
-                group.setAttribute("id","Test");
-
-                txt.setAttribute("type", "text");
-                txt.setAttribute("class", "form-control");
-                txt.setAttribute("value", email);
-                txt.setAttribute("id", email_cnt);
-
-                btn_span.setAttribute("class", "input-group-btn");
-                btn.setAttribute("class", "btn-default");
-                btn.setAttribute("type", "button");
-                btn.setAttribute("onclick", "whenClickDelEmail(this)");
-                btn.setAttribute("id", email_cnt);
-                btn.innerHTML = "&times";
-                btn_span.appendChild(btn);
-
-                group.appendChild(txt);
-                group.appendChild(btn_span);
-
-                panel.appendChild(group);
-                email_cnt++;
-            }
-
-            function whenClickDelEmail(obj){
-                var output = obj.id;
-                console.log(output);
-
-                //Remove text component and button component
-                //Text name and button name are same. So removal is twice.
-                $('#'+output).remove();
-                $('#'+output).remove();
-                email_cnt--;
-            }
-            
-            function whenClickInvite(obj){
-                var invite_type = obj.id;
-                
-                if(invite_type === "invite_email")
-                    $('#tab_email').addClass('active');
-                else if(invite_type === "invite_facebook")
-                    $('#tab_acebook').addClass('active');
-                else if(invite_type === "invite_twitter")
-                    $('#tab_twitter').addClass('active');
-                else if(invite_type === "invite_url")
-                    $('#tab_url').addClass('active');
-            }
-
-            //Activating tab-pane make inactive.
-            function whenClickInviteExit(){
-                $('.active.tab-pane').removeClass('active');
-            }
-
-            function checkEmailForm(obj){
-                var obj_len = obj.length;
-                console.log(obj[0]);
-
-                for(var i = 0; i < obj_len; i++){
-                    if(obj[i] === " ")
-                        return false;
-
-                    if(obj[i] === "@")
-                        break;
-                }
-
-                if(obj.length === 0)
-                    return false;
-                else if(i === obj.length)
-                    return false;
-                else
-                    return true;
-
-            }
-            $(document).ready(function() {
-                $('#chat_input').bind('keypress', function(e) {
-                    if(e.which == 13) {
-                        e.preventDefault();
-                        whenClickChatSend();
-                    }
-                });
-                $('.input_hide_border').bind('focus blur', function() {
-                   // $(this).removeClass('input_hide_border');
-
-                });
-            });
+            var userName = '<?= $context['user_name'] ?>';
+            var chatName = '<?= $context['chat_name'] ?>';
         </script>
+    </head>
+
+    <body>
         <div class="header">
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>

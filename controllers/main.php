@@ -46,7 +46,6 @@ function main_signin() {
                     $context['msg'] = 'Successfully signed in';
 
                     // Successfully signed in & Session start
-                    session_start();
                     $_SESSION['user_id'] = $user->id;
                     $_SESSION['is_logged'] = true;
                     $_SESSION['user_email'] = $user->email;
@@ -137,7 +136,6 @@ function main_signup() {
 
 
 function main_signout() {
-    session_start();
     $context = array();
 
     if ($_SESSION['is_logged']) {
@@ -171,14 +169,19 @@ function main_goto_room() {
         $room_name = uniqid('r');
     }
 
-    session_start();
+    if (isset($_GET['user_name'])) {
+        $_SESSION['chat_name'] = $_GET['user_name'];
+
+    } else {
+        if (isset($_SESSION['user_name'])) {
+            $_SESSION['chat_name'] = $_SESSION['user_name'];
+        } else {
+            $_SESSION['chat_name'] = 'Anonymous';
+        }
+    }
 
     if (!isset($_SESSION['user_name'])) {
-        if (isset($_GET['user_name'])) {
-            $_SESSION['user_name'] = $_GET['user_name'];
-        } else {
-            $_SESSION['user_name'] = 'Anonymous';
-        }
+        $_SESSION['user_name'] = $_SESSION['chat_name'];
     }
 
     header('Location: ' . $sr_root . '/d/room/?name=' . $room_name);

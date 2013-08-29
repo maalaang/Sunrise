@@ -35,8 +35,6 @@ function admin_dashboard() {
 
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        session_start();
-
         if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
             $context = array();
             $context['error'] = 0;
@@ -214,8 +212,6 @@ function admin_dashboard() {
 function admin_rooms() {
     // Show Rooms Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        session_start();
-
         if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
             $context = array();
             $context['error'] = 0;
@@ -325,8 +321,6 @@ function admin_rooms() {
 function admin_users() {
     // Show Users Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        session_start();
-
         if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
             $context = array();
             $context['error'] = 0;
@@ -428,8 +422,6 @@ function admin_users() {
 }
 
 function admin_settings() {
-    session_start();
-
     if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
         $context = array();
         $context['error'] = 0;
