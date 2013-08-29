@@ -11,80 +11,10 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-connection.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
 
-        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room-temp.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-glyphicons.css">
-        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css">
-        
-        <style>
-            html, body {
-                height: 100%;
-            }
-            .navbar {
-                height: 42px;
-                padding-right: 0;
-            }
-            .navbar-brand {
-                font-weight: bold;
-                font-size: 19pt;
-                padding-top: 10px;
-                -webkit-transition: all .3s linear;
-                -moz-transition: all .3s linear;
-                transition: all .3s linear;
-            }
-            .navbar-nav > li > a {
-                padding-top: 10px;
-                padding-bottom: 0px;
-                -webkit-transition: all .3s linear;
-                -moz-transition: all .3s linear;
-                transition: all .3s linear;
-            }
-            .glyphicon {
-                font-size: 22px;
-            }
-            .glyphicon-volume-off, .glyphicon-volume-up {
-                font-size: 23px;
-            }
-            .glyphicon-link {
-                font-size: 21px;
-            }
-            .side_content {
-                height: 100%;
-                padding-right: 8px;
-            }
-            .chat_content_wrapper {
-                height: 90%;
-                padding-top: 8px;
-                padding-bottom: 4px;
-            }
-            .chat_input_wrapper {
-                height: 10%;
-                padding-bottom: 4px;
-            }
-            .chat_content {
-                height: 100%;
-                resize: none;
-                font-size: 10pt;
-                line-height: normal;
-                text-indent: 0px;
-                text-shadow: none;
-                text-align: start;
-                cursor: auto;
-                padding: 6px;
-            }
-            .chat_input {
-                height: 100%;
-                resize: none;
-                font-size: 10pt;
-                line-height: normal;
-                text-indent: 0px;
-                text-shadow: none;
-                text-align: start;
-                cursor: auto;
-                padding: 6px;
-            }
-        </style>
-        
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css">
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room.css">
     </head>
 
     <body>
@@ -254,6 +184,10 @@
                         whenClickChatSend();
                     }
                 });
+                $('.input_hide_border').bind('focus blur', function() {
+                   // $(this).removeClass('input_hide_border');
+
+                });
             });
         </script>
         <div class="header">
@@ -292,48 +226,35 @@
             </div>
         </div>
 
-        <div class="main_content col-lg-9">
-            <div id="main_head">
-                <table width="100%">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <h2 id="title" style="text-align:left">The title</h2>
-                                <h3 id="description" style="text-align:left">The layout of the video chat room...</h3>
-                                    <a data-toggle="modal" href="#editModal" onclick="whenClickTitleEdit()">
-                                        <i class="glyphicon glyphicon-link"></i>
-                                    </a>
-                            </td>
-                            <td align="right">
-                                <table>
-                                    <td><span id="invite_label" class="label label-important">Invite People </span></td>
-                                    <td>
-                                        <a id="invite_email" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
-                                            <i class="glyphicon glyphicon-envelope"></i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a id="invite_facebook" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
-                                            face
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a id="invite_twitter" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
-                                            Twit
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <a id="invite_url" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
-                                            <i class="glyphicon glyphicon-link"></i>
-                                        </a>
-                                    </td>
-                                </table>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="main_content col-9">
+            <div class="room_head">
+                <div class="room_info col-6">
+                    <div class="room_title_wrapper">
+                        <input id="room_title" type="text" placeholder="Room title"/>
+                    </div>
+                    <div class="room_description_wrapper">
+                        <input id="room_description" type="text" placeholder="Room description"/>
+                    </div>
+                </div>
+                <div class="room_invite col-6">
+                    <span class="label label-important invite_label">Invite People:</span>
+                    <span class="invite_icons_wrapper">
+                        <a id="invite_email" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
+                            <i class="invite_icon icon-large icon-envelope"></i>
+                        </a>
+                        <a id="invite_facebook" data-toggle="modal" href="#inviteModal" onclick="whenClickInvite(this)">
+                            <i class="invite_icon icon-large icon-facebook"></i>
+                        </a>
+                        <a id="invite_twitter" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
+                            <i class="invite_icon icon-large icon-twitter"></i>
+                        </a>
+                        <a id="invite_url" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
+                            <i class="invite_icon icon-large icon-link"></i>
+                        </a>
+                    </span>
+                </div>
             </div>
-            <div id="container">
+            <div class="room_videos">
                 <div id="largeVideoContainer">
                     <video id="focusedVideo" class="largeVideo" autoplay="autoplay" muted="true"/>
                 </div>
@@ -342,7 +263,7 @@
                 </div>
             </div>
         </div>
-        <div class="side_content col-lg-3">
+        <div class="side_content col-3">
             <div class="chat_content_wrapper">
                 <textarea class="chat_content" id="chat_content" ></textarea>
             </div>
@@ -397,13 +318,13 @@
                     </div><!--modal-header-->
                     <div class="modal-body">
                         <div class="row">
-                            <ul class="nav nav-pills nav-stacked col-lg-2" id="inviteTab" style="text-align:left;">
+                            <ul class="nav nav-pills nav-stacked col-2" id="inviteTab" style="text-align:left;">
                                 <li><a href="#tab_email" data-toggle="tab">Email</a></li>                                           
                                 <li><a href="#tab_facebook" data-toggle="tab">Facebook</a></li>  
                                 <li><a href="#tab_twitter" data-toggle="tab">Twitter</a></li>   
                                 <li><a href="#tab_url" data-toggle="tab">URL</a></li>   
                             </ul>
-                            <div class="tab-content col-lg-8">
+                            <div class="tab-content col-8">
                                 <div class="tab-pane" id="tab_email">
                                     <table>
                                         <tr>
@@ -494,7 +415,5 @@
 
     <script src="<?= $GLOBALS['sr_root'] ?>/js/room.js"></script>
 
-<!--footer id="footer">
-</footer-->
 
 </html>

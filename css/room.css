@@ -1,0 +1,231 @@
+html, body {
+    height: 100%;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+body {
+  padding-top: 40px;
+}
+.navbar {
+  height: 42px;
+  padding-right: 0;
+}
+.navbar-brand {
+    font-weight: bold;
+    font-size: 19pt;
+    padding-top: 10px;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .3s linear;
+    transition: all .3s linear;
+}
+.navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 0px;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .3s linear;
+    transition: all .3s linear;
+}
+.glyphicon {
+    font-size: 22px;
+}
+.glyphicon-volume-off, .glyphicon-volume-up {
+    font-size: 23px;
+}
+.glyphicon-link {
+    font-size: 21px;
+}
+.main_content {
+    height: 100%;
+}
+.side_content {
+    height: 100%;
+    padding-right: 8px;
+}
+.chat_content_wrapper {
+    height: 90%;
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+.chat_input_wrapper {
+    height: 10%;
+    padding-bottom: 4px;
+}
+.chat_content {
+    height: 100%;
+    resize: none;
+    font-size: 10pt;
+    line-height: normal;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+    cursor: auto;
+    padding: 6px;
+}
+.chat_input {
+    height: 100%;
+    resize: none;
+    font-size: 10pt;
+    line-height: normal;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+    cursor: auto;
+    padding: 6px;
+}
+.room_head {
+    height: 8.53%;
+}
+.room_info {
+    margin-top: 12px;
+    font-weight: bold;
+}
+.room_title_wrapper {
+}
+.room_description_wrapper {
+}
+#room_title {
+    font-size: 15pt;
+    padding: 0 0 0 0;
+    min-height: 25px;
+    border: none;
+    font-weight: bold;
+    box-shadow: none;
+}
+#room_description {
+    font-size: 10pt;
+    padding: 0 0 0 1px;
+    min-height: 25px;
+    border: none;
+    box-shadow: none;
+}
+.room_invite {
+    padding: 20px 0 0 0;
+    text-align: right;
+}
+.invite_label {
+    font-size: 10pt;
+    font-weight: bold;
+}
+.invite_icons_wrapper {
+    padding-left: 5px;
+}
+.invite_icon {
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 16px;
+}
+.invite_icons_wrapper > a {
+    text-decoration:none;
+    -webkit-transition: all .2s linear;
+    -moz-transition: all .2s linear;
+    transition: all .2s linear;
+}
+.invite_icons_wrapper > a:link { color:gray; }
+.invite_icons_wrapper > a:visited { color:gray; }
+.invite_icons_wrapper > a:hover { color:black; }
+.invite_icons_wrapper > a:active { color:gray; }
+
+.room_videos {
+    height: 91.47%;
+}
+#largeVideoContainer {
+    padding: 10px;
+    height: 77%;
+    text-align: center;
+}
+#smallVideoContainer {
+    padding: 10px 0 30px 0;
+    height: 23%;
+    text-align: center;
+}
+.largeVideo {
+    height: 99%;  
+    max-width: 99%;
+    max-width: 99%;
+    opacity: 1;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 2s;
+}
+.smallVideo {
+    height: 140px;
+    max-height: 99%;
+    max-width: 99%;
+    margin-left: 10px;
+    margin-right: 10px;
+    opacity: 1;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 2s;
+}
+.chat-form {
+    padding-top:11px;
+}
+.form-field {
+    vertical-align:middle;
+}
+#container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 60px 10px 10px 10px;
+    text-align: center;
+    -webkit-perspective: 1000;
+}
+#card {
+    -webkit-transition-property: rotation;
+    -webkit-transition-duration: 2s;
+    -webkit-transform-style: preserve-3d;
+}
+#local {
+    position: absolute;
+    width: 100%;
+    -webkit-transform: scale(-1, 1);
+    -webkit-backface-visibility: hidden;
+}
+#remote {
+    position: absolute;
+    width: 100%;
+    -webkit-transform: rotateY(180deg);
+    -webkit-backface-visibility: hidden;
+}
+#inviteModalForm{
+    width:50%;
+    margin-left: -25%;
+}
+#mini {
+    position: absolute;
+    height: 30%;
+    width: 30%;
+    bottom: 32px;
+    right: 4px;
+    -webkit-transform: scale(-1, 1);
+    opacity: 1.0;
+}
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 28px;
+    background-color: #3F3F3F;
+    color: rgb(255, 255, 255);
+    font-size: 13px; font-weight: bold;
+    line-height: 28px;
+    text-align: center;
+}
+#hangup {
+    font-size: 13px; font-weight: bold;
+    color: #FFFFFF;
+    width: 128px;
+    height: 24px;
+    background-color: #808080;
+    border-style: solid;
+    border-color: #FFFFFF;
+    margin: 2px;
+}
+#logo {
+    display: block;
+    top: 4;
+    right: 4;
+    position: absolute;
+    float: right;
+    opacity: 0.5;
+}
+
