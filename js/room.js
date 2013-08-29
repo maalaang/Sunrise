@@ -387,6 +387,7 @@ function checkEmailForm(obj) {
 }
 
 $(document).ready(function() {
+    // text message send
     $('#chat_input').bind('keypress', function(e) {
         if(e.which == 13) {
             e.preventDefault();
@@ -394,6 +395,7 @@ $(document).ready(function() {
         }
     });
 
+    // local media setting
     localVideo = document.getElementById('localVideo');
 
     try {
@@ -403,4 +405,9 @@ $(document).ready(function() {
         alert('getUserMedia() failed. Is this a WebRTC capable browser?');
         console.log('getUserMedia failed with exception: ' + e.message);
     }
+
+    // alert before leaving the room
+    $(window).on('beforeunload', function(){
+          return 'You are going to leave from the video chat room.';
+    });
 });
