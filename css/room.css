@@ -18,20 +18,14 @@ body {
     transition: all .3s linear;
 }
 .navbar-nav > li > a {
-    padding-top: 10px;
+    padding-top: 13px;
     padding-bottom: 0px;
     -webkit-transition: all .3s linear;
     -moz-transition: all .3s linear;
     transition: all .3s linear;
 }
-.glyphicon {
-    font-size: 22px;
-}
-.glyphicon-volume-off, .glyphicon-volume-up {
-    font-size: 23px;
-}
-.glyphicon-link {
-    font-size: 21px;
+.control_icon {
+    font-size: 19px;
 }
 .main_content {
     height: 100%;

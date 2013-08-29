@@ -38,17 +38,17 @@
                     <ul class="nav navbar-nav">
                         <li>
                             <a id="menu_screen" href="#" onclick="whenClickScreenToggle()">
-                                <i class="glyphicon glyphicon-eye-open"></i>
+                                <i class="control_icon icon-large icon-eye-open"></i>
                             </a>
                         </li>
                         <li>
                             <a id="menu_mic" href="#" onclick="whenClickMicToggle()">
-                                <i class="glyphicon glyphicon-volume-up"></i>
+                                <i class="control_icon icon-large icon-microphone"></i>
                             </a>
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" id="menu_sns" href="#">
-                                <i class="glyphicon glyphicon-link"></i>
+                                <i class="control_icon icon-large icon-share-sign"></i>
                                 <span class="caret"></span>
                             </a> 
                             <ul class="dropdown-menu">
@@ -59,7 +59,7 @@
                         </li>
                         <li>
                             <a id="menu_exit" href="#" onclick="whenClickExit()">
-                                <i class="glyphicon glyphicon-remove"></i>
+                                <i class="control_icon icon-large icon-remove"></i>
                             </a>
                         </li>
                     </ul>

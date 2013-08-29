@@ -1,5 +1,5 @@
 // Sunrise Connection
-function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, opponent, initiator, stereo) {
+function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, opponent, initiator, stereo, remoteVideoContainer, remoteVideoClass) {
     var conn = this;
 
     this.remoteStream = null;
@@ -19,6 +19,8 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     this.initiator = initiator;
     this.stereo = stereo;
     this.signalingReady = initiator;
+    this.remoteVideoContainer = remoteVideoContainer;
+    this.remoteVideoClass = remoteVideoClass;
 
     this.card = document.getElementById('card');
 
@@ -175,7 +177,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
 
     this.setLocalAndSendMessage = function(sessionDescription) {
         // Set Opus as the preferred codec in SDP if Opus is present.
-        sessionDescription.sdp = conn.preferOpus(sessionDescription.sdp);
+        // sessionDescription.sdp = conn.preferOpus(sessionDescription.sdp);
         conn.pc.setLocalDescription(sessionDescription);
         channel.sendMessage(sessionDescription, conn.opponent);
     }
@@ -242,8 +244,8 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
         conn.addRemoteVideo();
         conn.remoteVideo = document.getElementById(conn.getRemoteVideoId());
 
-        attachMediaStream(conn.remoteVideo, event.stream);
         attachMediaStream(conn.focusedVideo, event.stream);
+        attachMediaStream(conn.remoteVideo, event.stream);
 
         // reattachMediaStream(conn.remoteVideo, localVideo);
         
@@ -252,7 +254,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     }
 
     this.addRemoteVideo = function() {
-        $('#smallVideoContainer').append('<video id="' + conn.getRemoteVideoId() + '" class="smallVideo" autoplay="autoplay" muted="true"/>');
+        $('#' + conn.remoteVideoContainer).append('<video id="' + conn.getRemoteVideoId() + '" class="' + conn.remoteVideoClass + ' " autoplay="autoplay" />');
     }
 
     this.removeRemoteVideo = function() {

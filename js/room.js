@@ -11,10 +11,11 @@ var stereo = false;
 var participant_id = null;
 var email_cnt = 0;
 var participant_names = null;
+var isAudioMuted = false;
 
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
-        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true);
+        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'smallVideoContainer', 'smallVideo');
         participant_names[msg.sender] = msg.name;
     }
 
@@ -26,7 +27,7 @@ function onChannelOpened(msg) {
     participant_names = [];
 
     for (p in msg.participant_list) {
-        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true);
+        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'smallVideoContainer', 'smallVideo');
         connections[p].maybeStart();
 
         participant_names[p] = msg.participant_list[p].name;
@@ -198,26 +199,6 @@ window.onresize = function() {
 
 //function toggleAudioMute() {
 //     Call the getAudioTracks method via adapter.js.
-//    audioTracks = localStream.getAudioTracks();
-
-//    if (audioTracks.length === 0) {
-//        console.log('No local audio available.');
-//        return;
-//    }
-
-//    if (isAudioMuted) {
-//        for (i = 0; i < audioTracks.length; i++) {
-//            audioTracks[i].enabled = true;
-//        }
-//        console.log('Audio unmuted.');
-//    } else {
-//        for (i = 0; i < audioTracks.length; i++){
-//            audioTracks[i].enabled = false;
-//        }
-//        console.log('Audio muted.');
-//    }
-
-//    isAudioMuted = !isAudioMuted;
 //}
 
 // Ctrl-D: toggle audio mute; Ctrl-E: toggle video mute.
@@ -247,11 +228,31 @@ window.onresize = function() {
 
 
 function whenClickMicToggle(){
-    $('#menu_mic i').toggleClass('glyphicon glyphicon-volume-off glyphicon glyphicon-volume-up');
+    $('#menu_mic i').toggleClass('icon-large icon-microphone-off icon-large icon-microphone');
+    var audioTracks = localStream.getAudioTracks();
+
+    if (audioTracks.length === 0) {
+        console.log('No local audio available.');
+        return;
+    }
+
+    if (isAudioMuted) {
+        for (i = 0; i < audioTracks.length; i++) {
+            audioTracks[i].enabled = true;
+        }
+        console.log('Audio unmuted.');
+    } else {
+        for (i = 0; i < audioTracks.length; i++){
+            audioTracks[i].enabled = false;
+        }
+        console.log('Audio muted.');
+    }
+
+    isAudioMuted = !isAudioMuted;
 }
 
 function whenClickScreenToggle(){
-    $('#menu_screen i').toggleClass('glyphicon glyphicon-eye-close glyphicon glyphicon-eye-open');
+    $('#menu_screen i').toggleClass('icon-large icon-eye-close icon-large icon-eye-open');
 }
 
 function whenClickExit(){
