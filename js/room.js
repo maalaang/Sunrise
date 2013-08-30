@@ -17,8 +17,10 @@ var focusedVideoId = null;
 
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
+        // create a new connection
         connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'smallVideoContainer', 'smallVideo', 'focusedVideo');
-        participant_names[msg.sender] = msg.name;
+        setParticipantName(msg.sender, msg.name);
+        appendChatMessage(null, msg.name + ' has joined the room.');
     }
 
     connections[msg.sender].onChannelMessage(msg);
@@ -32,7 +34,7 @@ function onChannelOpened(msg) {
         connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'smallVideoContainer', 'smallVideo', 'focusedVideo');
         connections[p].maybeStart();
 
-        participant_names[p] = msg.participant_list[p].name;
+        setParticipantName(p, msg.participant_list[p].name);
     }
 
     participant_id = msg.participant_id;
@@ -45,16 +47,32 @@ function onChannelBye(msg) {
     connections[msg.participant_id].onRemoteHangup();
     delete connections[msg.participant_id];
 
+    // show message a participant left the room
+    appendChatMessage(null, getParticipantName(msg.participant_id) + ' has left the room.');
+
+    // for debugging
     console.log('removed ' + msg.participant_id + ' from connection list');
     printObject('connections', connections);
 }
 
+function getParticipantName(senderId) {
+    return participant_names[senderId];
+}
+
+function setParticipantName(senderId, name) {
+    participant_names[senderId] = name;
+}
+
 function onChannelChat(msg) {
-    appendChatMessage(participant_names[msg.sender], msg.content);
+    appendChatMessage(getParticipantName(msg.sender), msg.content);
 }
 
 function appendChatMessage(sender, msg) {
-    $('#chat_content').append(sender + ': ' + msg + '\n');
+    if (sender) {
+        $('#chat_content').append(sender + ': ' + msg + '\n');
+    } else {
+        $('#chat_content').append(msg + '\n');
+    }
     $('#chat_content').scrollTop($('#chat_content')[0].scrollHeight);
 }
 
