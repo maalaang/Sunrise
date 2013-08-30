@@ -13,10 +13,11 @@ var email_cnt = 0;
 var participant_names = null;
 var isAudioMuted = false;
 var isVideoMuted = false;
+var focusedVideoId = null;
 
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
-        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'smallVideoContainer', 'smallVideo');
+        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'smallVideoContainer', 'smallVideo', 'focusedVideo');
         participant_names[msg.sender] = msg.name;
     }
 
@@ -28,7 +29,7 @@ function onChannelOpened(msg) {
     participant_names = [];
 
     for (p in msg.participant_list) {
-        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'smallVideoContainer', 'smallVideo');
+        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'smallVideoContainer', 'smallVideo', 'focusedVideo');
         connections[p].maybeStart();
 
         participant_names[p] = msg.participant_list[p].name;
@@ -39,6 +40,8 @@ function onChannelOpened(msg) {
 }
 
 function onChannelBye(msg) {
+    videoFocusOut(msg.participant_id);
+
     connections[msg.participant_id].onRemoteHangup();
     delete connections[msg.participant_id];
 
@@ -61,6 +64,10 @@ function onHangup() {
         connections[p].onHangup();
         delete connections[p];
     }
+
+    channel.close();
+
+    videoFocusOut(null);
 }
 
 // for debuging
@@ -105,9 +112,6 @@ function initializeChannel() {
     channel.open();
 }
 
-function addSmallVideo() {
-}
-
 function roomJoin() {
     var params = {};
     params.participant_id = participant_id;
@@ -126,23 +130,64 @@ function roomJoin() {
     });
 }
 
-function roomExit() {
-    var params = {};
-    params.participant_id = participant_id;
+function changeFocusedVideo(connectionId) {
+    var focusedVideo = document.getElementById('focusedVideo');
+    var connection = connections[connectionId];
 
-    $.post(roomApi + '/d/room/exit/', params, function (data) {
-        var json = $.parseJSON(data);
-        if (json.result === 0) {
-            console.log('done: room-exit');
+    if (connection) {
+        attachMediaStream(focusedVideo, connection.remoteStream);
+    } else {
+        var keys = Object.keys(connections);
+
+        if (keys.length > 0) {
+            var target = connections[keys[keys.length-1]];
+            attachMediaStream(focusedVideo, target.remoteStream);
+
         } else {
-            console.log('error on room-join: failed to get participant_id');
+            focusedVideo.style.opacity = '0';
         }
-    });
+    }
 }
 
-//window.onbeforeunload = function() {
-//    channel.sendMessage({type: 'channel', subtype: 'close'});
-//}
+function videoFocusIn(connectionId) {
+    var focusedVideo = document.getElementById('focusedVideo');
+    var connection = connections[connectionId];
+
+    if (connection) {
+        attachMediaStream(focusedVideo, connection.remoteStream);
+        focusedVideoId = connectionId;
+    }
+    console.log('focused - ' + connectionId);
+}
+
+function videoFocusOut(connectionId) {
+    var focusedVideo = document.getElementById('focusedVideo');
+
+    if (connectionId === null) {
+        // hide focused video
+        focusedVideo.style.opacity = '0';
+        focusedVideoId = null;
+        return;
+
+    } else if (connectionId !== focusedVideoId) {
+        // specified video is not focused
+        return;
+    }
+
+    var connection = connections[connectionId];
+
+    for (var i in connections) {
+        if (i !== connectionId) {
+            // focus to another video
+            attachMediaStream(focusedVideo, connections[i].remoteStream);
+            focusedVideoId = i;
+            return;
+        }
+    }
+    // there is no video to be focused
+    focusedVideo.style.opacity = '0';
+    focusedVideoId = null;
+}
 
 // Set the video diplaying in the center of window.
 window.onresize = function() {
@@ -200,7 +245,7 @@ window.onresize = function() {
 //}
 
 
-function whenClickMicToggle(){
+function whenClickMicToggle() {
     $('#menu_mic i').toggleClass('icon-large icon-microphone-off icon-large icon-microphone');
     var audioTracks = localStream.getAudioTracks();
 
@@ -215,7 +260,7 @@ function whenClickMicToggle(){
         }
         console.log('Audio unmuted.');
     } else {
-        for (i = 0; i < audioTracks.length; i++){
+        for (i = 0; i < audioTracks.length; i++) {
             audioTracks[i].enabled = false;
         }
         console.log('Audio muted.');
@@ -224,7 +269,7 @@ function whenClickMicToggle(){
     isAudioMuted = !isAudioMuted;
 }
 
-function whenClickScreenToggle(){
+function whenClickScreenToggle() {
     $('#menu_screen i').toggleClass('icon-large icon-eye-close icon-large icon-eye-open');
 
     var videoTracks = localStream.getVideoTracks();
@@ -249,10 +294,11 @@ function whenClickScreenToggle(){
     isVideoMuted = !isVideoMuted;
 }
 
-function whenClickExit(){
+function whenClickExit() {
+    onHangup();
 }
 
-function whenClickChatSend(){
+function whenClickChatSend() {
     var msg = $('#chat_input').val();
 
     channel.sendMessage({type: 'chat',
@@ -264,7 +310,7 @@ function whenClickChatSend(){
     $('#chat_input').val('');
 }
 
-function whenClickTitleEdit(){
+function whenClickTitleEdit() {
     var title;
     var description;
 
@@ -278,29 +324,28 @@ function whenClickTitleEdit(){
     $('#edit_description').attr("placeholder", description);
 }
 
- function whenClickTitleSave(){
-     var title;
-     var description;
-     var edit_title;
-     var edit_description;
+function whenClickTitleSave() {
+    var title;
+    var description;
+    var edit_title;
+    var edit_description;
 
-
-     //value initializing
+    //value initializing
     
-     title = $('#title').html();
-     description = $('#description').html();
+    title = $('#title').html();
+    description = $('#description').html();
                                      
-     edit_title = $('#edit_title').val();
-     edit_description = $('#edit_description').val();
+    edit_title = $('#edit_title').val();
+    edit_description = $('#edit_description').val();
 
-     if(edit_title !== '')
-         $('#title').html(edit_title);
+    if(edit_title !== '')
+        $('#title').html(edit_title);
 
-     if(edit_description !== '')
-         $('#description').html(edit_description);
- }
+    if(edit_description !== '')
+        $('#description').html(edit_description);
+}
 
-function whenClickAddEmail(){
+function whenClickAddEmail() {
     var group = document.createElement("span"); 
     var txt = document.createElement("input");
     var btn_span = document.createElement("span");
@@ -336,7 +381,7 @@ function whenClickAddEmail(){
     email_cnt++;
 }
 
-function whenClickDelEmail(obj){
+function whenClickDelEmail(obj) {
     var output = obj.id;
     console.log(output);
 
@@ -347,7 +392,7 @@ function whenClickDelEmail(obj){
     email_cnt--;
 }
 
-function whenClickInvite(obj){
+function whenClickInvite(obj) {
     var invite_type = obj.id;
     
     if(invite_type === "invite_email")
@@ -383,7 +428,6 @@ function checkEmailForm(obj) {
         return false;
     else
         return true;
-
 }
 
 $(document).ready(function() {

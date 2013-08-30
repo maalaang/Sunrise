@@ -1,5 +1,5 @@
 // Sunrise Connection
-function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, opponent, initiator, stereo, remoteVideoContainer, remoteVideoClass) {
+function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, opponent, initiator, stereo, remoteVideoContainer, remoteVideoClass, focusedVideo) {
     var conn = this;
 
     this.remoteStream = null;
@@ -25,7 +25,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     this.card = document.getElementById('card');
 
     this.remoteVideo = null;
-    this.focusedVideo = document.getElementById('focusedVideo');
+    this.focusedVideo = document.getElementById(focusedVideo);
 
 
     this.initialize = function() {
@@ -246,6 +246,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
 
         attachMediaStream(conn.focusedVideo, event.stream);
         attachMediaStream(conn.remoteVideo, event.stream);
+        focusedVideoId = conn.opponent;
 
         // reattachMediaStream(conn.remoteVideo, localVideo);
         
