@@ -118,4 +118,54 @@ function room_join_log($participant) {
     }
 }
 
+/**
+ * Save room title.
+ */
+function room_title_save() {
+    $res = array();
+
+    if ($_POST['id'] && isset($_POST['title'])) {
+        $db = sr_pdo();
+        if ($room = Room::get($db, $_POST['id'])) {
+            $room->title = $_POST['title'];
+            $room->save($db);
+            $res['result'] = 0;
+
+        } else {
+            $res['result'] = 2;
+            $res['msg'] = "Couldn't find the room";
+        }
+    } else {
+        $res['result'] = 1;
+        $res['msg'] = "Invalid request";
+    }
+
+    echo json_encode($res);
+}
+
+/**
+ * Save room description.
+ */
+function room_description_save() {
+    $res = array();
+
+    if ($_POST['id'] && isset($_POST['description'])) {
+        $db = sr_pdo();
+        if ($room = Room::get($db, $_POST['id'])) {
+            $room->description = $_POST['description'];
+            $room->save($db);
+            $res['result'] = 0;
+
+        } else {
+            $res['result'] = 2;
+            $res['msg'] = "Couldn't find the room";
+        }
+    } else {
+        $res['result'] = 1;
+        $res['msg'] = "Invalid request";
+    }
+
+    echo json_encode($res);
+}
+
 ?>

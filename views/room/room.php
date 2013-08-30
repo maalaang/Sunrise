@@ -22,6 +22,8 @@
             var roomId = '<?= $context['room']->id ?>';
             var roomLink = '<?= $context['room_link'] ?>';
             var roomName = '<?= $context['room']->name ?>';
+            var roomTitle = '<?= $context['room']->title ?>';
+            var roomDescription = '<?= $context['room']->description ?>';
             var roomApi = '<?= $context['room_api'] ?>';
             var isRegisteredUser = <?= $context['is_registered_user'] ?>;
             var userId = <?= $context['user_id'] ?>;
@@ -71,10 +73,10 @@
             <div class="room_head">
                 <div class="room_info col-6">
                     <div class="room_title_wrapper">
-                        <input id="room_title" type="text" placeholder="Room title"/>
+                        <input id="room_title" type="text" placeholder="Room title" value="<?= $context['room']->title ?>"/>
                     </div>
                     <div class="room_description_wrapper">
-                        <input id="room_description" type="text" placeholder="Room description"/>
+                        <input id="room_description" type="text" placeholder="Room description" value="<?= $context['room']->description ?>"/>
                     </div>
                 </div>
                 <div class="room_invite col-6">

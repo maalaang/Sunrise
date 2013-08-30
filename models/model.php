@@ -46,6 +46,18 @@ abstract class Model {
         return $this->id;
     }
 
+    public function get($db, $id) {
+        $called_class = get_called_class();
+        $table = $called_class::getTableName();
+
+        $stmt = $db->prepare("SELECT * FROM $table WHERE id = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $called_class);
+        $stmt->execute();
+
+        return $stmt->fetch();
+    }
+
     /**
      * Save this instance to the database by updating the row with the matched id.
      *

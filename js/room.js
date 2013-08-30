@@ -472,4 +472,49 @@ $(document).ready(function() {
     $(window).on('beforeunload', function(){
           return 'You are going to leave from the video chat room.';
     });
+
+    $('#room_title').focusout(function(event) {
+        var value = $(this).val().trim();
+        $(this).val(value);
+
+        if (value !== roomTitle) {
+            roomTitle = value;
+
+            // send reqeust to save title
+            var params = {};
+            params.id = roomId;
+            params.title = value;
+
+            $.post(roomApi + '/d/room/title/save/', params, function (data) {
+                var json = $.parseJSON(data);
+                if (json.result === 0) {
+                    console.log('done: title save');
+                } else {
+                    console.log('error on saving title: ' + json.msg);
+                }
+            });
+        }
+    });
+
+    $('#room_description').focusout(function(event) {
+        var value = $(this).val().trim();
+        $(this).val(value);
+        if (value !== roomDescription) {
+            roomDescription = value;
+
+            // send reqeust to save description
+            var params = {};
+            params.id = roomId;
+            params.description = value;
+
+            $.post(roomApi + '/d/room/description/save/', params, function (data) {
+                var json = $.parseJSON(data);
+                if (json.result === 0) {
+                    console.log('done: description save');
+                } else {
+                    console.log('error on saving description: ' + json.msg);
+                }
+            });
+        }
+    });
 });
