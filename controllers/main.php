@@ -169,7 +169,7 @@ function main_goto_room() {
         $room_name = uniqid('r');
     }
 
-    if (isset($_GET['user_name']) && strlen($_GET['user_name'] > 0)) {
+    if (isset($_GET['user_name']) && strlen($_GET['user_name']) > 0) {
         $_SESSION['chat_name'] = $_GET['user_name'];
 
     } else {
