@@ -64,7 +64,14 @@ function setParticipantName(senderId, name) {
 }
 
 function onChannelChat(msg) {
-    appendChatMessage(getParticipantName(msg.sender), msg.content);
+    switch (msg.subtype) {
+        case 'normal':
+            appendChatMessage(getParticipantName(msg.sender), msg.content);
+            break;
+        case 'notice':
+            appendChatMessage(null, msg.content);
+            break;
+    }
 }
 
 function appendChatMessage(sender, msg) {
@@ -320,6 +327,7 @@ function whenClickChatSend() {
     var msg = $('#chat_input').val();
 
     channel.sendMessage({type: 'chat',
+        subtype: 'normal',
         recipient: 'ns',
         content: msg});
 
@@ -493,6 +501,14 @@ $(document).ready(function() {
                     console.log('error on saving title: ' + json.msg);
                 }
             });
+
+            // send message to the participants in the room
+            channel.sendMessage({type: 'chat',
+                subtype: 'notice',
+                recipient: 'ns',
+                content: chatName + ' has changed the room title - "' + value + '"'});
+
+            appendChatMessage(chatName, 'You have changed the room title - "' + value + '"');
         }
     });
 
@@ -515,6 +531,14 @@ $(document).ready(function() {
                     console.log('error on saving description: ' + json.msg);
                 }
             });
+
+            // send message to the participants in the room
+            channel.sendMessage({type: 'chat',
+                subtype: 'notice',
+                recipient: 'ns',
+                content: chatName + ' has changed the room description - "' + value + '"'});
+
+            appendChatMessage(chatName, 'You have changed the room description - "' + value + '"');
         }
     });
 });

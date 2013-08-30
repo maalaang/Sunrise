@@ -57,6 +57,14 @@ function room() {
         $context['user_name'] = $_SESSION['user_name'];
         $context['chat_name'] = $_SESSION['chat_name'];
 
+        if ($_SESSION['chat_name']) {
+            $context['chat_name'] = $_SESSION['chat_name'];
+        } else if ($_SESSION['user_name']) {
+            $context['chat_name'] = $_SESSION['user_name'];
+        } else {
+            $context['chat_name'] = 'Anonymous';
+        }
+
         sr_response('views/room/room.php', $context);
 
     } else {
