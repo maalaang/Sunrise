@@ -160,34 +160,25 @@ function roomJoin() {
     });
 }
 
-function changeFocusedVideo(connectionId) {
-    var focusedVideo = document.getElementById('focusedVideo');
-    var connection = connections[connectionId];
-
-    if (connection) {
-        attachMediaStream(focusedVideo, connection.remoteStream);
-    } else {
-        var keys = Object.keys(connections);
-
-        if (keys.length > 0) {
-            var target = connections[keys[keys.length-1]];
-            attachMediaStream(focusedVideo, target.remoteStream);
-
-        } else {
-            focusedVideo.style.opacity = '0';
-        }
-    }
-}
-
 function videoFocusIn(connectionId) {
     var focusedVideo = document.getElementById('focusedVideo');
-    var connection = connections[connectionId];
 
-    if (connection) {
-        attachMediaStream(focusedVideo, connection.remoteStream);
-        focusedVideoId = connectionId;
+    if (connectionId == null) {
+        attachMediaStream(focusedVideo, localStream);
+        focusedVideoId = null;
+        console.log('focused - local video');
+
+    } else {
+        var connection = connections[connectionId];
+        if (connection) {
+            var remoteVideo = document.getElementById(connection.getRemoteVideoId());
+            attachMediaStream(focusedVideo, connection.remoteStream);
+            attachMediaStream(remoteVideo, connection.remoteStream);
+            focusedVideoId = connectionId;
+
+            console.log('focused - ' + connectionId);
+        }
     }
-    console.log('focused - ' + connectionId);
 }
 
 function videoFocusOut(connectionId) {
@@ -462,20 +453,13 @@ function checkEmailForm(obj) {
 }
 
 function onSmallVideoClicked() {
-    console.log('video clicked - ' + $(this).attr('id'));
     var id = $(this).attr('id');
     var idTokens = id.split('-');
-    var focusedVideo = document.getElementById('focusedVideo');
 
     if (idTokens[0] == 'localVideo') {
-        attachMediaStream(focusedVideo, localStream);
-        focusedVideoId = null;
-
+        videoFocusIn(null);
     } else if (idTokens[0] == 'remoteVideo') {
-        var connId = idTokens[1];
-        attachMediaStream(focusedVideo, connections[connId].remoteStream);
-        attachMediaStream($(this).get(0), connections[connId].remoteStream);
-        focusedVideoId = connId;
+        videoFocusIn(idTokens[1]);
     }
 }
 
@@ -531,7 +515,7 @@ $(document).ready(function() {
                 recipient: 'ns',
                 content: value });
 
-            appendChatMessage(chatName, 'You have changed the room title - "' + value + '"');
+            appendChatMessage(null, 'You have changed the room title - "' + value + '"');
         }
     });
 
@@ -561,7 +545,7 @@ $(document).ready(function() {
                 recipient: 'ns',
                 content: value });
 
-            appendChatMessage(chatName, 'You have changed the room description - "' + value + '"');
+            appendChatMessage(null, 'You have changed the room description - "' + value + '"');
         }
     });
 

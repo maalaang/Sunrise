@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?= $context['room_ui_title'] ?></title>
-
         <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+        <meta charset='utf-8'> 
+
+        <title><?= $context['room_ui_title'] ?></title>
     
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
