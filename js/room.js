@@ -456,6 +456,24 @@ function checkEmailForm(obj) {
         return true;
 }
 
+function onSmallVideoClicked() {
+    console.log('video clicked - ' + $(this).attr('id'));
+    var id = $(this).attr('id');
+    var idTokens = id.split('-');
+    var focusedVideo = document.getElementById('focusedVideo');
+
+    if (idTokens[0] == 'localVideo') {
+        attachMediaStream(focusedVideo, localStream);
+        focusedVideoId = null;
+
+    } else if (idTokens[0] == 'remoteVideo') {
+        var connId = idTokens[1];
+        attachMediaStream(focusedVideo, connections[connId].remoteStream);
+        attachMediaStream($(this).get(0), connections[connId].remoteStream);
+        focusedVideoId = connId;
+    }
+}
+
 $(document).ready(function() {
     // text message send
     $('#chat_input').bind('keypress', function(e) {
@@ -541,4 +559,6 @@ $(document).ready(function() {
             appendChatMessage(chatName, 'You have changed the room description - "' + value + '"');
         }
     });
+
+    $('.smallVideo').click(onSmallVideoClicked);
 });
