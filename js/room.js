@@ -68,8 +68,13 @@ function onChannelChat(msg) {
         case 'normal':
             appendChatMessage(getParticipantName(msg.sender), msg.content);
             break;
-        case 'notice':
-            appendChatMessage(null, msg.content);
+        case 'title':
+            appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the room title - "' + msg.content + '"');
+            $('#room_title').val(msg.content);
+            break;
+        case 'description':
+            appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the room description - "' + msg.content + '"');
+            $('#room_description').val(msg.content);
             break;
     }
 }
@@ -521,10 +526,10 @@ $(document).ready(function() {
             });
 
             // send message to the participants in the room
-            channel.sendMessage({type: 'chat',
-                subtype: 'notice',
+            channel.sendMessage({ type: 'chat',
+                subtype: 'title',
                 recipient: 'ns',
-                content: chatName + ' has changed the room title - "' + value + '"'});
+                content: value });
 
             appendChatMessage(chatName, 'You have changed the room title - "' + value + '"');
         }
@@ -551,10 +556,10 @@ $(document).ready(function() {
             });
 
             // send message to the participants in the room
-            channel.sendMessage({type: 'chat',
-                subtype: 'notice',
+            channel.sendMessage({ type: 'chat',
+                subtype: 'description',
                 recipient: 'ns',
-                content: chatName + ' has changed the room description - "' + value + '"'});
+                content: value });
 
             appendChatMessage(chatName, 'You have changed the room description - "' + value + '"');
         }
