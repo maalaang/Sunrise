@@ -176,4 +176,30 @@ function room_description_save() {
     echo json_encode($res);
 }
 
+/**
+ * Save room open status, public or private, and the password.
+ */
+function room_open_status_save() {
+    $res = array();
+
+    if ($_POST['id'] && ($_POST['open'] == 'true' || $_POST['open'] == 'false') && isset($_POST['password'])) {
+        $db = sr_pdo();
+        if ($room = Room::get($db, $_POST['id'])) {
+            $room->is_open = $_POST['open'] == 'true' ? 1 : 0;
+            $room->password = $_POST['password'];
+            $room->save($db);
+            $res['result'] = 0;
+
+        } else {
+            $res['result'] = 2;
+            $res['msg'] = "Couldn't find the room";
+        }
+    } else {
+        $res['result'] = 1;
+        $res['msg'] = "Invalid request";
+    }
+
+    echo json_encode($res);
+}
+
 ?>

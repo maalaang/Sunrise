@@ -10,7 +10,7 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-channel.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-connection.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.js"></script>
 
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css">
@@ -25,6 +25,8 @@
             var roomTitle = '<?= $context['room']->title ?>';
             var roomDescription = '<?= $context['room']->description ?>';
             var roomApi = '<?= $context['room_api'] ?>';
+            var roomIsOpen = <?= $context['room']->is_open ?>;
+            var roomPassword = '<?= $context['room']->password?>';
             var isRegisteredUser = <?= $context['is_registered_user'] ?>;
             var userId = <?= $context['user_id'] ?>;
             var userName = '<?= $context['user_name'] ?>';
@@ -93,6 +95,12 @@
                         </a>
                         <a id="invite_url" data-toggle="modal" href="#inviteModal" onclick="whenClickInvte(this)">
                             <i class="invite_icon icon-large icon-link"></i>
+                        </a>
+                    </span>
+                    <span class="label label-important invite_label invite_label_right">Opan Status:</span>
+                    <span class="invite_icons_wrapper">
+                        <a id="invite_open_status" data-toggle="modal" href="#openStatusModal">
+                        <i class="invite_icon icon-large <?= $context['room']->is_open ? 'icon-unlock' : 'icon-lock' ?>"></i>
                         </a>
                     </span>
                 </div>
@@ -254,6 +262,57 @@
                 </div><!--modal-content-->
             </div><!--modal-dialog-->
         </div><!--modal-->
+
+        <!-- Open Status Modal -->
+        <div class="modal fade" id="openStatusModal">
+            <div class="modal-dialog" style="height:500px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Open Status</h4>
+                    </div>
+                    <div class="modal-body open_status_modal_body">
+                        <div>
+                            <div>
+                                <label for="input_access_control" class="col-lg-4 control-label">Access Control</label>
+                                <div class="col-lg-8">
+                                    <div class="btn-group access_control_btn" id="input_access_control">
+                                        <button type="button" class="btn btn-default btn-small" id="btn_public">Public</button>
+                                        <button type="button" class="btn btn-default btn-small" id="btn_private">Private</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label for="room_password" class="col-lg-4 control-label">Password</label>
+                                    <div class="col-lg-8">
+                                        <input type="password" class="form-control" id="room_password" placeholder="Password" value="<?= $context['room']->password ?>">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="col-lg-8 col-offset-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" id="room_password_hide" checked> Hide Password
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-lg-8 col-offset-4 open_status_save">
+                                    <button id="open_status_save" type="submit" class="btn btn-default btn-small open_status_save_btn has-spinner">
+                                        <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+                                        <span id="open_status_save_text">Save</span>
+                                     </button>
+                                    <button id="open_status_cancel" type="submit" class="btn btn-default btn-small open_status_save_btn">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 
     <script src="<?= $GLOBALS['sr_root'] ?>/js/room.js"></script>

@@ -29,6 +29,7 @@ body {
 }
 .main_content {
     height: 100%;
+    padding-right: 0;
 }
 .side_content {
     height: 100%;
@@ -92,12 +93,20 @@ body {
     box-shadow: none;
 }
 .room_invite {
-    padding: 20px 0 0 0;
+    padding: 18px 0 0 0;
     text-align: right;
+}
+.invite_control {
+    margin-bottom: 6px;
+}
+.invite_open_status {
 }
 .invite_label {
     font-size: 10pt;
     font-weight: bold;
+}
+.invite_label_right {
+    margin-left: 8px;
 }
 .invite_icons_wrapper {
     padding-left: 5px;
@@ -222,4 +231,55 @@ body {
     float: right;
     opacity: 0.5;
 }
+.open_status_modal_body {
+    height: 220px;
+}
 
+.access_control_btn {
+    margin-bottom: 14px;
+}
+
+.open_status_save {
+    margin-top: 14px;
+}
+.open_status_save_btn {
+    width: 100px;
+}
+#open_status_private_extra {
+}
+
+.spinner {
+      display: inline-block;
+        opacity: 0;
+          width: 0;
+
+            -webkit-transition: opacity 0.25s, width 0.25s;
+              -moz-transition: opacity 0.25s, width 0.25s;
+                -o-transition: opacity 0.25s, width 0.25s;
+                  transition: opacity 0.25s, width 0.25s;
+              }
+
+              .has-spinner.active {
+                    cursor:progress;
+                }
+
+                .has-spinner.active .spinner {
+                      opacity: 1;
+                        width: auto; /* This doesn't work, just fix for unkown width elements */
+                    }
+
+                    .has-spinner.btn-mini.active .spinner {
+                            width: 10px;
+                        }
+
+                        .has-spinner.btn-small.active .spinner {
+                                width: 13px;
+                            }
+
+                            .has-spinner.btn.active .spinner {
+                                    width: 16px;
+                                }
+
+                                .has-spinner.btn-large.active .spinner {
+                                        width: 19px;
+                                    }

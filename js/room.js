@@ -14,6 +14,7 @@ var participant_names = null;
 var isAudioMuted = false;
 var isVideoMuted = false;
 var focusedVideoId = null;
+var isPasswordHidden = true;
 
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
@@ -75,6 +76,27 @@ function onChannelChat(msg) {
         case 'description':
             appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the room description - "' + msg.content + '"');
             $('#room_description').val(msg.content);
+            break;
+        case 'open-status':
+            if (msg.open) {
+                appendChatMessage(null, getParticipantName(msg.sender) + ' has unlocked the room.');
+                $('#invite_open_status i').removeClass('icon-lock');
+                $('#invite_open_status i').addClass('icon-unlock');
+            } else {
+                if (roomIsOpen) {
+                    appendChatMessage(null, getParticipantName(msg.sender) + ' has locked this room with a password.');
+                    $('#invite_open_status i').removeClass('icon-unlock');
+                    $('#invite_open_status i').addClass('icon-lock');
+                } else {
+                    appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the password.');
+                }
+            }
+
+            roomIsOpen = msg.open;
+            roomPassword = msg.password;
+            $('#room_password').val(roomPassword);
+            changeOpenStatus(roomIsOpen);
+
             break;
     }
 }
@@ -493,6 +515,12 @@ $(document).ready(function() {
         $(this).val(value);
 
         if (value !== roomTitle) {
+            if (!channel.isReady) {
+                console.log("Cannot update room information before the channel is ready");
+                alert('You are not allowed to change the room information before joining the room');
+                return;
+            }
+
             roomTitle = value;
 
             // send reqeust to save title
@@ -523,6 +551,12 @@ $(document).ready(function() {
         var value = $(this).val().trim();
         $(this).val(value);
         if (value !== roomDescription) {
+            if (!channel.isReady) {
+                console.log("Cannot update room information before the channel is ready");
+                alert('You are not allowed to change the room information before joining the room');
+                return;
+            }
+
             roomDescription = value;
 
             // send reqeust to save description
@@ -549,5 +583,120 @@ $(document).ready(function() {
         }
     });
 
+
     $('.smallVideo').click(onSmallVideoClicked);
+
+    $('#btn_public').click(function() {
+        changeOpenStatus(false);
+    });
+
+    $('#btn_private').click(function() {
+        changeOpenStatus(true);
+    });
+
+    $('#room_password_hide').change(function() {
+        isPasswordHidden = $(this).prop('checked');
+        if (isPasswordHidden) {
+            $('#room_password').attr({type:"password"});
+        } else {
+            $('#room_password').attr({type:"text"});
+        }
+    });
+
+    $('#room_password').bind('change paste keyup', function() {
+        if (roomIsOpen == !$('#btn_public').prop('disabled') && $(this).val() == roomPassword) {
+            $('#open_status_save_text').html('Save');
+            $('#open_status_save').prop('disabled', true);
+        } else {
+            $('#open_status_save_text').html('Save');
+            $('#open_status_save').prop('disabled', false);
+        }
+        console.log('hi');
+    });
+
+    $('#open_status_save').click(function() {
+        if (!channel.isReady) {
+            console.log("Cannot update room information before the channel is ready");
+            alert('You are not allowed to change the room information before joining the room');
+            return;
+        }
+
+        $(this).prop('disabled', true);
+        $(this).addClass('active');
+
+        var params = {};
+        params.id = roomId;
+        params.open = !$('#btn_public').prop('disabled');
+        params.password = $('#room_password').val();
+
+        $.post(roomApi + '/d/room/open-status/save/', params, function (data) {
+            var json = $.parseJSON(data);
+            if (json.result === 0) {
+                console.log('done: room open status save');
+
+                // show notification on the chat box
+                if (!$('#btn_public').prop('disabled')) {
+                    appendChatMessage(null, 'You have unlocked the room.');
+                } else {
+                    if (roomIsOpen) {
+                        appendChatMessage(null, 'You have locked this room with a password.');
+                    } else {
+                        appendChatMessage(null, 'You have changed the password.');
+                    }
+                }
+
+                // accept the changes
+                roomPassword = $('#room_password').val();
+                roomIsOpen = !$('#btn_public').prop('disabled');
+
+                // change the ui components
+                $('#open_status_save').removeClass('active');
+                $('#open_status_save_text').html('Saved');
+
+                if (roomIsOpen) {
+                    $('#invite_open_status i').removeClass('icon-lock');
+                    $('#invite_open_status i').addClass('icon-unlock');
+                } else {
+                    $('#invite_open_status i').removeClass('icon-unlock');
+                    $('#invite_open_status i').addClass('icon-lock');
+                }
+
+                // send message to the participants in the room
+                channel.sendMessage({ type: 'chat',
+                    subtype: 'open-status',
+                    recipient: 'ns',
+                    open: roomIsOpen,
+                    password: roomPassword
+                });
+            } else {
+                console.log('error on saving room open status: ' + json.msg);
+                $('#open_status_save').prop('disabled', false);
+                $('#open_status_save').removeClass('active');
+            }
+        });
+
+    });
+
+    $('#open_status_cancel').click(function() {
+        $('#room_password').val(roomPassword);
+        changeOpenStatus(roomIsOpen);
+        $('#openStatusModal').modal('hide');
+    });
+
+    changeOpenStatus(roomIsOpen);
 });
+
+function changeOpenStatus(open) {
+    $('#btn_public').prop('disabled', !open);
+    $('#btn_private').prop('disabled', open);
+    $('#room_password').prop('disabled', open);
+    $('#room_password_hide').prop('disabled', open);
+
+    if (open == roomIsOpen && $('#room_password').val() == roomPassword) {
+        $('#open_status_save_text').html('Save');
+        $('#open_status_save').prop('disabled', true);
+    } else {
+        $('#open_status_save_text').html('Save');
+        $('#open_status_save').prop('disabled', false);
+    }
+}
