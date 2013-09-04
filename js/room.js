@@ -117,7 +117,10 @@ function onHangup() {
         delete connections[p];
     }
 
-    channel.close();
+    if (channel && channel.isReady) {
+        channel.close();
+    }
+    appendChatMessage(null, 'You have left from the room.');
 
     videoFocusOut(null);
 }
@@ -176,6 +179,7 @@ function roomJoin() {
         var json = $.parseJSON(data);
         if (json.result === 0) {
             console.log('done: room-join');
+            appendChatMessage(null, 'You have joined the room.');
         } else {
             console.log('error on room-join: failed to get participant_id');
         }
@@ -517,7 +521,7 @@ $(document).ready(function() {
         if (value !== roomTitle) {
             if (!channel.isReady) {
                 console.log("Cannot update room information before the channel is ready");
-                alert('You are not allowed to change the room information before joining the room');
+                alert('You are not allowed to change the room information before joining the room.');
                 return;
             }
 
