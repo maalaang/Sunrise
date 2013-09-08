@@ -305,7 +305,6 @@ function admin_rooms() {
 
         // Close Room Request
         } else {
-            // TODO: Write History
             try {
                 $db = sr_pdo();
 
@@ -314,9 +313,19 @@ function admin_rooms() {
                 $stmt->setFetchMode(PDO::FETCH_CLASS, 'Room');
                 $stmt->execute();
 
-                $user = $stmt->fetch();
+                $room = $stmt->fetch();
 
-                $result = $user->close($db);
+                $roomLog = new RoomLog();
+                $roomLog->room_id       = $room->id;
+                $roomLog->name          = $room->name;
+                $roomLog->title         = $room->title;
+                $roomLog->description   = $room->description;
+                $roomLog->is_open       = $room->is_open;
+                $roomLog->start_time    = $room->start_time;
+                $roomLog->end_time      = Model::getCurrentTime();
+                $roomLog->add($db);
+
+                $room->close($db);
 
             } catch (PDOException $e) {
 

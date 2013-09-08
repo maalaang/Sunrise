@@ -261,7 +261,7 @@
                 switch (selected_filter) {
                 case 'All': break;
                 case 'Public': filter_arr['is_open'] = '1'; break;
-                case 'Private': filter_arr['is_open'] = '2'; break;
+                case 'Private': filter_arr['is_open'] = '0'; break;
                 }
 
                 switch (selected_btn) {
