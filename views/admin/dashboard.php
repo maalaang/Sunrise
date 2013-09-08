@@ -77,6 +77,7 @@
                     </ul>
                 </div>
                 <div class="span9" id="content">
+
                     <!-- Channel Server Status -->
                     <div class="row-fluid section">
                         <div class="block">
@@ -85,7 +86,6 @@
                                     <h4>Channel Server Status :: <span id="channel_server_status"></span></h4>
                                 </div>
                             </div>
-
                             <?php
                                 if ($context['show_channel_server_controls']) {
                             ?>

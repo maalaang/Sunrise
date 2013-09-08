@@ -53,7 +53,7 @@ function admin_dashboard() {
 
             for ($j = 0; $j < 3; $j++) {
                 $filter = 'is_open=' . $j . ' AND';
-                if ($j == 0) {
+                if ($j == 2) {
                     $filter = '';
                 }
 
@@ -64,9 +64,9 @@ function admin_dashboard() {
                 $result = $stmt->fetch();
 
                 switch ($j) {
-                case 0: $a_month_data['total'] = $result['COUNT(*)']; break;
+                case 0: $a_month_data['private'] = $result['COUNT(*)']; break;
                 case 1: $a_month_data['public'] = $result['COUNT(*)']; break;
-                case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
+                case 2: $a_month_data['total'] = $result['COUNT(*)']; break;
                 }
             }
 
@@ -81,10 +81,11 @@ function admin_dashboard() {
             $a_month_data['period'] = $date;
 
             for ($j = 0; $j < 3; $j++) {
-                $filter = 'is_registered_user=' . $j . ' AND';
+                $filter = 'is_registered_user=' . $j . ' AND ';
                 if ($j == 2) {
                     $filter = '';
                 }
+                $filter .= 'type=2 AND';
 
                 $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
                     WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
@@ -107,8 +108,11 @@ function admin_dashboard() {
             'current' => Room::getRecordNum(array()),
         );
 
+        $filter = array();
+        $filter['type'] = 2;
+
         $participant_num_data = array(
-            'total' => ParticipantLog::getRecordNum(array()),
+            'total' => ParticipantLog::getRecordNum($filter),
             'current' => Participant::getRecordNum(array()),
         );
 
@@ -161,10 +165,11 @@ function admin_dashboard() {
                         case 2: $a_month_data['private'] = $result['COUNT(*)']; break;
                         }
                     } else {
-                        $filter = 'is_registered_user=' . $j . ' AND';
+                        $filter = 'is_registered_user=' . $j . ' AND ';
                         if ($j == 2) {
                             $filter = '';
                         }
+                        $filter .= 'type=2 AND';
 
                         $stmt = $db->prepare("SELECT COUNT(*) FROM participant_log
                             WHERE $filter DATE_FORMAT(time, '%Y-%m') BETWEEN '$date' AND '$date'");
@@ -189,8 +194,11 @@ function admin_dashboard() {
                     'current' => Room::getRecordNum(array()),
                 );
             } else {
+                $filter = array();
+                $filter['type'] = 2;
+
                 $num_data = array(
-                    'total' => ParticipantLog::getRecordNum(array()),
+                    'total' => ParticipantLog::getRecordNum($filter),
                     'current' => Participant::getRecordNum(array()),
                 );
             }
