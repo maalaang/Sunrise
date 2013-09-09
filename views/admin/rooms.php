@@ -120,6 +120,7 @@
                                             <th>Description</th>
                                             <th>Is Open</th>
                                             <th>Start Time</th>
+                                            <th>Participants</th>
                                             <th>Close Room</th>
                                         </tr>
                                     </thead>
@@ -184,6 +185,7 @@
                                             <th>Is Open</th>
                                             <th>Start Time</th>
                                             <th>End Time</th>
+                                            <th>Participants</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -246,7 +248,9 @@
                 $.ajax({
                     data: { page: 'rooms', type: 'closeRoom', id: this.id },
                     success: function () {
+                        alert('Closed the Room Successfully.');
                         loadData('t1', $('#t1_sr_page li.active').attr('id'));
+                        loadData('t2', $('#t2_sr_page li.active').attr('id'));
                     }
                 });
             }
@@ -355,7 +359,7 @@
                     }
                 }
 
-                $('.closeRoom').click(closeRoom);
+                $('#'+id).click(closeRoom);
             }
 
             function updatePage(table, current_page, total_record_number) {

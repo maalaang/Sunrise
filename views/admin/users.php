@@ -5,6 +5,7 @@
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/styles.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet" media="screen">
+        <link href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
@@ -170,22 +171,48 @@
             });
 
             function checkAuthorized() {
+                var id = this.id;
                 var isChecked = 'unchecked';
+
+                $('#' + id + '_authorized').css('color', 'black');
+                $('#' + id + '_authorized').attr('class', 'icon-spinner icon-spin');
+
                 if (this.checked) {
                     isChecked = 'checked';
                 }
                 $.ajax({
-                    data: { page: 'users', type: 'authorized', id: this.id, checked: isChecked }
+                    data: { page: 'users', type: 'authorized', id: this.id, checked: isChecked },
+                    success: function () {
+                        $('#' + id + '_authorized').css('color', 'green');
+                        $('#' + id + '_authorized').attr('class', 'icon-ok');
+                        $('#' + id + '_authorized').fadeOut('slow', function() {
+                            $('#' + id + '_authorized').attr('class', '');
+                            $('#' + id + '_authorized').fadeIn('slow', function() {});
+                        });
+                    }
                 });
             }
 
             function checkAdmin() {
+                var id = this.id;
                 var isChecked = 'unchecked';
+
+                $('#' + id + '_admin').css('color', 'black');
+                $('#' + id + '_admin').attr('class', 'icon-spinner icon-spin');
+
                 if (this.checked) {
                     isChecked = 'checked';
                 }
                 $.ajax({
-                    data: { page: 'users', type: 'admin', id: this.id, checked: isChecked }
+                    data: { page: 'users', type: 'admin', id: this.id, checked: isChecked },
+                    success: function () {
+                        $('#' + id + '_admin').css('color', 'green');
+                        $('#' + id + '_admin').attr('class', 'icon-ok');
+                        $('#' + id + '_admin').fadeOut('slow', function() {
+                            $('#' + id + '_admin').attr('class', '');
+                            $('#' + id + '_admin').fadeIn('slow', function() {});
+                        });
+                    }
                 });
             }
 
@@ -262,6 +289,7 @@
                                 if (val == '1') temp += 'checked '; 
                                 temp += '/>';
                                 val = temp;
+                                val += ' <i id="' + id + '_authorized"></i>';
                                 break;
                             case 'is_admin':
                                 temp = checkbox;
@@ -269,6 +297,7 @@
                                 if (val == '1') temp += 'checked '; 
                                 temp += '/>';
                                 val = temp;
+                                val += ' <i id="' + id + '_admin"></i>';
                                 break;
                             case 'id':
                                 id = val;

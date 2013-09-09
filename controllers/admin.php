@@ -234,10 +234,26 @@ function admin_rooms() {
 
         $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
 
+        foreach ($room_list as $a_room) {
+            $room_id = $a_room->id;
+            $stmt = $db->prepare("SELECT name FROM participant WHERE room_id='$room_id'");
+            $stmt->execute();
+
+            $a_room->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
+
         $stmt = $db->prepare('SELECT * FROM room_log LIMIT 10');
         $stmt->execute();
 
         $room_log_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'RoomLog');
+
+        foreach ($room_log_list as $a_room_log) {
+            $room_id = $a_room_log->room_id;
+            $stmt = $db->prepare("SELECT participant_name FROM participant_log WHERE type=2 AND room_id='$room_id'");
+            $stmt->execute();
+
+            $a_room_log->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        }
 
         $context = array(
             'room_list' => $room_list,
@@ -285,11 +301,27 @@ function admin_rooms() {
                     $stmt->execute();
 
                     $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
+
+                    foreach ($record_list as $a_room) {
+                        $room_id = $a_room->id;
+                        $stmt = $db->prepare("SELECT name FROM participant WHERE room_id='$room_id'");
+                        $stmt->execute();
+
+                        $a_room->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                    }
                 } else {
                     $stmt = $db->prepare("SELECT * FROM room_log $where LIMIT $beginRecordNum, 10");
                     $stmt->execute();
 
                     $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'RoomLog');
+
+                    foreach ($record_list as $a_room_log) {
+                        $room_id = $a_room_log->room_id;
+                        $stmt = $db->prepare("SELECT participant_name FROM participant_log WHERE type=2 AND room_id='$room_id'");
+                        $stmt->execute();
+
+                        $a_room_log->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                    }
                 }
 
                 $result = array(
