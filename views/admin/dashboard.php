@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.2.3.2.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/styles.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/morris.css" rel="stylesheet" media="screen">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.2.3.2.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/raphael-min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/morris.min.js"></script>

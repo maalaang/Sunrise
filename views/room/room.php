@@ -10,9 +10,9 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-channel.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-connection.js"></script>
-        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.0.min.js"></script>
 
-        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.css">
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.0.min.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room.css">
 
