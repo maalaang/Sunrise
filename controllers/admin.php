@@ -6,6 +6,7 @@ require_once (dirname(__FILE__) . '/../models/room_log.php');
 require_once (dirname(__FILE__) . '/../models/participant.php');
 require_once (dirname(__FILE__) . '/../models/participant_log.php');
 require_once (dirname(__FILE__) . '/../include/utils.php');
+require_once (dirname(__FILE__) . '/../settings/config.php');
 
 /**
  * Ajax request dispatcher 
@@ -478,7 +479,39 @@ function admin_settings() {
         sr_response('views/main/signin.php', $context);
     }
 
-    sr_response('views/admin/settings.php', null);
+    global $sr_db_type;
+    global $sr_db_host;
+    global $sr_db_name;
+    global $sr_db_user;
+    global $sr_db_password;
+    global $sr_db_charset;
+
+    $context = array(
+        'db_type'       => $sr_db_type,
+        'db_host'       => $sr_db_host,
+        'db_port'       => 'TODO',
+        'db_database'   => $sr_db_name,
+        'db_username'   => $sr_db_user,
+        'db_password'   => $sr_db_password,
+        'db_char_set'   => $sr_db_charset,
+
+        'give_authority'    => 'TODO',
+        'allow_anonymous'   => 'TODO',
+
+        'smtp_server'       => 'TODO',
+        'smtp_port'         => 'TODO',
+        'smtp_username'     => 'TODO',
+        'smtp_password'     => 'TODO',
+
+        'installation_path' => 'TODO',
+
+        'maximum_users'     => 'TODO',
+        'stun_server'       => 'TODO',
+        'xmpp_server_use'   => 'TODO',
+        'xmpp_server'       => 'TODO'
+    );
+
+    sr_response('views/admin/settings.php', $context);
 }
 
 function admin_channel_start() {

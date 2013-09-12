@@ -128,7 +128,7 @@
                             <div class="block-content collapse in">
                                 <table class="table table-striped">
                                     <col width="250px" />
-                                    <tr> <td class="type">Path from web server root</td> <td><?= $context['installatioin_path'] ?></td> </tr>
+                                    <tr> <td class="type">Path from web server root</td> <td><?= $context['installation_path'] ?></td> </tr>
                                 </table>
                             </div>
                         </div>
