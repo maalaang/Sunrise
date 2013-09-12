@@ -1,0 +1,18 @@
+.footer {
+    position: relative;
+    margin-top: 100px;
+    padding: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    border-top: 1px solid #DBDBDB;
+}
+
+.footer_link {
+    margin-right: 20px;
+    float: left;
+}
+
+.footer_link_right {
+    margin-left: 20px;
+    float: right;
+}

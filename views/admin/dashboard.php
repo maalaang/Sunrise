@@ -4,8 +4,8 @@
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.2.3.2.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/styles.css" rel="stylesheet" media="screen">
-        <link href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/morris.css" rel="stylesheet" media="screen">
+        <link href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet" media="screen">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.2.3.2.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/scripts.js"></script>
@@ -37,35 +37,9 @@
         </style>
     </head>
     <body>
-        <!---------- Part 1 ---------->
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container-fluid">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="#">Sunrise Admin Page</a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav pull-right">
-                            <li class="dropdown">
-                                <a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i> <?= $user_name ?> <i class="caret"></i></a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a tabindex="-1" href="#">Profile</a>
-                                    </li>
-                                    <li class="divider"></li>
-                                    <li>
-                                        <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/">Sign Out</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <? include("views/header00_admin.php") ?>
 
-        <!---------- Part 2 ---------->
+        <!-- Side Menu Bar-->
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
@@ -193,19 +167,9 @@
             </div>
         </div>
 
-        <!---------- Part 3 ---------->
-        <div id="footer">
-            <div class="container" align="center">
-                <p>
-                <a href="#" class="foot_link">Privacy Policy</a>
-                <a href="#" class="foot_link">About Sunrise</a>
-                <a href="#" class="foot_link">Admin Page</a>
-                <a href="#" class="foot_link_right">Powered by Sunrise</a>
-                </p>
-            </div>
-        </div>
+        <? include("views/footer00.php") ?>
 
-        <!---------- Part 4 ---------->
+        <!---------- Javascript ---------->
         <script>
             function loadData(graph, selected_btn) {
                 var current_first_date = '';
