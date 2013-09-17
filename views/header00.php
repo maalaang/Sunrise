@@ -1,6 +1,8 @@
-<?php
-session_start();
-?>
+<!-- Header for Admin Pages -->
+
+<?php session_start() ?>
+
+<link href="<?= $GLOBALS['sr_root'] ?>/css/header.css" rel="stylesheet" media="screen">
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Sunrise</title>
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.0.min.css" rel="stylesheet">
-        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
-        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet">
-        <script type="text/javascript" src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet">
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.0.min.js"></script>
         <script>
             function whenSignin(e) {
                 var email = document.getElementById('signin_email').value;
@@ -29,6 +30,9 @@
             }
         </script>
         <style>
+            body {
+                padding-top: 70px;
+            }
             #signin-div{
                 width:300px;
                 margin:100px auto;
@@ -37,14 +41,15 @@
         </style>
     </head>
     <body>
-        <div class="header">
-            <div class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container">
-                    <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>
-                </div>
-            </div>
-        </div>
-        
+        <? 
+            session_start();
+            if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+                include("views/header03.php");
+            } else {
+                include("views/header04.php");
+            }
+        ?>
+
         <div class="container" id="signin-div">
             <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post">
                 <fieldset>
@@ -78,15 +83,8 @@
             ?>
         </div>
 
-        <div class="tail_content">
-            <div class="container" align="center">
-                <p>
-                    <a href="#" class="foot_link">Privacy Policy</a>
-                    <a href="#" class="foot_link">About Sunrise</a>
-                    <a href="#" class="foot_link">Admin Page</a>
-                    <a href="#" class="foot_link_right">Powered by Sunrise</a>
-                </p>
-            </div>
+        <div class="container">
+            <? include("views/footer00.php") ?>
         </div>
     </body>
 </html>

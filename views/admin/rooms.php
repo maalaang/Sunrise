@@ -52,7 +52,7 @@
         </style>
     </head>
     <body>
-        <? include("views/header00_admin.php") ?>
+        <? include("views/header00.php") ?>
 
         <!-- Side Menu Bar-->
         <div class="container-fluid">
@@ -305,6 +305,7 @@
                     }
 
                     $('#' + table + '_tr' + index).html(tags);
+                    $('#' + id).click(closeRoom);
                 });
 
                 indexNum /= record_list.length;
@@ -322,8 +323,6 @@
                         $('#' + table + '_tr' + i).html(tags);
                     }
                 }
-
-                $('#'+id).click(closeRoom);
             }
 
             function updatePage(table, current_page, total_record_number) {

@@ -3,8 +3,9 @@
     <head>
         <title>Sunrise</title>
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.0.min.css" rel="stylesheet">
-        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/jumbotron.css" rel="stylesheet">
-        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/foot.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet">
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
+        <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.0.min.js"></script>
         <script>
             function whenSignin(e) {
                 var email = document.getElementById('signin_email').value;
@@ -29,6 +30,9 @@
             }
         </script>
         <style>
+            body {
+                padding: 70px;
+            }
             .roomInfo label {
                 float: right;
             }
@@ -38,33 +42,19 @@
                 top: -4px;
                 left: 10px;
             }
-            .navbar-brand {
-                text-align: left;
-                margin-left: 0;
-            }
-            .navbar-form {
-                text-align: right;
-                margin-right: 0;
-            }
         </style>
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="<?= $GLOBALS['sr_root'] ?>/d/main/">Sunrise</a>
-                <div class="nav-collapse collapse">
-                    <form class="navbar-form form-inline pull-right" action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post">
-                        <input type="text" id=signin_email name=signin_email placeholder="Email" class="form-control">
-                        <input type="password" id=signin_password name=signin_password placeholder="Password" class="form-control">
-                        <input type="button" class="btn" id="btn_signin" name="btn_signin" value="Sign In" onclick="whenSignin(event)" />
-                        <input type="button" class="btn" id="btn_signup" name="btn_signup" value="Sign Up" onclick="whenClickSignup(event)" />
-                    </form>
-                </div>
-            </div>
-        </div>
+        <? 
+            session_start();
+            if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+                include("views/header01.php");
+            } else {
+                include("views/header04.php");
+            }
+        ?>
 
         <div class="container">
-
             <div class="jumbotron">
                 <h1>Welcome to Sunrise</h1>
                 <p>
@@ -93,7 +83,6 @@
                     </fieldset>
                 </form>
             </div>
-
             <div class="body-content">
                 <div class="row">
                     <div class="col-lg-4">
@@ -111,18 +100,10 @@
                 </div>
                 <hr>
             </div>
-
         </div>
 
-        <div class="tail_content">
-            <div class="container" align="center">
-                <p>
-                <a href="#" class="foot_link">Privacy Policy</a>
-                <a href="#" class="foot_link">About Sunrise</a>
-                <a href="#" class="foot_link">Admin Page</a>
-                <a href="#" class="foot_link_right">Powered by Sunrise</a>
-                </p>
-            </div>
+        <div class="container">
+            <? include("views/footer00.php") ?>
         </div>
     </body>
 </html>

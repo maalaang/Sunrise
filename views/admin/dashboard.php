@@ -37,7 +37,7 @@
         </style>
     </head>
     <body>
-        <? include("views/header00_admin.php") ?>
+        <? include("views/header00.php") ?>
 
         <!-- Side Menu Bar-->
         <div class="container-fluid">

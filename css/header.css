@@ -1,0 +1,39 @@
+.navbar {
+  height: 42px;
+}
+
+.navbar-brand {
+    text-align: left;
+    margin-left: 0px;
+
+    font-weight: bold;
+    font-size: 19pt;
+    padding-top: 10px;
+}
+
+.navbar-form {
+    text-align: right;
+    margin-right: 20px;
+}
+
+.navbar-form * {
+    height: 35px;
+    margin-top: 3.5px;
+}
+
+.navbar-form input {
+    min-height: 0px;
+    width: 180px;
+}
+
+.navbar-form button {
+    width: 70px;
+}
+
+.nav {
+    margin-top: 2px;
+}
+
+.nav * {
+    color: #B3B3B3;
+}

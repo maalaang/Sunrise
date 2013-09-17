@@ -5,6 +5,6 @@
         <a href="#" class="footer_link">Privacy Policy</a>
         <a href="#" class="footer_link">About Sunrise</a>
         <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/" class="footer_link">Admin Page</a>
-        <a href="#" class="footer_link_right">Powered by Sunrise</a>
+        <a href="<?= $GLOBALS['sr_root'] ?>/d/main/" class="footer_link_right">Powered by Sunrise</a>
     </p>
 </div>
