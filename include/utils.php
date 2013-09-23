@@ -80,4 +80,19 @@ function sr_regex($type) {
     }
 }
 
+function sr_signin($user) {
+    $_SESSION['user_id'] = $user->id;
+    $_SESSION['is_logged'] = true;
+    $_SESSION['user_email'] = $user->email;
+    $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
+}
+
+function sr_signout() {
+    unset($_SESSION['is_logged']);
+    unset($_SESSION['user_email']);
+    unset($_SESSION['user_name']);
+    unset($_SESSION['user_id']);
+    session_destroy();
+}
+
 ?>

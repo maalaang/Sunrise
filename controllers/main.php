@@ -45,11 +45,7 @@ function main_signin() {
                     $context['result'] = 0;
                     $context['msg'] = 'Successfully signed in';
 
-                    // Successfully signed in & Session start
-                    $_SESSION['user_id'] = $user->id;
-                    $_SESSION['is_logged'] = true;
-                    $_SESSION['user_email'] = $user->email;
-                    $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
+                    sr_signin($user);
                 }
 
             } catch (PDOException $e) {
@@ -57,8 +53,12 @@ function main_signin() {
                 $context['msg'] = 'Failed to signin. Please try it again.';
             }
         }
-        // TODO: What page will be shown up after signin?
-        sr_response('views/main/signin.php', $context);
+
+        if ($context['result'] === 0) {
+            sr_response('views/main/index.php', $context);
+        } else {
+            sr_response('views/main/signin.php', $context);
+        }
 
     } else {
         // Show signin view
@@ -125,8 +125,13 @@ function main_signup() {
                 }
             }
         }
-        // TODO: What page will be shown up after signup?
-        sr_response('views/main/signup.php', $context);
+
+        if ($context['result'] === 0) {
+            $sr_signin($user);
+            sr_response('views/main/index.php', $context);
+        } else {
+            sr_response('views/main/signup.php', $context);
+        }
 
     } else {
         // Show signup view
@@ -143,21 +148,11 @@ function main_signout() {
         $context['msg'] = 'Email: ' . $_SESSION['user_email'] .
                     '<br />Name:' . $_SESSION['user_name'] .
                     '<br />Successfully signed out';
-
-        unset($_SESSION['is_logged']);
-        unset($_SESSION['user_email']);
-        unset($_SESSION['user_name']);
-        unset($_SESSION['user_id']);
-        session_destroy();
-
+        sr_signout();
+        sr_response('views/main/signout.php', $context);
     } else {
-        $context['result'] = 1;
-        $context['msg'] = 'You were not signed in';
+        sr_response_error(404);
     }
-
-    // TODO: What page will be shown up after signout?
-    // Show signout result
-    sr_response('views/main/signout.php', $context);
 }
 
 function main_goto_room() {
