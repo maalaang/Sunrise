@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="refresh" content="3; url=<?= $GLOBALS['sr_root'] ?>/d/main/signin/">
+        <meta http-equiv="refresh" content="3; url=<?= $GLOBALS['sr_root'] ?>/d/">
     </head>
     <body>
         <h1>Sign Out Result</h1>

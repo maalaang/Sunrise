@@ -32,6 +32,15 @@ function sr_response_error($error) {
     exit(0);
 }
 
+function sr_home_path() {
+    global $sr_root;
+    return $sr_root;
+}
+
+function sr_redirect($path) {
+    header('Location: ' . sr_home_path() . $path);
+}
+
 /**
  * Return PDO object created based on the database configuations.
  * @return  PDO object

@@ -55,7 +55,7 @@ function main_signin() {
         }
 
         if ($context['result'] === 0) {
-            sr_response('views/main/index.php', $context);
+            sr_redirect('/d/');
         } else {
             sr_response('views/main/signin.php', $context);
         }
@@ -127,8 +127,8 @@ function main_signup() {
         }
 
         if ($context['result'] === 0) {
-            $sr_signin($user);
-            sr_response('views/main/index.php', $context);
+            sr_signin($user);
+            sr_redirect('/d/');
         } else {
             sr_response('views/main/signup.php', $context);
         }
