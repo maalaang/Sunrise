@@ -23,6 +23,7 @@ $url_patterns = array (
     "#^/room/description/save/$#" => room_description_save,
     "#^/room/open-status/save/$#" => room_open_status_save,
     "#^/channel/$#"         => channel_event,
+    "#^/admin/$#"           => admin_dashboard,
     "#^/admin/fetch/$#"     => admin_ajax_dispatcher,
     "#^/admin/dashboard/$#" => admin_dashboard,
     "#^/admin/rooms/$#"     => admin_rooms,

@@ -42,10 +42,10 @@
     </head>
     <body>
         <? 
-            if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
-                include("views/header03.php");
-            } else {
+            if (sr_is_signed_in()) {
                 include("views/header04.php");
+            } else {
+                include("views/header03.php");
             }
         ?>
 

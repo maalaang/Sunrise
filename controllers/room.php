@@ -46,7 +46,7 @@ function room() {
         $context['room_api'] = $sr_root;
         $context['room_ui_title'] = $sr_room_ui_title;
 
-        if ($_SESSION['is_logged'] === true) {
+        if (sr_is_signed_in()) {
             $context['user_id'] = $_SESSION['user_id'];
             $context['is_registered_user'] = 'true';
         } else {

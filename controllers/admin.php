@@ -36,7 +36,7 @@ function admin_dashboard() {
 
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+        if (!sr_is_signed_in()) {
             $context = array();
             $context['error'] = 0;
             $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
@@ -221,7 +221,7 @@ function admin_dashboard() {
 function admin_rooms() {
     // Show Rooms Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+        if (!sr_is_signed_in()) {
             $context = array();
             $context['error'] = 0;
             $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
@@ -371,7 +371,7 @@ function admin_rooms() {
 function admin_users() {
     // Show Users Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-        if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+        if (!sr_is_signed_in()) {
             $context = array();
             $context['error'] = 0;
             $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
@@ -472,7 +472,7 @@ function admin_users() {
 }
 
 function admin_settings() {
-    if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
+    if (!sr_is_signed_in()) {
         $context = array();
         $context['error'] = 0;
         $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';

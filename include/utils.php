@@ -41,6 +41,30 @@ function sr_redirect($path) {
     header('Location: ' . sr_home_path() . $path);
 }
 
+function sr_is_signed_in() {
+    if ($_SESSION['is_logged']) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function sr_user_name() {
+    if ($_SESSION['is_logged']) {
+        return $_SESSION['user_name'];
+    } else {
+        return null;
+    }
+}
+
+function sr_is_admin() {
+    if ($_SESSION['is_admin']) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 /**
  * Return PDO object created based on the database configuations.
  * @return  PDO object
@@ -94,6 +118,7 @@ function sr_signin($user) {
     $_SESSION['is_logged'] = true;
     $_SESSION['user_email'] = $user->email;
     $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
+    $_SESSION['is_admin'] = $user->is_admin;
 }
 
 function sr_signout() {

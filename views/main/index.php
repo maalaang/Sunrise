@@ -31,25 +31,34 @@
         </script>
         <style>
             body {
-                padding: 70px;
+                padding: 60px;
             }
             .roomInfo label {
                 float: right;
+                font-size: 13pt;
             }
             .roomInfo input {
-                padding-left: 5px;
+                padding-left: 8px;
+                padding-right: 8px;
                 position: relative;
                 top: -4px;
                 left: 10px;
+                font-weight: bold;
+                width: 220px;
             }
+            #room-join-btn {
+                width: 347px;
+                font-weight: bold;
+            }
+
         </style>
     </head>
     <body>
         <? 
-            if (!isset($_SESSION['is_logged']) || !$_SESSION['is_logged']) {
-                include("views/header01.php");
-            } else {
+            if (sr_is_signed_in()) {
                 include("views/header04.php");
+            } else {
+                include("views/header01.php");
             }
         ?>
 
@@ -62,6 +71,9 @@
                     Moreover, you may provide more enhanced customer service using video chat.
                     Enjoy the next generation of the Web with Sunrise.
                     It is an open source sofrware licensed under Apache License Version 2.0.
+                    <br/>
+                    <br/>
+                    <br/>
                 </p>
                 <hr/>
                 <form action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
@@ -73,11 +85,11 @@
                             </tr>
                             <tr>
                                 <td><label for="your_name">Your Name :</label></td>
-                                <td><input id="your_name" name="user_name" type="text" placeholder="ex.Steve Kim" /></td>
+                                <td><input id="your_name" name="user_name" type="text" placeholder="ex.Steve Kim" value="<?= sr_user_name() ?>"/></td>
                             </tr>
                         </table>
                         <p style="text-align:center; margin: 10px">
-                        <button type="submit" class="btn btn-primary btn-large">Go to the Room!</button> 
+                            <button id="room-join-btn" type="submit" class="btn btn-primary btn-normal">Go to the Room!</button> 
                         </p>
                     </fieldset>
                 </form>

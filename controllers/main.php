@@ -143,7 +143,7 @@ function main_signup() {
 function main_signout() {
     $context = array();
 
-    if ($_SESSION['is_logged']) {
+    if (sr_is_signed_in()) {
         $context['result'] = 0;
         $context['msg'] = 'Email: ' . $_SESSION['user_email'] .
                     '<br />Name:' . $_SESSION['user_name'] .
@@ -151,7 +151,7 @@ function main_signout() {
         sr_signout();
         sr_response('views/main/signout.php', $context);
     } else {
-        sr_response_error(404);
+        sr_response_error(400);
     }
 }
 

@@ -1,5 +1,5 @@
 .navbar {
-  height: 42px;
+    height: 42px;
 }
 
 .navbar-brand {
@@ -9,6 +9,10 @@
     font-weight: bold;
     font-size: 19pt;
     padding-top: 10px;
+
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .3s linear;
+    transition: all .3s linear;
 }
 
 .navbar-form {
@@ -34,6 +38,45 @@
     margin-top: 2px;
 }
 
-.nav * {
+.nav .user-menu {
+    margin-top: -3px;
+}
+
+.nav > li.dropdown > a {
     color: #B3B3B3;
+    font-size: 12pt;
+}
+
+.nav .user-name {
+    margin-left: 4px;
+}
+
+.navbar .nav li.dropdown > a .icon-user {
+    font-size: 16pt;
+}
+
+.navbar .nav li.dropdown > .dropdown-toggle .caret {
+    border-bottom-color: #d1d1d1;
+    border-top-color: #d1d1d1;
+}
+
+.nav .user-menu {
+    font-weight: bold;
+}
+
+.nav .user-menu > a.dropdown-toggle {
+    background-color:inherit;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .3s linear;
+    transition: all .3s linear;
+}
+
+.nav .user-menu > a.dropdown-toggle:hover {
+    background-color:inherit;
+    color: #fff;
+}
+
+.nav .user-menu > a.dropdown-toggle:focus {
+    background-color:inherit;
+    color: #fff;
 }
