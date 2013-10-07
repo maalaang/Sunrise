@@ -37,10 +37,10 @@ function admin_dashboard() {
     // Show Dashboard Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         if (!sr_is_signed_in()) {
-            $context = array();
-            $context['error'] = 0;
-            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
-            sr_response('views/main/signin.php', $context);
+            sr_redirect('/d/main/signin/');
+        }
+        if (!sr_is_admin()) {
+            sr_redirect('/d/');
         }
 
         $db = sr_pdo();
@@ -222,10 +222,10 @@ function admin_rooms() {
     // Show Rooms Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         if (!sr_is_signed_in()) {
-            $context = array();
-            $context['error'] = 0;
-            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
-            sr_response('views/main/signin.php', $context);
+            sr_redirect('/d/main/signin/');
+        }
+        if (!sr_is_admin()) {
+            sr_redirect('/d/');
         }
 
         $db = sr_pdo();
@@ -372,10 +372,10 @@ function admin_users() {
     // Show Users Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         if (!sr_is_signed_in()) {
-            $context = array();
-            $context['error'] = 0;
-            $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
-            sr_response('views/main/signin.php', $context);
+            sr_redirect('/d/main/signin/');
+        }
+        if (!sr_is_admin()) {
+            sr_redirect('/d/');
         }
 
         $db = sr_pdo();
@@ -464,6 +464,10 @@ function admin_users() {
 
                 $result = $user->save($db);
 
+                if (sr_user_id() == $user->id) {
+                    sr_set_admin($user->is_admin);
+                }
+
             } catch (PDOException $e) {
 
             }
@@ -473,10 +477,10 @@ function admin_users() {
 
 function admin_settings() {
     if (!sr_is_signed_in()) {
-        $context = array();
-        $context['error'] = 0;
-        $context['msg'] = 'Admin authority is required to access admin pages. Please signin first.';
-        sr_response('views/main/signin.php', $context);
+        sr_redirect('/d/main/signin/');
+    }
+    if (!sr_is_admin()) {
+        sr_redirect('/d/');
     }
 
     global $sr_db_type;

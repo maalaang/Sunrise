@@ -39,6 +39,7 @@ function sr_home_path() {
 
 function sr_redirect($path) {
     header('Location: ' . sr_home_path() . $path);
+    exit(0);
 }
 
 function sr_is_signed_in() {
@@ -57,12 +58,24 @@ function sr_user_name() {
     }
 }
 
+function sr_user_id() {
+    if ($_SESSION['is_logged']) {
+        return $_SESSION['user_id'];
+    } else {
+        return null;
+    }
+}
+
 function sr_is_admin() {
     if ($_SESSION['is_admin']) {
         return true;
     } else {
         return false;
     }
+}
+
+function sr_set_admin($is_admin) {
+    $_SESSION['is_admin'] = $is_admin;
 }
 
 /**
