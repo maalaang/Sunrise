@@ -10,15 +10,15 @@ $sr_db_password     = 'sunrisedb3533';
 $sr_db_charset      = 'utf8';
 
 /**
- *  * Sunrise VC home directory from the web server root.
- *   */
+ * Sunrise VC home directory from the web server root.
+ */
 $sr_root        = '/workspace/blackhat/Sunrise';
 
 $sr_room_ui_title   = 'Sunrise - Video Conference Room';
 
 /**
- *  * Channel server configuration.
- *   */
+ * Channel server configuration.
+ */
 $sr_channel_server_key = 'sunrise/channel/';
 $sr_channel_server_port = '8889';
 $sr_channel_server_uri  = 'ws://dev.maalaang.com:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
@@ -30,15 +30,15 @@ $sr_channel_local_installation  = true;
 $sr_channel_run_script          = '/run/sunrise_channel_server.php';
 
 /**
- *  * Regular expressions for validation.
- *   */
+ * Regular expressions for validation.
+ */
 $sr_regex_name      = '/^[a-zA-Z]+$/';
 $sr_regex_email     = '/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/';
 $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
 
 /**
- *  * Logger configuration - Apache log4php
- *   */
+ * Logger configuration - Apache log4php
+ */
 $sr_channel_log_file = '/var/log/sunrise/sunrise-channel.log';
 $sr_channel_logger_config = array(
     'appenders' => array(
