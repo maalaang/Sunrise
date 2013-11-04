@@ -30,6 +30,19 @@ body {
     padding: 12px 8px 4px 20px;
 }
 
+.dropdown-menu {
+    padding: 4px 0;
+}
+
+.dropdown-menu .divider {
+    margin: 2px 0;
+}
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+    background-color: #0088cc;
+    background-image: none;
+}
+
 /** Login Page **/
 #login {
     padding-top: 40px;

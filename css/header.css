@@ -107,3 +107,19 @@
     background-color:inherit;
     color: #fff;
 }
+
+.dropdown-menu {
+    padding: 4px 0;
+}
+
+.dropdown-menu .divider {
+    margin: 2px 0;
+}
+
+.dropdown-menu>li>a{
+}
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+    background-color: #9d261d;
+    background-image: none;
+}

@@ -16,11 +16,12 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                            <a tabindex="-1" href="#">Profile</a>
+                                <a tabindex="-1" href="#">Profile</a>
                             </li>
-                            <li class="divider"></li>
+                            <li class="divider">
+                            </li>
                             <li>
-                            <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/">Sign Out</a>
+                                <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/signout/">Sign Out</a>
                             </li>
                         </ul>
                     </li>
