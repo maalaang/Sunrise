@@ -483,12 +483,16 @@ function admin_settings() {
         sr_redirect('/d/');
     }
 
+    global $sr_root;
     global $sr_db_type;
     global $sr_db_host;
     global $sr_db_name;
     global $sr_db_user;
     global $sr_db_password;
     global $sr_db_charset;
+    global $sr_default_authority;
+    global $sr_join_anonymous;
+    global $sr_join_non_authorized;
 
     $context = array(
         'db_type'       => $sr_db_type,
@@ -499,15 +503,16 @@ function admin_settings() {
         'db_password'   => $sr_db_password,
         'db_char_set'   => $sr_db_charset,
 
-        'give_authority'    => 'TODO',
-        'allow_anonymous'   => 'TODO',
+        'default_authority'     => $sr_default_authority ? 'Yes' : 'No',
+        'join_anonymous'        => $sr_join_anonymous ? 'Yes' : 'No',
+        'join_non_authorized'   => $sr_join_non_authorized ? 'Yes' : 'No',
 
         'smtp_server'       => 'TODO',
         'smtp_port'         => 'TODO',
         'smtp_username'     => 'TODO',
         'smtp_password'     => 'TODO',
 
-        'installation_path' => 'TODO',
+        'installation_path' => $sr_root,
 
         'maximum_users'     => 'TODO',
         'stun_server'       => 'TODO',

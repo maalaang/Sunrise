@@ -4,23 +4,30 @@
  */
 $sr_db_type         = 'mysql';
 $sr_db_host         = 'dev.maalaang.com';
-$sr_db_name         = 'sunrise';
-$sr_db_user         = 'sunrise';
-$sr_db_password     = 'sunrisedb3533';
+$sr_db_name         = 'sunrise_husky';
+$sr_db_user         = 'sunrise_husky';
+$sr_db_password     = 'husky8888';
 $sr_db_charset      = 'utf8';
 
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/blackhat/Sunrise';
+$sr_root        = '/workspace/husky/Sunrise';
 
 $sr_room_ui_title   = 'Sunrise - Video Conference Room';
+
+/**
+ * User authorization configuration
+ */
+$sr_default_authority   = 1;
+$sr_join_anonymous      = 1;
+$sr_join_non_authorized = 1;
 
 /**
  * Channel server configuration.
  */
 $sr_channel_server_key = 'sunrise/channel/';
-$sr_channel_server_port = '8889';
+$sr_channel_server_port = '9002';
 $sr_channel_server_uri  = 'ws://dev.maalaang.com:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
 $sr_channel_server_uri_internal = 'ws://172.27.254.4:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
 
@@ -39,7 +46,7 @@ $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
 /**
  * Logger configuration - Apache log4php
  */
-$sr_channel_log_file = '/var/log/sunrise/sunrise-channel.log';
+$sr_channel_log_file = '/var/log/sunrise/sunrise-channel-husky.log';
 $sr_channel_logger_config = array(
     'appenders' => array(
         'default' => array(

@@ -64,8 +64,9 @@
                             <div class="block-content collapse in">
                                 <table class="table table-striped">
                                     <col width="300px" />
-                                    <tr> <td class="type">Give authorization on sign up</td>          <td><?= $context['give_authority'] ?></td>  </tr>
-                                    <tr> <td class="type">Allow anonymous users to join to chat</td>  <td><?= $context['allow_anonymous'] ?></td> </tr>
+                                    <tr> <td class="type">Give authorization on sign up</td>          <td><?= $context['default_authority'] ?></td>  </tr>
+                                    <tr> <td class="type">Allow anonymous users to join to chat</td>  <td><?= $context['join_anonymous'] ?></td> </tr>
+                                    <tr> <td class="type">Allow non authorized users to join to chat</td>  <td><?= $context['join_non_authorized'] ?></td> </tr>
                                 </table>
                             </div>
                         </div>

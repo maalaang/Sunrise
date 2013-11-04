@@ -74,6 +74,14 @@ function sr_is_admin() {
     }
 }
 
+function sr_is_authorized() {
+    if ($_SESSION['is_authorized']) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function sr_set_admin($is_admin) {
     $_SESSION['is_admin'] = $is_admin;
 }
@@ -127,11 +135,12 @@ function sr_regex($type) {
 }
 
 function sr_signin($user) {
-    $_SESSION['user_id'] = $user->id;
     $_SESSION['is_logged'] = true;
     $_SESSION['user_email'] = $user->email;
     $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
+    $_SESSION['user_id'] = $user->id;
     $_SESSION['is_admin'] = $user->is_admin;
+    $_SESSION['is_authorized'] = $user->is_authorized;
 }
 
 function sr_signout() {
@@ -139,6 +148,8 @@ function sr_signout() {
     unset($_SESSION['user_email']);
     unset($_SESSION['user_name']);
     unset($_SESSION['user_id']);
+    unset($_SESSION['is_admin']); 
+    unset($_SESSION['is_authorized']);
     session_destroy();
 }
 
