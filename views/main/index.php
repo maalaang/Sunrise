@@ -46,13 +46,9 @@
 
         <div class="container">
             <div class="jumbotron">
-                <h1>Sunrise Video Conference</h1>
+                <h1><?= $context['content']['title'] ?></h1>
                 <p>
-                    Sunrise is an open video conference solution based on HTML5 WebRTC.
-                    You can use this software for online meeting at your company or for talking to your friends.
-                    Moreover, you may provide more enhanced customer service using video chat.
-                    Enjoy the next generation of the Web with Sunrise.
-                    It is an open source sofrware licensed under Apache License Version 2.0.
+                    <?= $context['content']['description'] ?>
                 </p>
                 <hr/>
                 <form class="room-info" action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
@@ -72,23 +68,20 @@
                         </p>
                     </fieldset>
                 </form>
+                <hr/>
             </div>
             <div class="body-content">
                 <div class="row">
                     <div class="col-lg-4">
-                        <h2>Custom Heading 1</h2>
-                        <p>Custom Message 1</p>
+                        <?= $context['content']['info1'] ?>
                     </div>
                     <div class="col-lg-4">
-                        <h2>Custom Heading 2</h2>
-                        <p>Custom Message 2</p>
+                        <?= $context['content']['info2'] ?>
                     </div>
                     <div class="col-lg-4">
-                        <h2>Custom Heading 3</h2>
-                        <p>Custom Message 3</p>
+                        <?= $context['content']['info3'] ?>
                     </div>
                 </div>
-                <hr>
             </div>
         </div>
 

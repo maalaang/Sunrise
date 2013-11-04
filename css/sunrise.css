@@ -1,6 +1,6 @@
 body {
     color: #444444;
-    padding: 40px;
+    padding: 30px;
 }
 
 .btn-primary {
@@ -19,6 +19,8 @@ body {
 
 .jumbotron {
     background-color: transparent;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .jumbotron h1 {
@@ -34,7 +36,8 @@ body {
 }
 
 .jumbotron .room-info {
-    margin-top: 30px;
+    margin-top: 40px;
+    margin-bottom: 30px;
 }
 
 .jumbotron button.btn-primary {
@@ -56,6 +59,16 @@ body {
     left: 10px;
     font-weight: bold;
     width: 220px;
+}
+
+.body-content .content-image {
+    text-align: center;
+}
+
+.body-content .content-desc {
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 @media (max-width: 767px) {
