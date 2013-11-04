@@ -1,6 +1,4 @@
 <!-- Header for Admin Pages -->
-<link href="<?= $GLOBALS['sr_root'] ?>/css/header.css" rel="stylesheet" media="screen">
-
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">

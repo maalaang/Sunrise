@@ -1,18 +1,44 @@
 .navbar {
     height: 42px;
+    background-color: #9d261d;
+    background-image: linear-gradient(-30deg, #9e271e, #9a251d);
 }
 
 .navbar-brand {
     text-align: left;
     margin-left: 0px;
-
     font-weight: bold;
-    font-size: 19pt;
+    font-size: 22pt;
     padding-top: 10px;
+    text-shadow: 2px 2px 2px #333333;
+}
 
-    -webkit-transition: all .3s linear;
-    -moz-transition: all .3s linear;
-    transition: all .3s linear;
+.navbar .btn-inverse {
+    color: #717171;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.navbar .btn-inverse:hover {
+    color: #070707;
+    background-color: #d1d1d1;
+}
+
+.navbar input, .navbar button {
+    height: 30px;
+    margin-top: 6px;
+}
+
+.navbar input {
+    padding: 8px;
+}
+
+.navbar button {
+    padding: 0;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff;
 }
 
 .navbar-form {
@@ -43,8 +69,9 @@
 }
 
 .nav > li.dropdown > a {
-    color: #B3B3B3;
+    color: #fff;
     font-size: 12pt;
+    text-shadow: 2px 2px 2px #333333;
 }
 
 .nav .user-name {
@@ -56,8 +83,8 @@
 }
 
 .navbar .nav li.dropdown > .dropdown-toggle .caret {
-    border-bottom-color: #d1d1d1;
-    border-top-color: #d1d1d1;
+    border-bottom-color: #fff;
+    border-top-color: #fff;
 }
 
 .nav .user-menu {

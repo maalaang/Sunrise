@@ -4,6 +4,8 @@
         <title>Sunrise</title>
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.0.min.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/header.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/sunrise.css" rel="stylesheet">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.0.min.js"></script>
         <script>
@@ -30,26 +32,6 @@
             }
         </script>
         <style>
-            body {
-                padding: 60px;
-            }
-            .roomInfo label {
-                float: right;
-                font-size: 13pt;
-            }
-            .roomInfo input {
-                padding-left: 8px;
-                padding-right: 8px;
-                position: relative;
-                top: -4px;
-                left: 10px;
-                font-weight: bold;
-                width: 220px;
-            }
-            #room-join-btn {
-                width: 347px;
-                font-weight: bold;
-            }
 
         </style>
     </head>
@@ -64,28 +46,25 @@
 
         <div class="container">
             <div class="jumbotron">
-                <h1>Welcome to Sunrise</h1>
+                <h1>Sunrise Video Conference</h1>
                 <p>
                     Sunrise is an open video conference solution based on HTML5 WebRTC.
                     You can use this software for online meeting at your company or for talking to your friends.
                     Moreover, you may provide more enhanced customer service using video chat.
                     Enjoy the next generation of the Web with Sunrise.
                     It is an open source sofrware licensed under Apache License Version 2.0.
-                    <br/>
-                    <br/>
-                    <br/>
                 </p>
                 <hr/>
-                <form action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
+                <form class="room-info" action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
                     <fieldset>
-                        <table align="center" class="roomInfo">
+                        <table align="center" class="room-info-table">
                             <tr>
                                 <td><label for="room_name">Room Name :</label></td>
-                                <td><input id="room_name" name="room_name" type="text" placeholder="ex.Sunrise Meeting" /></td>
+                                <td><input id="room_name" name="room_name" type="text" placeholder="Developer Weekly Meeting" /></td>
                             </tr>
                             <tr>
                                 <td><label for="your_name">Your Name :</label></td>
-                                <td><input id="your_name" name="user_name" type="text" placeholder="ex.Steve Kim" value="<?= sr_user_name() ?>"/></td>
+                                <td><input id="your_name" name="user_name" type="text" placeholder="Steve Kim" value="<?= sr_user_name() ?>"/></td>
                             </tr>
                         </table>
                         <p style="text-align:center; margin: 10px">
