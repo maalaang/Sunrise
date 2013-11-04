@@ -5,6 +5,31 @@ body {
 	background-color: #f5f5f5;
 }
 
+.navbar-inner {
+    padding-right: 20px;
+    padding-left: 20px;
+    background-color: #fafafa;
+    background-image: -moz-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -webkit-gradient(linear,0 0,0 100%,from(#fff),to(#f2f2f2));
+    background-image: -webkit-linear-gradient(top,#fff,#f2f2f2);
+    background-image: -o-linear-gradient(top,#fff,#f2f2f2);
+    background-image: linear-gradient(to bottom,#fff,#f2f2f2);
+    background-repeat: repeat-x;
+    border: 1px solid #d4d4d4;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#fff2f2f2',GradientType=0);
+    -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.065);
+}
+
+.navbar-inner .brand {
+    font-weight: bold;
+    padding: 12px 8px 4px 20px;
+}
+
 /** Login Page **/
 #login {
     padding-top: 40px;
@@ -87,8 +112,9 @@ body {
 .block {
 	border: 1px solid #ccc;
 	background: white;
-	margin: 1em 0em;
+	margin: 0.5em 0em;
 	border-top: none;
+    max-width: 1000px;
 }
 
 .block-content {
@@ -103,9 +129,25 @@ body {
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
 	border-radius: 0px;
+    height: 14px;
 }
+
 .block-header div {
-	padding-top: 10px;
+}
+
+.block-header h4 {
+    font-size: 15px;
+    margin: 12px 0;
+}
+
+.navbar-inner .btn-small {
+    padding: 4px 16px 4px 16px;
+}
+
+.nav > li.dropdown > a {
+    color: #777777;
+    text-shadow: none;
+    font-weight: bold;
 }
 
 .easyPieChart {
