@@ -146,6 +146,20 @@
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
     background-color: #9d261d;
     background-image: none;
+    color: #fff;
+}
+
+.navbar .navbar-nav-small {
+    display: none;
+}
+
+.navbar .navbar-nav-large {
+    display: block;
+}
+
+.navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 12px;
 }
 
 @media (max-width: 767px) {
@@ -185,6 +199,20 @@
 
     .navbar-nav {
         margin-bottom: 0;
+    }
+
+    .navbar .navbar-nav-small {
+        display: block;
+    }
+
+    .navbar .navbar-nav-large {
+        display: none;
+    }
+
+    .navbar-inverse .navbar-nav>li>a {
+        padding-top: 4px;
+        padding-bottom: 10px;
+        color: #fff;
     }
 }
 

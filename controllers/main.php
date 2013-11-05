@@ -5,10 +5,10 @@ require_once (dirname(__FILE__) . '/../include/utils.php');
 require_once (dirname(__FILE__) . '/../settings/config.php');
 
 function main_welcome() {
-    global $sr_index_content;
+    global $sr_main_content;
 
     $context = array();
-    $context['content'] = $sr_index_content;
+    $context['content'] = $sr_main_content;
 
     sr_response('views/main/index.php', $context);
 }
