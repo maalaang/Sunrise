@@ -107,9 +107,6 @@
             <?php
                 if ($context['result'] !== 0) {
                     echo $context['msg'];
-                } else {
-                    // for test
-                    echo 'Signup done';
                 }
             ?>
         </div>
