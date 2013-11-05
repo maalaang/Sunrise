@@ -1,5 +1,6 @@
 .navbar {
     height: 42px;
+    min-height: 42px;
     background-color: #9d261d;
     background-image: linear-gradient(-30deg, #9e271e, #9a251d);
 }
@@ -8,7 +9,7 @@
     text-align: left;
     margin-left: 0px;
     font-weight: bold;
-    font-size: 22pt;
+    font-size: 20pt;
     padding-top: 10px;
     text-shadow: 2px 2px 2px #333333;
 }
@@ -26,7 +27,6 @@
 
 .navbar input, .navbar button {
     height: 30px;
-    margin-top: 6px;
 }
 
 .navbar input {
@@ -35,6 +35,22 @@
 
 .navbar button {
     padding: 0;
+}
+
+.navbar-inverse {
+    border-color: #fff;
+}
+
+.navbar-inverse .navbar-collapse {
+    border-color: #B3464C;
+}
+
+.navbar-inverse .navbar-form {
+    border-top: 0;
+    border-bottom: 0;
+    box-shadow: none;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .navbar-inverse .navbar-brand {
@@ -108,6 +124,13 @@
     color: #fff;
 }
 
+.navbar-inverse .navbar-toggle {
+    border-color: #fff;
+    padding: 0 10px 0 10px;
+    margin-top: 0;
+    top: 6px;
+}
+
 .dropdown-menu {
     padding: 4px 0;
 }
@@ -122,4 +145,47 @@
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
     background-color: #9d261d;
     background-image: none;
+}
+
+@media (max-width: 767px) {
+    .nav {
+        margin-top: 0;
+    }
+
+    header div.container {
+        width: 100%;
+    }
+
+    .navbar {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .navbar-brand {
+        padding: 10px;
+    }
+
+    .navbar-collapse {
+        background-color: #9d261d;
+        background-image: linear-gradient(-30deg, #9e271e, #9a251d);
+    }
+
+    .navbar-collapse .pull-right {
+        float: none!important;
+    }
+
+    .navbar-form {
+        margin: 0 20px 0 20px;
+    }
+
+    .navbar-form input {
+        width: 100%;
+    }
+
+    .navbar-nav {
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 480px) {
 }
