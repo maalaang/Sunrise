@@ -72,6 +72,12 @@ body {
     padding-right: 20px;
 }
 
+@media (max-width: 1199px) {
+    div.content-desc {
+        margin-bottom: 50px;
+    }
+}
+
 @media (max-width: 767px) {
     body {
         padding: 20px;
@@ -111,10 +117,6 @@ body {
 
     .jumbotron button.btn-primary {
         width: 270px;
-    }
-
-    div.content-desc {
-        margin-bottom: 42px;
     }
 
 }
