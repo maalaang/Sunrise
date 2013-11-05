@@ -20,7 +20,7 @@ $sr_room_ui_title   = 'Sunrise - Video Conference Room';
  * User authorization configuration
  */
 $sr_default_authority   = 1;
-$sr_join_anonymous      = 1;
+$sr_join_anonymous      = 0;
 $sr_join_non_authorized = 1;
 
 /**

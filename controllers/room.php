@@ -9,6 +9,8 @@ function room() {
     global $sr_root;
     global $sr_channel_server_uri;
     global $sr_room_ui_title;
+    global $sr_join_anonymous;
+    global $sr_join_non_authorized;
     
     $db = sr_pdo();
 
@@ -46,12 +48,33 @@ function room() {
         $context['room_api'] = $sr_root;
         $context['room_ui_title'] = $sr_room_ui_title;
 
+        //IF he is registered user
         if (sr_is_signed_in()) {
-            $context['user_id'] = $_SESSION['user_id'];
-            $context['is_registered_user'] = 'true';
+            //IF server allow non-authorized user to join
+            if ($sr_join_non_authorized) {
+                $context['user_id'] = $_SESSION['user_id'];
+                $context['is_registered_user'] = 'true';
+            //IF server allow only authorized user to join
+            } else {
+                //IF he is authorized user
+                if (sr_is_authorized()) {
+                    $context['user_id'] = $_SESSION['user_id'];
+                    $context['is_registered_user'] = 'true';
+                //IF he is non-authorized user
+                } else {
+                    // TODO
+                }
+            }
+        //IF he is anonymous user
         } else {
-            $context['user_id'] = 0;
-            $context['is_registered_user'] = 'false';
+            //IF server allow anonymous user to join
+            if ($sr_join_anonymous) {
+                $context['user_id'] = 0;
+                $context['is_registered_user'] = 'false';
+            //IF server not allow anonymous user to join
+            } else {
+                sr_redirect('/d/main/signin/');
+            }
         }
 
         $context['user_name'] = $_SESSION['user_name'];
