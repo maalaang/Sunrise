@@ -175,7 +175,7 @@ body {
 /** Side Bar **/
 .bs-docs-sidenav {
   max-width: 228px;
-  margin: 30px 0 0;
+  margin: 20px 0 0;
   padding: 0;
   background-color: #fff;
   -webkit-border-radius: 6px;
@@ -257,4 +257,28 @@ div.block-content table textarea {
     width: 94%;
     height: 100px;
     readonly:
+}
+
+button.btn-back {
+    margin-top: 10px;
+    color: #fff;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.2);
+    background-color: #08c;
+    background-image: none;
+    height: 36px;
+    width: 228px;
+    border: 1px outset buttonface;
+    text-align: left;
+    padding-left: 12px;
+    padding-right: 12px;
+    text-shadow: none;
+}
+
+button.btn-back:hover {
+    background-color: #fff;
+    color: #08c;
+}
+
+button.btn-back i {
+    margin-right: 4px;
 }
