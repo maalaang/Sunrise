@@ -62,7 +62,7 @@ function room() {
                     $context['is_registered_user'] = 'true';
                 //IF he is non-authorized user
                 } else {
-                    // TODO
+                    sr_redirect('/d/room/message/auth/');
                 }
             }
         //IF he is anonymous user
@@ -223,6 +223,20 @@ function room_open_status_save() {
     }
 
     echo json_encode($res);
+}
+
+/**
+ * Show message page for non-authorized user.
+ */
+function room_message_auth() {
+    $context = array();
+
+    $context['type'] = 1;
+    $context['msg']  = '<h2>Sorry,</h2>
+                        Only authorized users to join to room.<br />
+                        Please contact your administrator.';
+
+    sr_response('views/room/message.php', $context);
 }
 
 ?>
