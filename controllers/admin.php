@@ -466,7 +466,9 @@ function admin_users() {
 
                 if (sr_user_id() == $user->id) {
                     sr_set_admin($user->is_admin);
+                    sr_set_authorized($user->is_authorized);
                 }
+
 
             } catch (PDOException $e) {
 
