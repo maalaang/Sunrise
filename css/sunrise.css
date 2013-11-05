@@ -24,8 +24,9 @@ body {
 }
 
 .jumbotron h1 {
-    text-shadow: 2px 2px 2px #333333;
-    font-family: "Arial Black", "Arial Bold", Gadget, sans-serif;
+    text-shadow: 1px 2px 2px #333333;
+    font-family: "Arial Black", "Arial Bold", Arial, Gadget, sans-serif;
+    font-weight: 900;
     color: #444444;
 }
 
@@ -78,8 +79,46 @@ body {
 }
 
 @media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
     .jumbotron p {
-        font-size: 17px;
+        font-size: 14px;
         padding: 0;
+    }
+
+    .jumbotron .room-info table {
+        //width: 200px;
+    }
+
+    .jumbotron .room-info-table label {
+        float: right;
+        font-size: 13px;
+    }
+
+    .jumbotron .room-info-table input {
+        padding-left: 8px;
+        padding-right: 8px;
+        position: relative;
+        top: -4px;
+        left: 6px;
+        font-weight: bold;
+        font-size: 13px;
+        width: 180px;
+    }
+
+    .jumbotron button.btn-primary {
+        width: 270px;
+    }
+
+    div.content-desc {
+        margin-bottom: 42px;
+    }
+
+    div.container .footer_link_right {
+        float: left;
+        margin-left: 0;
+
     }
 }
