@@ -108,7 +108,7 @@ body {
 
 /** Global **/
 #content {
-  margin-left:0px;
+  margin-left:10px;
 }
 .hide-sidebar, .show-sidebar {
   cursor: pointer;
@@ -266,7 +266,8 @@ button.btn-back {
     background-color: #08c;
     background-image: none;
     height: 36px;
-    width: 228px;
+    max-width: 228px;
+    width: 100%;
     border: 1px outset buttonface;
     text-align: left;
     padding-left: 12px;
@@ -279,6 +280,58 @@ button.btn-back:hover {
     color: #08c;
 }
 
-button.btn-back i {
+i.icon {
     margin-right: 4px;
+}
+
+.navbar-inner .admin-nav-small {
+    display: none;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+.navbar-inner .admin-nav-large {
+    display: block;
+}
+
+@media (max-width: 979px) {
+    body {
+        padding-top: 0;
+    }
+
+    div#sidebar {
+        display: none;
+    }
+
+    div#content {
+        width: 100%;
+    }
+
+    .navbar-inner .container-fluid {
+        padding-left: 0;
+    }
+
+    .navbar-fixed-top, .navbar-fixed-bottom {
+        position: relative;
+    }
+
+    .navbar-inner .admin-nav-small {
+        display: block;
+    }
+
+    .navbar-inner .admin-nav-large {
+        display: none;
+    }
+
+    .block-content .btn {
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+}
+
+@media (max-width: 767px) {
+    div.footer .footer_link_right {
+        float: left;
+        margin-left: 0;
+    }
 }

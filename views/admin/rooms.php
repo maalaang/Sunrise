@@ -59,7 +59,7 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span3" id="sidebar">
-                    <button class="btn-inverse btn-back" onclick="window.location='<?= $GLOBALS['sr_root'] ?>'"><i class="icon-mail-reply"></i> Back to Sunrise Main</button>
+                    <button class="btn-inverse btn-back" onclick="window.location='<?= $GLOBALS['sr_root'] ?>'"><i class="icon icon-mail-reply"></i> Back to Sunrise Main</button>
                     <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
                         <li><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon-chevron-right"></i> Dashboard</a></li>
                         <li class="active"><a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon-chevron-right"></i> Rooms</a></li>
