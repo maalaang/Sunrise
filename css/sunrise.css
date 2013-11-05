@@ -20,7 +20,7 @@ body {
 .jumbotron {
     background-color: transparent;
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding: 40px 0 0 0;
 }
 
 .jumbotron h1 {
@@ -76,6 +76,16 @@ body {
     body {
         padding: 20px;
     }
+
+    .jumbotron p {
+        font-size: 14px;
+        padding: 0;
+    }
+
+    div.container .footer_link_right {
+        float: left;
+        margin-left: 0;
+    }
 }
 
 @media (max-width: 480px) {
@@ -83,15 +93,6 @@ body {
         padding: 5px;
     }
     
-    .jumbotron p {
-        font-size: 14px;
-        padding: 0;
-    }
-
-    .jumbotron .room-info table {
-        //width: 200px;
-    }
-
     .jumbotron .room-info-table label {
         float: right;
         font-size: 13px;
@@ -116,9 +117,4 @@ body {
         margin-bottom: 42px;
     }
 
-    div.container .footer_link_right {
-        float: left;
-        margin-left: 0;
-
-    }
 }

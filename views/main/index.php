@@ -56,16 +56,16 @@
                     <?= $context['content']['description'] ?>
                 </p>
                 <hr/>
-                <form class="room-info" action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET">
+                <form class="room-info" action="<?= $GLOBALS['sr_root'] ?>/d/main/room/" method="GET" role="form">
                     <fieldset>
                         <table align="center" class="room-info-table">
                             <tr>
                                 <td><label for="room_name">Room Name :</label></td>
-                                <td><input id="room_name" name="room_name" type="text" placeholder="Developer Weekly Meeting" /></td>
+                                <td><input class="form-control" id="room_name" name="room_name" type="text" placeholder="Developer Weekly Meeting" /></td>
                             </tr>
                             <tr>
                                 <td><label for="your_name">Your Name :</label></td>
-                                <td><input id="your_name" name="user_name" type="text" placeholder="Steve Kim" value="<?= sr_user_name() ?>"/></td>
+                                <td><input class="form-control" id="your_name" name="user_name" type="text" placeholder="Steve Kim" value="<?= sr_user_name() ?>"/></td>
                             </tr>
                         </table>
                         <p style="text-align:center; margin: 10px">
