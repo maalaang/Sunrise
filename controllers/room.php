@@ -90,10 +90,16 @@ function room() {
 
         if ($room->is_open == 1) {
             sr_response('views/room/room.php', $context);
-        //IF unlocked room
+        //IF locked room
         } else {
-            $SESSION['room_name'] = $_GET['name'];
-            sr_redirect('/d/room/message/pswd/');
+            if (isset($_SESSION['is_checked_password']) && $_SESSION['is_checked_password'] == $_SESSION['room_name']) {
+                unset($_SESSION['is_checked_password']);
+                unset($_SESSION['room_name']);
+                sr_response('views/room/room.php', $context);
+            } else {
+                $_SESSION['room_name'] = $_GET['name'];
+                sr_redirect('/d/room/message/pswd/');
+            }
         }
 
     } else {
@@ -249,12 +255,42 @@ function room_message_auth() {
  * Show page for input password.
  */
 function room_message_pswd() {
-    $context = array();
+    // Show input password page
+    if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+        $context = array();
+    
+        $context['type'] = 2; 
+        $context['msg']  = 'It is private room.<br />You need password.';
+    
+        sr_response('views/room/message.php', $context);
+        
+    // Ajax password check
+    } else {
+        try {
+            $db = sr_pdo();
 
-    $context['type'] = 2; 
-    $context['msg']  = 'It is private room.<br />You need password.';
+            $result = array();
 
-    sr_response('views/room/message.php', $context);
+            $stmt = $db->prepare('SELECT * FROM room WHERE name = :name');
+            $stmt->bindParam(':name', $_SESSION['room_name']);
+            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Room');
+            $stmt->execute();
+
+            $room = $stmt->fetch();
+
+            if ($room->password == $_POST['input_password']) {
+                $_SESSION['is_checked_password'] = $_SESSION['room_name'];
+                $result['result'] = 1;
+            } else {
+                $result['result'] = 0;
+            }
+
+            echo json_encode($result);
+
+        } catch (PDOException $e) {
+
+        }
+    }
 }
 
 ?>
