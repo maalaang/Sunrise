@@ -495,6 +495,7 @@ function admin_settings() {
     global $sr_default_authority;
     global $sr_join_anonymous;
     global $sr_join_non_authorized;
+    global $sr_main_content;
 
     $context = array(
         'db_type'       => $sr_db_type,
@@ -519,7 +520,9 @@ function admin_settings() {
         'maximum_users'     => 'TODO',
         'stun_server'       => 'TODO',
         'xmpp_server_use'   => 'TODO',
-        'xmpp_server'       => 'TODO'
+        'xmpp_server'       => 'TODO',
+
+        'main_content'      => $sr_main_content,
     );
 
     sr_response('views/admin/settings.php', $context);

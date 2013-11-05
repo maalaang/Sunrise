@@ -146,6 +146,7 @@
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
     background-color: #9d261d;
     background-image: none;
+    color: #fff;
 }
 
 .navbar .navbar-nav-small {

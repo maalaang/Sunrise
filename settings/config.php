@@ -72,7 +72,7 @@ $sr_channel_logger_config = array(
 /**
  * Content settings.
  */
-$sr_index_content = array(
+$sr_main_content = array(
     'title' => 'Sunrise Video Conference',
     'description' => 'Sunrise is an open video conference solution based on <a href="http://www.webrtc.org" target="_blank">HTML5 WebRTC</a>.
                 You can use this software for online meeting at your company or for talking to your friends.

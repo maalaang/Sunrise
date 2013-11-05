@@ -130,6 +130,27 @@
                         </div>
                     </div>
 
+                    <!-- Main Page Setting -->
+                    <div class="row-fluid section">
+                        <div class="block">
+                            <div class="navbar navbar-inner block-header">
+                                <div class="muted pull-left">
+                                    <h4>Main Page Setting</h4>
+                                </div>
+                            </div>
+                            <div class="block-content collapse in">
+                                <table class="table table-striped">
+                                    <col width="250px" />
+                                    <tr> <td class="type">Title</td>                    <td><textarea readonly="readonly"><?= $context['main_content']['title'] ?></textarea></td> </tr>
+                                    <tr> <td class="type">Description</td>              <td><textarea readonly="readonly"><?= $context['main_content']['description'] ?></textarea></td> </tr>
+                                    <tr> <td class="type">Info1</td>                    <td><textarea readonly="readonly"><?= $context['main_content']['info1'] ?></textarea></td> </tr>
+                                    <tr> <td class="type">Info2</td>                    <td><textarea readonly="readonly"><?= $context['main_content']['info2'] ?></textarea></td> </tr>
+                                    <tr> <td class="type">Info3</td>                    <td><textarea readonly="readonly"><?= $context['main_content']['info3'] ?></textarea></td> </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
