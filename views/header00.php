@@ -9,6 +9,18 @@
             <div class="nav-collapse collapse">
                 <ul class="nav pull-right admin-nav-small">
                     <li>
+                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/dashboard/"><i class="icon icon-th-list"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/rooms/"><i class="icon icon-comments"></i> Rooms</a>
+                    </li>
+                    <li>
+                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/users/"><i class="icon icon-group"></i> Users</a>
+                    </li>
+                    <li>
+                        <a href="<?= $GLOBALS['sr_root'] ?>/d/admin/settings/"><i class="icon icon-cog"></i> Settings</a>
+                    </li>
+                    <li>
                         <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>"><i class="icon icon-mail-reply"></i> Back to Sunrise Main</a>
                     </li>
                     <li>

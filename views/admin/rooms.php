@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+        <meta charset='utf-8'> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.2.3.2.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet" media="screen">
@@ -87,7 +91,7 @@
                                 </div>
                             </div>
                             <div class="block-content collapse in">
-                                <table class="table table-striped" id="t1_sr_table">
+                                <table class="table table-striped table-filter" id="t1_sr_table">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -150,7 +154,7 @@
                                 </div>
                             </div>
                             <div class="block-content collapse in">
-                                <table class="table table-striped" id="t2_sr_table">
+                                <table class="table table-striped table-filter" id="t2_sr_table">
                                     <thead>
                                         <tr>
                                             <th>ID</th>

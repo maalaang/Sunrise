@@ -253,10 +253,13 @@ body {
   background-color: rgba(255,0,0,.25);
 }
 
+.table th {
+    line-height: 12px;
+}
+
 div.block-content table textarea {
-    width: 94%;
+    width: 92%;
     height: 100px;
-    readonly:
 }
 
 button.btn-back {
@@ -327,11 +330,55 @@ i.icon {
         margin-top: 4px;
         margin-bottom: 4px;
     }
+
+    #content {
+      margin-left:0px;
+    }
+
+    div.block div.pull-left {
+        float: none;
+        width: 100%;
+    }
+
+    div.block div.pull-right {
+        float: none;
+        width: 100%;
+    }
+
+    div.block .btn {
+        font-size: 12px;
+        padding: 3px 8px 3px 8px;
+    }
+
+    div.block div.block-content table.table-filter {
+        margin-top: 40px;
+    }
+
+    div.block-content table textarea {
+        font-size: 12px;
+    }
+
 }
 
 @media (max-width: 767px) {
     div.footer .footer_link_right {
         float: left;
         margin-left: 0;
+    }
+
+    div.block-content table {
+        font-size: 10px;
+    }
+
+    div.block-content .sr_num_info button {
+        width: 100%;
+    }
+
+    div.pagination li > a {
+        padding: 3px 8px;
+    }
+
+    .table th, .table td {
+        padding: 4px;
     }
 }

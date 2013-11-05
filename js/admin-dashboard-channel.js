@@ -98,7 +98,7 @@ function updateChannelStatus(data, type) {
 
         $('#channel_count').html(channelCnt);
         $('#client_count').html(clientCnt);
-        $('#channel_server_status').html('Running (' + data.time + ')');
+        $('#channel_server_status').html('Running');
         $('#channel_server_status_tbody').html(html);
 
         if (channelCnt > 0) {

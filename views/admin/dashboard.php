@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
+        <meta charset='utf-8'> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.2.3.2.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/morris.css" rel="stylesheet" media="screen">
@@ -58,8 +62,8 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">
-                                    <h4>Channel Server Status :: <span id="channel_server_status"></span></h4>
+                                <div class="muted">
+                                    <h4>Channel Server Status :: <span class="label" style="line-height: 20px; padding: 0 8px 0 8px;" id="channel_server_status"></span></h4>
                                 </div>
                             </div>
                             <?php
@@ -113,7 +117,7 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">
+                                <div class="muted">
                                     <h4>Room Opened</h4>
                                 </div>
                             </div>
@@ -141,7 +145,7 @@
                     <div class="row-fluid section">
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
-                                <div class="muted pull-left">
+                                <div class="muted">
                                     <h4>Participants</h4>
                                 </div>
                             </div>
