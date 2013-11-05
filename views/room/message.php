@@ -8,6 +8,26 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
     </head>
+    <script>
+        function passwordCheck(e) {
+            $.ajax({
+                url: "<?= sr_home_path() ?>/d/room/message/pswd/",
+                type: 'POST',
+                dataType: 'JSON',
+                data: { input_password: $('#room_pw').val() },
+                success: function (data) {
+                    if (data['result']) {
+                        location.replace("<?= sr_home_path() ?>/d/room/?name=<?= $_SESSION['room_name'] ?>");
+                    } else {
+                        alert('Wrong password.');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert('Ajax Error: ' + textStatus);
+                },
+            });
+        }
+    </script>
     <style>
         body {
             padding-top: 70px;
@@ -34,11 +54,11 @@
                     <p><a class="btn btn-danger" role="button" href="<?= sr_home_path() ?>/d/">Go Back to Home</a></p>
         <?  } else if ($context['type'] == 2) { ?>
                     <p>
-                        <form class="form-inline" role="form" onSubmit="return passwordCheck(e)">
+                        <form class="form-inline" role="form">
                             <div class="form-group">
                                 <input type="password" class="form-control" id="room_pw" placeholder="Password">
                             </div>
-                            <button type="submit" class="btn btn-default">Go to the room</button>
+                            <button type="button" class="btn btn-default" onClick="passwordCheck(this)">Go to the room</button>
                         </form>
                     </p>
         <? } else { ?>
