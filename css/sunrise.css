@@ -1,0 +1,85 @@
+body {
+    color: #444444;
+    padding: 30px;
+}
+
+.btn-primary {
+    color: #fff;
+    border-color: #721c15;
+    background-color: #9d261d;
+    text-shadow: 1px 1px 1px #333333;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    border-color: #721c15;
+    background-color: #B3464C;
+    text-shadow: 1px 1px 1px #333333;
+}
+
+.jumbotron {
+    background-color: transparent;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.jumbotron h1 {
+    text-shadow: 2px 2px 2px #333333;
+    font-family: "Arial Black", "Arial Bold", Gadget, sans-serif;
+    color: #444444;
+}
+
+.jumbotron p {
+    margin-top: 20px;
+    padding: 12px;
+    color: #777777;
+}
+
+.jumbotron .room-info {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.jumbotron button.btn-primary {
+    font-size: 20px;
+    width: 347px;
+    font-weight: bold;
+}
+
+.jumbotron .room-info-table label {
+    float: right;
+    font-size: 13pt;
+}
+
+.jumbotron .room-info-table input {
+    padding-left: 8px;
+    padding-right: 8px;
+    position: relative;
+    top: -4px;
+    left: 10px;
+    font-weight: bold;
+    width: 220px;
+}
+
+.body-content .content-image {
+    text-align: center;
+}
+
+.body-content .content-desc {
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+@media (max-width: 767px) {
+    body {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .jumbotron p {
+        font-size: 17px;
+        padding: 0;
+    }
+}

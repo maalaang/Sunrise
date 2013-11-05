@@ -15,6 +15,7 @@
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.0.min.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room.css">
+        <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/header.css">
 
         <script type="text/javascript">
             var channelServer = '<?= $context['channel_server'] ?>';
