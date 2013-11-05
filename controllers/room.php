@@ -88,7 +88,13 @@ function room() {
             $context['chat_name'] = 'Anonymous';
         }
 
-        sr_response('views/room/room.php', $context);
+        if ($room->is_open == 1) {
+            sr_response('views/room/room.php', $context);
+        //IF unlocked room
+        } else {
+            $SESSION['room_name'] = $_GET['name'];
+            sr_redirect('/d/room/message/pswd/');
+        }
 
     } else {
         sr_response_error(400);
@@ -235,6 +241,18 @@ function room_message_auth() {
     $context['msg']  = '<h2>Sorry,</h2>
                         Only authorized users to join to room.<br />
                         Please contact your administrator.';
+
+    sr_response('views/room/message.php', $context);
+}
+
+/**
+ * Show page for input password.
+ */
+function room_message_pswd() {
+    $context = array();
+
+    $context['type'] = 2; 
+    $context['msg']  = 'It is private room.<br />You need password.';
 
     sr_response('views/room/message.php', $context);
 }
