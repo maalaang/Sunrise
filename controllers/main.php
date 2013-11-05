@@ -78,6 +78,7 @@ function main_signup() {
         global $sr_regex_name;
         global $sr_regex_email;
         global $sr_regex_password;
+        global $sr_default_authority;
 
         $user = new User();
         $context = array();
@@ -99,12 +100,12 @@ function main_signup() {
             $context['msg'] = 'Check Repeat Password';
         } else {
 
-            //TODO: Manage is_authorized, last_active_date
+            //TODO: last_active_date
             $user->first_name = $_POST['first_name'];
             $user->last_name = $_POST['last_name'];
             $user->email = $_POST['signup_email'];
             $user->password = md5($_POST['signup_password']);
-            $user->is_authorized = 0;
+            $user->is_authorized = $sr_default_authority;
             $user->is_admin = 0;
             $user->join_date = Model::getCurrentTime();
             $user->last_active_date = Model::getCurrentTime();
@@ -150,9 +151,7 @@ function main_signout() {
 
     if (sr_is_signed_in()) {
         $context['result'] = 0;
-        $context['msg'] = 'Email: ' . $_SESSION['user_email'] .
-                    '<br />Name:' . $_SESSION['user_name'] .
-                    '<br />Successfully signed out';
+        $context['msg'] = 'Thank you, '. $_SESSION['user_name'] .' :)<br />Please wait...';
         sr_signout();
         sr_response('views/main/signout.php', $context);
     } else {

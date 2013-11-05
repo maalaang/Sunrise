@@ -86,6 +86,10 @@ function sr_set_admin($is_admin) {
     $_SESSION['is_admin'] = $is_admin;
 }
 
+function sr_set_authorized($is_authorized) {
+    $_SESSION['is_authorized'] = $is_authorized;
+}
+
 /**
  * Return PDO object created based on the database configuations.
  * @return  PDO object
