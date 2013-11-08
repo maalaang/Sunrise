@@ -4,7 +4,9 @@
         <title>Sunrise</title>
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.1.min.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/sunrise.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/header.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/signin.css" rel="stylesheet">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
         <script>
@@ -16,30 +18,26 @@
                 var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
 
                 if(!emailRegex.test(email)) {
-                    alert('Check Email Form');
+                    showMessage('Please enter a valid e-mail address.');
                     return false;
                 }
                 if(!passwordRegex.test(password)) {
-                    alert('Check Password Form');
+                    showMessage('Please enter a valid password. (Password should be alphanumeric)');
                     return false;
                 }
 
                 document.signin_form.submit();
             }
+
             function whenClickSignup(e) {
                 window.location.replace("<?= $GLOBALS['sr_root'] ?>/d/main/signup/");
             }
+
+            function showMessage(str) {
+                $('.alert').html(str);
+                $('.alert').addClass('alert-visible');
+            }
         </script>
-        <style>
-            body {
-                padding-top: 70px;
-            }
-            #signin-div{
-                width:300px;
-                margin:100px auto;
-                text-align:left;
-            }
-        </style>
     </head>
     <body>
         <? 
@@ -50,7 +48,7 @@
             }
         ?>
 
-        <div class="container" id="signin-div">
+        <div class="container signin">
             <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post">
                 <fieldset>
                     <legend>Sign In</legend>
@@ -59,25 +57,24 @@
                             <td><input type="text" class="form-control" id="signin_email" name="signin_email" placeholder="Email" autofocus /></td>
                         </tr>
                         <tr>
-                            <td><input type="password" class="form-control" id="signin_password" name="signin_password" placeholder="Password" /></td>
+                            <td class="sep"><input type="password" class="form-control" id="signin_password" name="signin_password" placeholder="Password" /></td>
                         </tr>
                         <tr>
-                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" style="width:300px;" value="Sign In" onclick="whenSignin(event)" /></td>
+                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" value="Sign in" onclick="whenSignin(event)" /></td>
                         </tr>
                         <tr>
-                            <td><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" style="width:300px;" value="Sign Up Now!" onclick="whenClickSignup(event)" /></td>
+                            <td><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign up" onclick="whenClickSignup(event)" /></td>
                         </tr>
                     </table>
                 </fieldset>
             </form>
-        </div>
-
-        <div id="error" style="text-align:center;">
-            <?php
-                if ($context['result'] !== 0) {
-                    echo $context['msg'];
-                }
-            ?>
+            <div class="alert alert-danger <?php if ($context['result']) { echo 'alert-visible'; } ?>" id="error">
+                <?php
+                    if ($context['result'] !== 0) {
+                        echo $context['msg'];
+                    }
+                ?>
+            </div>
         </div>
 
         <div class="container">

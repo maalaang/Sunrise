@@ -1,0 +1,32 @@
+div.signin {
+    width:330px;
+    margin:100px auto;
+    text-align:left;
+}
+
+div.signin td.sep {
+    padding-bottom: 14px;
+}
+
+div.signin div.alert {
+    margin: 14px 2px 0 2px;;
+    display: none;
+}
+
+div.signin div.alert-visible {
+    display: block;
+}
+
+input.btn {
+    width: 300px;
+}
+
+@media (max-width: 767px) {
+    div.signin {
+        width:300px;
+    }
+
+    input.btn {
+        width: 270px;
+    }
+}

@@ -1,0 +1,32 @@
+div.signup {
+    width:330px;
+    margin:100px auto;
+    text-align:left;
+}
+
+div.signup td.sep {
+    padding-bottom: 14px;
+}
+
+div.signup div.alert {
+    margin: 14px 2px 0 2px;;
+    display: none;
+}
+
+div.signup div.alert-visible {
+    display: block;
+}
+
+input.btn {
+    width: 300px;
+}
+
+@media (max-width: 767px) {
+    div.signup {
+        width:300px;
+    }
+
+    input.btn {
+        width: 270px;
+    }
+}

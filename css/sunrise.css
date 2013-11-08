@@ -10,7 +10,7 @@ body {
     text-shadow: 1px 1px 1px #333333;
 }
 
-.btn-primary:hover {
+.btn-primary:hover, .btn-primary:focus {
     color: #fff;
     border-color: #721c15;
     background-color: #B3464C;

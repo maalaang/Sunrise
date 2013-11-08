@@ -25,10 +25,12 @@ function main_signin() {
 
         if (!preg_match($sr_regex_email, $_POST['signin_email'])) {
             $context['result'] = 4;
-            $context['msg'] = 'Invalid Email Adress';
+            /* invalid email address */
+            $context['msg'] = 'Invalid email address or password.';
         } else if (!preg_match($sr_regex_password, $_POST['signin_password'])) {
             $context['result'] = 5;
-            $context['msg'] = 'Invalid Password';
+            /* invalid password */
+            $context['msg'] = 'Invalid email address or password.';
         } else {
             try {
                 $db = sr_pdo();
@@ -42,11 +44,14 @@ function main_signin() {
 
                 if ($user == Null || $user == false) {
                     $context['result'] = 2;
-                    $context['msg'] = 'Couldn\'t Find Email Address';
+                    /* not registered email address */
+                    $context['msg'] = 'Invalid email address or password.';
                 } else if ($user->password != md5($_POST['signin_password'])) {
                     $context['result'] = 3;
-                    $context['msg'] = 'Wrong Password';
+                    /* password not matched */
+                    $context['msg'] = 'Invalid email address or password.';
                 } else {
+                    /* signin done */
                     $context['result'] = 0;
                     $context['msg'] = 'Successfully signed in';
 
@@ -73,6 +78,10 @@ function main_signin() {
 
 
 function main_signup() {
+    if (sr_is_signed_in()) {
+        sr_redirect('/d/');
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         global $sr_regex_name;
@@ -85,25 +94,23 @@ function main_signup() {
 
         if (!preg_match($sr_regex_email, $_POST['signup_email'])) {
             $context['result'] = 3;
-            $context['msg'] = 'Invalid Email Adress';
+            $context['msg'] = 'Please enter a valid email address';
         } else if (!preg_match($sr_regex_password, $_POST['signup_password'])) {
             $context['result'] = 4;
-            $context['msg'] = 'Invalid Password';
+            $context['msg'] = 'Please enter a valid password. Password should be alphanumeric.';
         } else if (!preg_match($sr_regex_name, $_POST['first_name'])) {
             $context['result'] = 5;
-            $context['msg'] = 'Invalid Name';
+            $context['msg'] = 'Name should consist of only alphabets (uppercase or lowercase).';
         } else if (!preg_match($sr_regex_name, $_POST['last_name'])) {
             $context['result'] = 6;
-            $context['msg'] = 'Invalid Name';
+            $context['msg'] = 'Name should consist of only alphabets (uppercase or lowercase).';
         } else if ($_POST['signup_password'] != $_POST['repeat_password']) {
             $context['result'] = 7;
-            $context['msg'] = 'Check Repeat Password';
+            $context['msg'] = 'Please repeat your password.';
         } else {
-
-            //TODO: last_active_date
-            $user->first_name = $_POST['first_name'];
-            $user->last_name = $_POST['last_name'];
-            $user->email = $_POST['signup_email'];
+            $user->first_name = ucfirst($_POST['first_name']);
+            $user->last_name = ucfirst($_POST['last_name']);
+            $user->email = strtolower($_POST['signup_email']);
             $user->password = md5($_POST['signup_password']);
             $user->is_authorized = $sr_default_authority;
             $user->is_admin = 0;

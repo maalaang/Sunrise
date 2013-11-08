@@ -4,7 +4,9 @@
         <title>Sunrise</title>
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.1.min.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/sunrise.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/header.css" rel="stylesheet">
+        <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/signup.css" rel="stylesheet">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
         <script>
@@ -37,36 +39,40 @@
                 var emailRegex = new RegExp(<?= sr_regex('email') ?>);
                 var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
 
-                if(!nameRegex.test(first_name) || !nameRegex.test(last_name)) {
-                    alert('Check Name Form');
+                if(!nameRegex.test(first_name)) {
+                    showMessage('Please enter your name.');
+                    $('#first_name').focus();
                     return false;
                 }
-                if(!passwordRegex.test(password)) {
-                    alert('Check Password Form');
+                if(!nameRegex.test(last_name)) {
+                    showMessage('Please enter your name');
+                    $('#last_name').focus();
                     return false;
                 }
                 if(!emailRegex.test(email)) {
-                    alert('Check Email Form');
+                    showMessage('Please enter a valid email address.');
+                    $('#signup_email').focus();
+                    return false;
+                }
+                if(!passwordRegex.test(password)) {
+                    showMessage('Please enter a valid pasword. Password should be alphanumeric.');
+                    $('#signup_password').focus();
                     return false;
                 }
                 if(password != repeat_password) {
-                    alert('Check Repeat Password');
+                    showMessage('Please repeat your password.');
+                    $('#repeat_password').focus();
                     return false;
                 }
 
                 document.signup_form.submit();
             }
+
+            function showMessage(str) {
+                $('.alert').html(str);
+                $('.alert').addClass('alert-visible');
+            }
         </script>
-        <style>
-            body {
-                padding-top: 70px;
-            }
-            #signup-div{
-                width:300px;
-                margin:100px auto;
-                text-align:left;
-            }
-        </style>
     </head>
     <body>
         <? 
@@ -77,7 +83,7 @@
             }
         ?>
 
-        <div class="container" id="signup-div">
+        <div class="container signup" id="signup-div">
             <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post">
                 <fieldset>
                     <legend>Sign Up</legend>
@@ -93,23 +99,23 @@
                             <td colspan="2"><input type="password" class="form-control" id="signup_password" name="signup_password" placeholder="Password" /></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input type="password" class="form-control"id="repeat_password" name="repeat_password" placeholder="Repeat Password" /></td>
+                            <td colspan="2" class="sep"><input type="password" class="form-control"id="repeat_password" name="repeat_password" placeholder="Repeat Password" /></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" style="width:300px;" value="Sign Up" onclick="whenSignup(event)" /></td>
+                            <td colspan="2"><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign Up" onclick="whenSignup(event)" /></td>
                         </tr>
                     </table>
                 </fieldset>
             </form>
+            <div class="alert alert-danger <?php if ($context['result']) { echo 'alert-visible'; } ?>" id="error">
+                <?php
+                    if ($context['result'] !== 0) {
+                        echo $context['msg'];
+                    }
+                ?>
+            </div>
         </div>
 
-        <div id="error" style="text-align:center;">
-            <?php
-                if ($context['result'] !== 0) {
-                    echo $context['msg'];
-                }
-            ?>
-        </div>
 
         <div class="container">
             <? include("views/footer00.php") ?>
