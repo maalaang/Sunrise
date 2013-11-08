@@ -58,6 +58,30 @@ function sr_user_name() {
     }
 }
 
+function sr_user_first_name() {
+    if ($_SESSION['is_logged']) {
+        return $_SESSION['user_first_name'];
+    } else {
+        return null;
+    }
+}
+
+function sr_user_last_name() {
+    if ($_SESSION['is_logged']) {
+        return $_SESSION['user_last_name'];
+    } else {
+        return null;
+    }
+}
+
+function sr_user_email() {
+    if ($_SESSION['is_logged']) {
+        return $_SESSION['user_email'];
+    } else {
+        return null;
+    }
+}
+
 function sr_user_id() {
     if ($_SESSION['is_logged']) {
         return $_SESSION['user_id'];
@@ -80,6 +104,22 @@ function sr_is_authorized() {
     } else {
         return false;
     }
+}
+
+function sr_set_user_first_name($user_first_name) {
+    $_SESSION['user_first_name'] = $user_first_name;
+}
+
+function sr_set_user_last_name($user_last_name) {
+    $_SESSION['user_last_name'] = $user_last_name;
+}
+
+function sr_set_user_name($user_name) {
+    $_SESSION['user_name'] = $user_name;
+}
+
+function sr_set_user_email($user_email) {
+    $_SESSION['user_email'] = $user_email;
 }
 
 function sr_set_admin($is_admin) {
@@ -142,6 +182,8 @@ function sr_signin($user) {
     $_SESSION['is_logged'] = true;
     $_SESSION['user_email'] = $user->email;
     $_SESSION['user_name'] = $user->first_name . ' ' . $user->last_name;
+    $_SESSION['user_first_name'] = $user->first_name;
+    $_SESSION['user_last_name'] = $user->last_name;
     $_SESSION['user_id'] = $user->id;
     $_SESSION['is_admin'] = $user->is_admin;
     $_SESSION['is_authorized'] = $user->is_authorized;
@@ -151,6 +193,8 @@ function sr_signout() {
     unset($_SESSION['is_logged']);
     unset($_SESSION['user_email']);
     unset($_SESSION['user_name']);
+    unset($_SESSION['user_first_name']);
+    unset($_SESSION['user_last_name']);
     unset($_SESSION['user_id']);
     unset($_SESSION['is_admin']); 
     unset($_SESSION['is_authorized']);

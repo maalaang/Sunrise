@@ -26,7 +26,7 @@
                         <i class="caret"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li> <a tabindex="-1" href="#">My Profile</a> </li>
+                        <li> <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/profile/">My Profile</a> </li>
                         <? if (sr_is_admin()) { ?>
                         <li> <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/admin/">Admin Page</a> </li>
                         <? } ?>

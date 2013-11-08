@@ -16,6 +16,7 @@ $url_patterns = array (
     "#^/main/signup/$#"     => main_signup,
     "#^/main/signin/$#"     => main_signin,
     "#^/main/signout/$#"    => main_signout,
+    "#^/main/profile/$#"    => main_profile,
     "#^/main/room/$#"       => main_goto_room,
     "#^/room/$#"            => room,
     "#^/room/join/$#"       => room_join,
