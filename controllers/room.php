@@ -73,7 +73,8 @@ function room() {
                 $context['is_registered_user'] = 'false';
             //IF server not allow anonymous user to join
             } else {
-                sr_redirect('/d/main/signin/');
+                $context['info'] = 'Only registered users can join the room.';
+                sr_response('views/main/signin.php', $context);
             }
         }
 
@@ -241,12 +242,13 @@ function room_open_status_save() {
  * Show message page for non-authorized user.
  */
 function room_message_auth() {
+    global $sr_admin_email;
     $context = array();
 
     $context['type'] = 1;
     $context['msg']  = '<h2>Sorry,</h2>
-                        Only authorized users to join to room.<br />
-                        Please contact your administrator.';
+                        Only authorized users are allowed to join the room.<br/>
+                        Please contact the <a href="mailto:' . $sr_admin_email . '">administrator.</a>';
 
     sr_response('views/room/message.php', $context);
 }
@@ -260,7 +262,8 @@ function room_message_pswd() {
         $context = array();
     
         $context['type'] = 2; 
-        $context['msg']  = 'It is private room.<br />You need password.';
+        $context['msg']  = '<h2>Password required</h2>
+                            Please enter the password to get into the private room.';
     
         sr_response('views/room/message.php', $context);
         

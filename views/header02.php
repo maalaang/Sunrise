@@ -15,7 +15,7 @@
                     <form class="navbar-form form-inline" action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" id="signin_form" name="signin_form" method="post">
                         <input type="text" class="form-control" id="signin_email" name="signin_email" placeholder="Email">
                         <input type="password" class="form-control" id="signin_password" name="signin_password" placeholder="Password">
-                        <button type="button" class="btn btn-inverse" id="btn_signin" onclick="whenSignin(event)">Sign In</button>
+                        <button type="submit" class="btn btn-inverse" id="btn_signin">Sign In</button>
                     </form>
                 </li>
             </ul>

@@ -23,6 +23,8 @@ function main_signin() {
         $user = new User();
         $context = array();
 
+        $context['email'] = $_POST['signin_email'];
+
         if (!preg_match($sr_regex_email, $_POST['signin_email'])) {
             $context['result'] = 4;
             /* invalid email address */

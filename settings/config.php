@@ -16,12 +16,16 @@ $sr_root        = '/workspace/blackhat/Sunrise';
 
 $sr_room_ui_title   = 'Sunrise - Video Conference Room';
 
+$sr_admin_name = 'Sunrise Administrator';
+$sr_admin_email = 'face@maalaang.com';
+
+
 /**
  * User authorization configuration
  */
 $sr_default_authority   = 1;
 $sr_join_anonymous      = 0;
-$sr_join_non_authorized = 1;
+$sr_join_non_authorized = 0;
 
 /**
  * Channel server configuration.

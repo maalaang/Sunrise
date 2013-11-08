@@ -10,7 +10,7 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
         <script>
-            function whenSignin(e) {
+            function whenSignin() {
                 var email = document.getElementById('signin_email').value;
                 var password = document.getElementById('signin_password').value;
             
@@ -29,7 +29,7 @@
                 document.signin_form.submit();
             }
 
-            function whenClickSignup(e) {
+            function whenClickSignup() {
                 window.location.replace("<?= $GLOBALS['sr_root'] ?>/d/main/signup/");
             }
 
@@ -54,27 +54,33 @@
                     <legend>Sign In</legend>
                     <table>
                         <tr>
-                            <td><input type="text" class="form-control" id="signin_email" name="signin_email" placeholder="Email" autofocus /></td>
+                        <td><input type="text" class="form-control" id="signin_email" name="signin_email" value="<?= $context['email'] ?>" placeholder="Email" autofocus /></td>
                         </tr>
                         <tr>
                             <td class="sep"><input type="password" class="form-control" id="signin_password" name="signin_password" placeholder="Password" /></td>
                         </tr>
                         <tr>
-                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" value="Sign in" onclick="whenSignin(event)" /></td>
+                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" value="Sign in" onclick="whenSignin()" /></td>
                         </tr>
                         <tr>
-                            <td><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign up" onclick="whenClickSignup(event)" /></td>
+                            <td><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Create a new account" onclick="whenClickSignup()" /></td>
                         </tr>
                     </table>
                 </fieldset>
             </form>
             <div class="alert alert-danger <?php if ($context['result']) { echo 'alert-visible'; } ?>" id="error">
                 <?php
-                    if ($context['result'] !== 0) {
+                    if ($context['result']) {
                         echo $context['msg'];
                     }
                 ?>
             </div>
+            
+            <?php if ($context['info']) { ?>
+            <div class="alert alert-warning alert-visible" id="error">
+                <?= $context['info'] ?>
+            </div>
+            <?php } ?>
         </div>
 
         <div class="container">

@@ -62,6 +62,25 @@ body {
     width: 220px;
 }
 
+.jumbotron .message {
+    width: 400px;
+    margin: 80px auto 80px auto;
+    font-size: 16px;
+}
+
+.jumbotron .message-text {
+    margin-bottom: 20px;
+}
+
+.jumbotron .message .alert {
+    margin-top: 20px;
+    display: none;
+}
+
+.jumbotron .message .alert-visible {
+    display: block;
+}
+
 .body-content .content-image {
     text-align: center;
 }
@@ -117,6 +136,10 @@ body {
 
     .jumbotron button.btn-primary {
         width: 270px;
+    }
+
+    .jumbotron .message {
+        width: 100%;
     }
 
 }

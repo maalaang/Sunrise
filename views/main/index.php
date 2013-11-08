@@ -13,32 +13,6 @@
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/sunrise.css" rel="stylesheet">
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
-        <script>
-            function whenSignin(e) {
-                var email = document.getElementById('signin_email').value;
-                var password = document.getElementById('signin_password').value;
-            
-                var emailRegex = new RegExp(<?= sr_regex('email') ?>);
-                var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
-
-                if(!emailRegex.test(email)) {
-                    alert('Check Email Form');
-                    return false;
-                }
-                if(!passwordRegex.test(password)) {
-                    alert('Check Password Form');
-                    return false;
-                }
-
-                document.signin_form.submit();
-            }
-            function whenClickSignup(e) {
-                window.location.replace("<?= $GLOBALS['sr_root'] ?>/d/main/signup/");
-            }
-        </script>
-        <style>
-
-        </style>
     </head>
     <body>
         <? 

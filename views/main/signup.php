@@ -10,25 +10,7 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
         <script>
-            function whenSignin(e) {
-                var email = document.getElementById('signin_email').value;
-                var password = document.getElementById('signin_password').value;
-            
-                var emailRegex = new RegExp(<?= sr_regex('email') ?>);
-                var passwordRegex = new RegExp(<?= sr_regex('password') ?>);
-
-                if(!emailRegex.test(email)) {
-                    alert('Check Email Form');
-                    return false;
-                }
-                if(!passwordRegex.test(password)) {
-                    alert('Check Password Form');
-                    return false;
-                }
-
-                document.signin_form.submit();
-            }
-            function whenSignup(e) {
+            function whenSignup() {
                 var first_name = document.getElementById('first_name').value;
                 var last_name = document.getElementById('last_name').value;
                 var email = document.getElementById('signup_email').value;
@@ -86,7 +68,7 @@
         <div class="container signup" id="signup-div">
             <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post">
                 <fieldset>
-                    <legend>Sign Up</legend>
+                    <legend>Create a new account</legend>
                     <table>
                         <tr>
                             <td><input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name" autofocus /></td>
@@ -102,7 +84,7 @@
                             <td colspan="2" class="sep"><input type="password" class="form-control"id="repeat_password" name="repeat_password" placeholder="Repeat Password" /></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign Up" onclick="whenSignup(event)" /></td>
+                            <td colspan="2"><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign up" onclick="whenSignup()" /></td>
                         </tr>
                     </table>
                 </fieldset>
