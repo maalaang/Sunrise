@@ -154,6 +154,83 @@ function main_signup() {
     }
 }
 
+function main_profile() {
+    if (!sr_is_signed_in()) {
+        sr_response_error(400);
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        global $sr_regex_name;
+        global $sr_regex_email;
+        global $sr_regex_password;
+
+        $user = new User();
+        $context = array();
+
+        if (!preg_match($sr_regex_email, $_POST['profile_email'])) {
+            $context['result'] = 3;
+            $context['msg'] = 'Please enter a valid email address';
+        } else if (!preg_match($sr_regex_password, $_POST['profile_password'])) {
+            $context['result'] = 4;
+            $context['msg'] = 'Please enter a valid password.<br />Password should be alphanumeric.';
+        } else if (!preg_match($sr_regex_name, $_POST['first_name'])) {
+            $context['result'] = 5;
+            $context['msg'] = 'Name should consist of only alphabets (uppercase or lowercase).';
+        } else if (!preg_match($sr_regex_name, $_POST['last_name'])) {
+            $context['result'] = 6;
+            $context['msg'] = 'Name should consist of only alphabets (uppercase or lowercase).';
+        } else if ($_POST['profile_password'] != $_POST['repeat_password']) {
+            $context['result'] = 7;
+            $context['msg'] = 'Please repeat your password.';
+        } else {
+            try {
+                $db = sr_pdo();
+
+                $user = $user->get($db, sr_user_id());
+
+                $user->first_name = ucfirst($_POST['first_name']);
+                $user->last_name = ucfirst($_POST['last_name']);
+                $user->email = strtolower($_POST['profile_email']);
+                $user->password = md5($_POST['profile_password']);
+
+                $user->save($db);
+
+                $context['result'] = 1;
+                $context['msg'] = 'Successfully updated';
+
+                sr_set_user_first_name($user->first_name);
+                sr_set_user_last_name($user->last_name);
+                sr_set_user_name($user->first_name . ' ' . $user->last_name);
+                sr_set_user_email($user->email);
+
+            } catch (PDOException $e) {
+                $context['result'] = 2;
+                $context['msg'] = 'Failed to save. Please try it again.';
+            }
+        }
+
+        $context['first_name']  = sr_user_first_name();
+        $context['last_name']   = sr_user_last_name();
+        $context['email']       = sr_user_email();
+        $context['is_authorized']   = sr_is_authorized();
+        $context['is_admin']        = sr_is_admin();
+        
+        sr_response('views/main/profile.php', $context);
+
+    } else {
+        // Show profile view
+        $context = array(
+            'first_name'  => sr_user_first_name(),
+            'last_name'   => sr_user_last_name(),
+            'email'       => sr_user_email(),
+            'is_authorized'   => sr_is_authorized(),
+            'is_admin'        => sr_is_admin()
+        );
+
+        sr_response('views/main/profile.php', $context);
+    }
+}
 
 function main_signout() {
     $context = array();

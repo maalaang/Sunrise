@@ -1,0 +1,36 @@
+div.profile {
+    width: 330px;
+    margin: 100px auto;
+    text-align:left;
+}
+
+div.profile td.sep {
+    padding-bottom: 14px;
+}
+
+div.profile div.alert {
+    margin: 14px 2px 0 2px;;
+    display: none;
+}
+
+div.profile div.alert-visible {
+    display: block;
+}
+
+div.well {
+   margin: 0px; 
+}
+
+input.btn {
+    width: 150px;
+}
+
+@media (max-width: 767px) {
+    div.profile {
+        width: 300px;
+    }
+
+    input.btn {
+        width: 140px;
+    }
+}
