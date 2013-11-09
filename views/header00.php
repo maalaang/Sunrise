@@ -39,7 +39,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a tabindex="-1" href="#"><i class="icon icon-user"></i> Profile</a>
+                                <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/profile/"><i class="icon icon-user"></i> Profile</a>
                             </li>
                             <li class="divider">
                             </li>

@@ -11,7 +11,7 @@
         </div>
         <nav class="collapse navbar-collapse bs-navbar-collapse " role="navigation">
             <ul class="nav navbar-nav pull-right navbar-nav-small">
-                <li> <a tabindex="-1" href="#">My Profile</a> </li>
+                <li> <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/main/profile/">My Profile</a> </li>
                 <? if (sr_is_admin()) { ?>
                 <li> <a tabindex="-1" href="<?= $GLOBALS['sr_root'] ?>/d/admin/">Admin Page</a> </li>
                 <? } ?>
