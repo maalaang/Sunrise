@@ -1,5 +1,6 @@
 var channel = null;
 var connections = null;
+var focusedVideo = null;
 var localVideo = null;
 var localStream = null;
 var pcConfig = {"iceServers": [{"url": "stun:stun.l.google.com:19302"}]};
@@ -8,18 +9,21 @@ var offerConstraints = {"optional": [], "mandatory": {}};
 var mediaConstraints = {"audio": true, "video": {"mandatory": {}, "optional": []}};
 var sdpConstraints = {'mandatory': { 'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true }};
 var stereo = false;
-var participant_id = null;
-var email_cnt = 0;
-var participant_names = null;
+var participantId = null;
+var participantNames = null;
 var isAudioMuted = false;
 var isVideoMuted = false;
 var focusedVideoId = null;
 var isPasswordHidden = true;
 
+var v = null;
+var c = null;
+var c1 = null;
+
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
         // create a new connection
-        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'smallVideoContainer', 'smallVideo', 'focusedVideo');
+        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'small-videos', 'small-video', 'focused-video');
         setParticipantName(msg.sender, msg.name);
         appendChatMessage(null, msg.name + ' has joined the room.');
     }
@@ -29,39 +33,39 @@ function onChannelMessage(msg) {
 
 function onChannelOpened(msg) {
     connections = [];
-    participant_names = [];
+    participantNames = [];
 
     for (p in msg.participant_list) {
-        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'smallVideoContainer', 'smallVideo', 'focusedVideo');
+        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'small-videos', 'small-video', 'focused-video');
         connections[p].maybeStart();
 
         setParticipantName(p, msg.participant_list[p].name);
     }
 
-    participant_id = msg.participant_id;
+    participantId = msg.participantId;
     roomJoin();
 }
 
 function onChannelBye(msg) {
-    videoFocusOut(msg.participant_id);
+    videoFocusOut(msg.participantId);
 
-    connections[msg.participant_id].onRemoteHangup();
-    delete connections[msg.participant_id];
+    connections[msg.participantId].onRemoteHangup();
+    delete connections[msg.participantId];
 
     // show message a participant left the room
-    appendChatMessage(null, getParticipantName(msg.participant_id) + ' has left the room.');
+    appendChatMessage(null, getParticipantName(msg.participantId) + ' has left the room.');
 
     // for debugging
-    console.log('removed ' + msg.participant_id + ' from connection list');
+    console.log('removed ' + msg.participantId + ' from connection list');
     printObject('connections', connections);
 }
 
 function getParticipantName(senderId) {
-    return participant_names[senderId];
+    return participantNames[senderId];
 }
 
 function setParticipantName(senderId, name) {
-    participant_names[senderId] = name;
+    participantNames[senderId] = name;
 }
 
 function onChannelChat(msg) {
@@ -71,22 +75,22 @@ function onChannelChat(msg) {
             break;
         case 'title':
             appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the room title - "' + msg.content + '"');
-            $('#room_title').val(msg.content);
+            $('#room-title').val(msg.content);
             break;
         case 'description':
             appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the room description - "' + msg.content + '"');
-            $('#room_description').val(msg.content);
+            $('#room-description').val(msg.content);
             break;
         case 'open-status':
             if (msg.open) {
                 appendChatMessage(null, getParticipantName(msg.sender) + ' has unlocked the room.');
-                $('#invite_open_status i').removeClass('icon-lock');
-                $('#invite_open_status i').addClass('icon-unlock');
+                $('#invite-open-status i').removeClass('icon-lock');
+                $('#invite-open-status i').addClass('icon-unlock');
             } else {
                 if (roomIsOpen) {
                     appendChatMessage(null, getParticipantName(msg.sender) + ' has locked this room with a password.');
-                    $('#invite_open_status i').removeClass('icon-unlock');
-                    $('#invite_open_status i').addClass('icon-lock');
+                    $('#invite-open-status i').removeClass('icon-unlock');
+                    $('#invite-open-status i').addClass('icon-lock');
                 } else {
                     appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the password.');
                 }
@@ -94,24 +98,24 @@ function onChannelChat(msg) {
 
             roomIsOpen = msg.open;
             roomPassword = msg.password;
-            $('#room_password').val(roomPassword);
+            $('#room-password').val(roomPassword);
             changeOpenStatus(roomIsOpen);
-
             break;
     }
 }
 
 function appendChatMessage(sender, msg) {
     if (sender) {
-        $('#chat_content').append(sender + ': ' + msg + '\n');
+        $('#chat-content').append(sender + ': ' + msg + '\n');
     } else {
-        $('#chat_content').append(msg + '\n');
+        $('#chat-content').append(msg + '\n');
     }
-    $('#chat_content').scrollTop($('#chat_content')[0].scrollHeight);
+    $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
 }
 
 function onHangup() {
-    console.log('Hanging up.');
+    console.log('hang up');
+
     for (p in connections) {
         connections[p].onHangup();
         delete connections[p];
@@ -120,6 +124,7 @@ function onHangup() {
     if (channel && channel.isReady) {
         channel.close();
     }
+
     appendChatMessage(null, 'You have left from the room.');
 
     videoFocusOut(null);
@@ -136,13 +141,13 @@ function printObject(name, obj) {
 }
 
 function onUserMediaSuccess(stream) {
-    console.log('User has granted access to local media.');
+    console.log('got access to local media');
+    localStream = stream;
 
-    // Call the polyfill wrapper to attach the media stream to this element.
     attachMediaStream(localVideo, stream);
+    attachMediaStream(focusedVideo, stream);
 
     localVideo.style.opacity = 1;
-    localStream = stream;
 
     initializeChannel();
 }
@@ -169,7 +174,7 @@ function initializeChannel() {
 
 function roomJoin() {
     var params = {};
-    params.participant_id = participant_id;
+    params.participantId = participantId;
     params.room_id = roomId;
     params.is_registered_user = isRegisteredUser;
     params.user_name = chatName;
@@ -181,14 +186,12 @@ function roomJoin() {
             console.log('done: room-join');
             appendChatMessage(null, 'You have joined the room.');
         } else {
-            console.log('error on room-join: failed to get participant_id');
+            console.log('error on room-join: failed to get participantId');
         }
     });
 }
 
 function videoFocusIn(connectionId) {
-    var focusedVideo = document.getElementById('focusedVideo');
-
     if (connectionId == null) {
         attachMediaStream(focusedVideo, localStream);
         focusedVideoId = null;
@@ -208,8 +211,6 @@ function videoFocusIn(connectionId) {
 }
 
 function videoFocusOut(connectionId) {
-    var focusedVideo = document.getElementById('focusedVideo');
-
     if (connectionId === null) {
         // hide focused video
         focusedVideo.style.opacity = '0';
@@ -236,64 +237,7 @@ function videoFocusOut(connectionId) {
     focusedVideoId = null;
 }
 
-// Set the video diplaying in the center of window.
-window.onresize = function() {
-    $('#chat_content').scrollTop($('#chat_content')[0].scrollHeight);
-
-//    var smallVideo = document.getElementById('smallVideo');
-//    var largeVideo = document.getElementById('largeVideo');
-
-
-//    var aspectRatio;
-//    if (largeVideo.style.opacity === '1') {
-//        aspectRatio = largeVideo.videoWidth/largeVideo.videoHeight;
-//    } else if (localVideo.style.opacity === '1') {
-//        aspectRatio = localVideo.videoWidth/localVideo.videoHeight;
-//    } else {
-//        return;
-//    }
-
-//    var innerHeight = this.innerHeight;
-//    var innerWidth = this.innerWidth;
-//    var videoWidth = innerWidth < aspectRatio * window.innerHeight ?
-//        innerWidth : aspectRatio * window.innerHeight;
-//    var videoHeight = innerHeight < window.innerWidth / aspectRatio ?
-//        innerHeight : window.innerWidth / aspectRatio;
-//    containerDiv = document.getElementById('container');
-//    containerDiv.style.width = videoWidth + 'px';
-//    containerDiv.style.height = videoHeight + 'px';
-//    containerDiv.style.left = (innerWidth - videoWidth) / 2 + 'px';
-//    containerDiv.style.top = (innerHeight - videoHeight) / 2 + 'px';
-}
-
-// Ctrl-D: toggle audio mute; Ctrl-E: toggle video mute.
-// On Mac, Command key is instead of Ctrl.
-// Return false to screen out original Chrome shortcuts.
-//document.onkeydown = function() {
-//    if (navigator.appVersion.indexOf('Mac') != -1) {
-//        if (event.metaKey && event.keyCode === 68) {
-//            toggleAudioMute();
-//            return false;
-//        }
-//        if (event.metaKey && event.keyCode === 69) {
-//            toggleVideoMute();
-//            return false;
-//        }
-//    } else {
-//        if (event.ctrlKey && event.keyCode === 68) {
-//            toggleAudioMute();
-//            return false;
-//        }
-//        if (event.ctrlKey && event.keyCode === 69) {
-//            toggleVideoMute();
-//            return false;
-//        }
-//    }
-//}
-
-
-function whenClickMicToggle() {
-    $('#menu_mic i').toggleClass('icon-large icon-microphone-off icon-large icon-microphone');
+function micToggle() {
     var audioTracks = localStream.getAudioTracks();
 
     if (audioTracks.length === 0) {
@@ -302,23 +246,25 @@ function whenClickMicToggle() {
     }
 
     if (isAudioMuted) {
+        console.log('microphone on');
         for (i = 0; i < audioTracks.length; i++) {
             audioTracks[i].enabled = true;
         }
-        console.log('Audio unmuted.');
+        $('#menu-mic span').html('Microphone On');
+        $('#menu-mic i').toggleClass('icon-microphone-off icon-microphone');
     } else {
+        console.log('microphone off');
         for (i = 0; i < audioTracks.length; i++) {
             audioTracks[i].enabled = false;
         }
-        console.log('Audio muted.');
+        $('#menu-mic span').html('Microphone Muted');
+        $('#menu-mic i').toggleClass('icon-microphone icon-microphone-off');
     }
 
     isAudioMuted = !isAudioMuted;
 }
 
-function whenClickScreenToggle() {
-    $('#menu_screen i').toggleClass('icon-large icon-eye-close icon-large icon-eye-open');
-
+function screenToggle() {
     var videoTracks = localStream.getVideoTracks();
 
     if (videoTracks.length === 0) {
@@ -330,23 +276,28 @@ function whenClickScreenToggle() {
         for (i = 0; i < videoTracks.length; i++) {
             videoTracks[i].enabled = true;
         }
-        console.log('Video unmuted.');
+        console.log('camera on');
+        $('#menu-screen i').toggleClass('icon-eye-close icon-eye-open');
+        $('#menu-screen span').html('Camera On');
+
     } else {
         for (i = 0; i < videoTracks.length; i++) {
             videoTracks[i].enabled = false;
         }
-        console.log('Video muted.');
+        console.log('camera off');
+        $('#menu-screen i').toggleClass('icon-eye-open icon-eye-close');
+        $('#menu-screen span').html('Camera Off');
     }
 
     isVideoMuted = !isVideoMuted;
 }
 
-function whenClickExit() {
+function roomExit() {
     onHangup();
 }
 
-function whenClickChatSend() {
-    var msg = $('#chat_input').val();
+function chatSend() {
+    var msg = $('#chat-input').val();
 
     channel.sendMessage({type: 'chat',
         subtype: 'normal',
@@ -355,151 +306,87 @@ function whenClickChatSend() {
 
     appendChatMessage(chatName, msg);
 
-    $('#chat_input').val('');
+    $('#chat-input').val('');
 }
 
-function whenClickTitleEdit() {
-    var title;
-    var description;
-
-    $('#edit_title').val('');
-    $('#edit_description').val('');
-
-    title = $('#title').html();
-    description = $('#description').html();
-
-    $('#edit_title').attr("placeholder", title);
-    $('#edit_description').attr("placeholder", description);
-}
-
-function whenClickTitleSave() {
-    var title;
-    var description;
-    var edit_title;
-    var edit_description;
-
-    //value initializing
-    
-    title = $('#title').html();
-    description = $('#description').html();
-                                     
-    edit_title = $('#edit_title').val();
-    edit_description = $('#edit_description').val();
-
-    if(edit_title !== '')
-        $('#title').html(edit_title);
-
-    if(edit_description !== '')
-        $('#description').html(edit_description);
-}
-
-function whenClickAddEmail() {
-    var group = document.createElement("span"); 
-    var txt = document.createElement("input");
-    var btn_span = document.createElement("span");
-    var btn = document.createElement("button");
-    var panel = document.getElementById("email_set");
-    var email = $('#email').val();
-
-    if(checkEmailForm(email) === false){
-        console.log("Empty");
-        return;
-    }
-
-    group.setAttribute("class", "input-group");
-    group.setAttribute("id","Test");
-
-    txt.setAttribute("type", "text");
-    txt.setAttribute("class", "form-control");
-    txt.setAttribute("value", email);
-    txt.setAttribute("id", email_cnt);
-
-    btn_span.setAttribute("class", "input-group-btn");
-    btn.setAttribute("class", "btn-default");
-    btn.setAttribute("type", "button");
-    btn.setAttribute("onclick", "whenClickDelEmail(this)");
-    btn.setAttribute("id", email_cnt);
-    btn.innerHTML = "&times";
-    btn_span.appendChild(btn);
-
-    group.appendChild(txt);
-    group.appendChild(btn_span);
-
-    panel.appendChild(group);
-    email_cnt++;
-}
-
-function whenClickDelEmail(obj) {
-    var output = obj.id;
-    console.log(output);
-
-    //Remove text component and button component
-    //Text name and button name are same. So removal is twice.
-    $('#'+output).remove();
-    $('#'+output).remove();
-    email_cnt--;
-}
-
-function whenClickInvite(obj) {
-    var invite_type = obj.id;
-    
-    if(invite_type === "invite_email")
-        $('#tab_email').addClass('active');
-    else if(invite_type === "invite_facebook")
-        $('#tab_acebook').addClass('active');
-    else if(invite_type === "invite_twitter")
-        $('#tab_twitter').addClass('active');
-    else if(invite_type === "invite_url")
-        $('#tab_url').addClass('active');
-}
-
-//Activating tab-pane make inactive.
-function whenClickInviteExit() {
-    $('.active.tab-pane').removeClass('active');
-}
-
-function checkEmailForm(obj) {
-    var obj_len = obj.length;
-    console.log(obj[0]);
-
-    for(var i = 0; i < obj_len; i++) {
-        if(obj[i] === " ")
-            return false;
-
-        if(obj[i] === "@")
+function invite(obj) {
+    switch (obj.id) {
+        case 'invite-email':
+            $('#tab-email').addClass('active');
+            break;
+        case 'invite-facebook':
+            $('#tab-facebook').addClass('active');
+            break;
+        case 'invite-twitter':
+            $('#tab-twitter').addClass('active');
+            break;
+        case 'invite-url':
+            $('#tab-url').addClass('active');
             break;
     }
-
-    if(obj.length === 0)
-        return false;
-    else if(i === obj.length)
-        return false;
-    else
-        return true;
 }
 
 function onSmallVideoClicked() {
     var id = $(this).attr('id');
     var idTokens = id.split('-');
 
-    if (idTokens[0] == 'localVideo') {
+    if (idTokens[0] == 'local') {
         videoFocusIn(null);
-    } else if (idTokens[0] == 'remoteVideo') {
-        videoFocusIn(idTokens[1]);
+    } else if (idTokens[0] == 'remote') {
+        videoFocusIn(idTokens[2]);
+    }
+}
+
+function changeOpenStatus(open) {
+    $('#btn-public').prop('disabled', !open);
+    $('#btn-private').prop('disabled', open);
+    $('#room-password').prop('disabled', open);
+    $('#room-password-hide').prop('disabled', open);
+
+    if (open == roomIsOpen && $('#room-password').val() == roomPassword) {
+        $('#open-status-save-text').html('Save');
+        $('#open-status-save').prop('disabled', true);
+    } else {
+        $('#open-status-save-text').html('Save');
+        $('#open-status-save').prop('disabled', false);
+    }
+}
+
+function onResize() {
+    $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
+
+    if (localStream == null) {
+        return;
+    }
+
+    // console.log('video width=' + v.width() + ' height=' + v.height());
+
+    if (c.height() / c.width() >= v.height() / v.width()) {
+        // console.log('+++++++++++++');
+        v.css('width', 'auto');
+        v.css('height', '100%');
+        v.css('bottom', '0');
+        v.css('right', ((v.width()-c.width())/2) + 'px');
+    } else {
+        // console.log('--------------');
+        v.css('height', 'auto');
+        v.css('width', '100%');
+        v.css('bottom', ((v.height()-c.height())/2) + 'px');
+        v.css('right', '0');
     }
 }
 
 $(document).ready(function() {
     // text message send
-    $('#chat_input').bind('keypress', function(e) {
+    $('#chat-input').bind('keypress', function(e) {
         if(e.which == 13) {
             e.preventDefault();
-            whenClickChatSend();
+            chatSend();
         }
     });
 
-    // local media setting
-    localVideo = document.getElementById('localVideo');
+    localVideo = document.getElementById('local-video');
+    focusedVideo = document.getElementById('focused-video');
 
     try {
         getUserMedia(mediaConstraints, onUserMediaSuccess, onUserMediaError);
@@ -514,7 +401,7 @@ $(document).ready(function() {
           return 'You are going to leave from the video chat room.';
     });
 
-    $('#room_title').focusout(function(event) {
+    $('#room-title').focusout(function(event) {
         var value = $(this).val().trim();
         $(this).val(value);
 
@@ -551,7 +438,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#room_description').focusout(function(event) {
+    $('#room-description').focusout(function(event) {
         var value = $(this).val().trim();
         $(this).val(value);
         if (value !== roomDescription) {
@@ -587,38 +474,37 @@ $(document).ready(function() {
         }
     });
 
+    $('.small-video').click(onSmallVideoClicked);
 
-    $('.smallVideo').click(onSmallVideoClicked);
-
-    $('#btn_public').click(function() {
+    $('#btn-public').click(function() {
         changeOpenStatus(false);
     });
 
-    $('#btn_private').click(function() {
+    $('#btn-private').click(function() {
         changeOpenStatus(true);
     });
 
-    $('#room_password_hide').change(function() {
+    $('#room-password-hide').change(function() {
         isPasswordHidden = $(this).prop('checked');
         if (isPasswordHidden) {
-            $('#room_password').attr({type:"password"});
+            $('#room-password').attr({type:"password"});
         } else {
-            $('#room_password').attr({type:"text"});
+            $('#room-password').attr({type:"text"});
         }
     });
 
-    $('#room_password').bind('change paste keyup', function() {
-        if (roomIsOpen == !$('#btn_public').prop('disabled') && $(this).val() == roomPassword) {
-            $('#open_status_save_text').html('Save');
-            $('#open_status_save').prop('disabled', true);
+    $('#room-password').bind('change paste keyup', function() {
+        if (roomIsOpen == !$('#btn-public').prop('disabled') && $(this).val() == roomPassword) {
+            $('#open-status-save-text').html('Save');
+            $('#open-status-save').prop('disabled', true);
         } else {
-            $('#open_status_save_text').html('Save');
-            $('#open_status_save').prop('disabled', false);
+            $('#open-status-save-text').html('Save');
+            $('#open-status-save').prop('disabled', false);
         }
         console.log('hi');
     });
 
-    $('#open_status_save').click(function() {
+    $('#open-status-save').click(function() {
         if (!channel.isReady) {
             console.log("Cannot update room information before the channel is ready");
             alert('You are not allowed to change the room information before joining the room');
@@ -630,8 +516,8 @@ $(document).ready(function() {
 
         var params = {};
         params.id = roomId;
-        params.open = !$('#btn_public').prop('disabled');
-        params.password = $('#room_password').val();
+        params.open = !$('#btn-public').prop('disabled');
+        params.password = $('#room-password').val();
 
         $.post(roomApi + '/d/room/open-status/save/', params, function (data) {
             var json = $.parseJSON(data);
@@ -639,7 +525,7 @@ $(document).ready(function() {
                 console.log('done: room open status save');
 
                 // show notification on the chat box
-                if (!$('#btn_public').prop('disabled')) {
+                if (!$('#btn-public').prop('disabled')) {
                     appendChatMessage(null, 'You have unlocked the room.');
                 } else {
                     if (roomIsOpen) {
@@ -650,19 +536,19 @@ $(document).ready(function() {
                 }
 
                 // accept the changes
-                roomPassword = $('#room_password').val();
-                roomIsOpen = !$('#btn_public').prop('disabled');
+                roomPassword = $('#room-password').val();
+                roomIsOpen = !$('#btn-public').prop('disabled');
 
                 // change the ui components
-                $('#open_status_save').removeClass('active');
-                $('#open_status_save_text').html('Saved');
+                $('#open-status-save').removeClass('active');
+                $('#open-status-save-text').html('Saved');
 
                 if (roomIsOpen) {
-                    $('#invite_open_status i').removeClass('icon-lock');
-                    $('#invite_open_status i').addClass('icon-unlock');
+                    $('#invite-open-status i').removeClass('icon-lock');
+                    $('#invite-open-status i').addClass('icon-unlock');
                 } else {
-                    $('#invite_open_status i').removeClass('icon-unlock');
-                    $('#invite_open_status i').addClass('icon-lock');
+                    $('#invite-open-status i').removeClass('icon-unlock');
+                    $('#invite-open-status i').addClass('icon-lock');
                 }
 
                 // send message to the participants in the room
@@ -674,33 +560,31 @@ $(document).ready(function() {
                 });
             } else {
                 console.log('error on saving room open status: ' + json.msg);
-                $('#open_status_save').prop('disabled', false);
-                $('#open_status_save').removeClass('active');
+                $('#open-status-save').prop('disabled', false);
+                $('#open-status-save').removeClass('active');
             }
         });
 
     });
 
-    $('#open_status_cancel').click(function() {
-        $('#room_password').val(roomPassword);
+    $('#open-status-cancel').click(function() {
+        $('#room-password').val(roomPassword);
         changeOpenStatus(roomIsOpen);
         $('#openStatusModal').modal('hide');
     });
 
     changeOpenStatus(roomIsOpen);
+
+    $(window).resize(onResize);
+
+    v = $('.large-video');
+    c = $('.large-videos');
+    c1 = $('.small-videos');
+
+    v.bind('play', function() {
+        onResize();
+    });
+
+
 });
 
-function changeOpenStatus(open) {
-    $('#btn_public').prop('disabled', !open);
-    $('#btn_private').prop('disabled', open);
-    $('#room_password').prop('disabled', open);
-    $('#room_password_hide').prop('disabled', open);
-
-    if (open == roomIsOpen && $('#room_password').val() == roomPassword) {
-        $('#open_status_save_text').html('Save');
-        $('#open_status_save').prop('disabled', true);
-    } else {
-        $('#open_status_save_text').html('Save');
-        $('#open_status_save').prop('disabled', false);
-    }
-}

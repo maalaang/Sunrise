@@ -1,51 +1,160 @@
 html, body {
     height: 100%;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    overflow: hidden;
 }
+
 body {
-  padding-top: 40px;
+    background-color: #000000;
+    padding: 0;
 }
+
+/* Navbar */
 .navbar {
-  height: 42px;
-  padding-right: 0;
+    border: 0;
 }
-.navbar-brand {
-    font-weight: bold;
-    font-size: 19pt;
-    padding-top: 10px;
-    -webkit-transition: all .3s linear;
-    -moz-transition: all .3s linear;
-    transition: all .3s linear;
+
+.navbar .navbar-brand, .navbar .navbar-nav>li>a {
+    color: #e2e2e2;
 }
-.navbar-nav > li > a {
-    padding-top: 13px;
-    padding-bottom: 0px;
-    -webkit-transition: all .3s linear;
-    -moz-transition: all .3s linear;
-    transition: all .3s linear;
+
+.navbar .navbar-toggle {
+    border-color: #ffffff;
 }
-.control_icon {
+
+.navbar .control-icon {
     font-size: 19px;
 }
-.main_content {
+
+.navbar .control-icon-text {
+    display: none;
+}
+
+/* Main Content */
+.main-content {
     height: 100%;
+    padding: 42px 0 0 0;
+}
+
+.large-videos {
+    text-align: center;
+    height: 100%;
+    padding-bottom: 120px;
+    overflow: hidden;
+}
+
+.large-video {
+    width: 100%;
+    height: auto;
+    opacity: 1;
+    position: relative;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 2s;
+}
+
+.small-videos {
+    bottom: 120px;
+    height: 120px;
+    padding: 0;
+    text-align: center;
+    position: relative;
+    background-color: #000;
+}
+
+.small-video {
+    height: 100%; 
+}
+
+.room-videos {
+    height: 100%;
+}
+
+/* Modal Box */
+.modal-dialog {
+    width:50%;
+    margin-left: -25%;
+}
+
+.open-status-modal-body {
+    height: 220px;
+}
+
+.access-control-btn {
+    margin-bottom: 14px;
+}
+
+.open-status-save {
+    margin-top: 14px;
+}
+
+.open-status-save-btn {
+    width: 100px;
+}
+
+.spinner {
+    display: inline-block;
+    opacity: 0;
+    width: 0;
+
+    -webkit-transition: opacity 0.25s, width 0.25s;
+    -moz-transition: opacity 0.25s, width 0.25s;
+    -o-transition: opacity 0.25s, width 0.25s;
+    transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner .active {
+    cursor:progress;
+}
+
+.has-spinner .active .spinner {
+    opacity: 1;
+    width: auto;
+}
+
+.has-spinner .btn-small .active .spinner {
+    width: 13px;
+}
+
+/* Side Content */
+.side-content {
+    height: 100%;
+    padding-top: 42px;
+    padding-left: 0;
     padding-right: 0;
+    background-color: #f1f1f1;
+    border-left: 1px solid #aaa;
 }
-.side_content {
-    height: 100%;
-    padding-right: 8px;
-}
-.chat_content_wrapper {
+
+.side-content .chat-content-wrapper {
     height: 90%;
-    padding-top: 8px;
-    padding-bottom: 4px;
+    padding: 4px 0 4px 8px;
 }
-.chat_input_wrapper {
+
+.side-content .chat-input-wrapper {
     height: 10%;
-    padding-bottom: 4px;
+    padding: 4px 0 4px 8px;
+    border-top: 2px solid #fff;
 }
-.chat_content {
+
+.side-content .chat-content {
     height: 100%;
+    width: 100%;
+    line-height: normal;
+    text-indent: 0px;
+    text-shadow: none;
+    text-align: start;
+    cursor: auto;
+    font-size: 10pt;
+    padding: 6px 6px 0 6px;
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+    resize: none;
+    font-family: sans-serif;
+}
+
+.side-content .chat-input {
+    height: 100%;
+    width: 100%;
     resize: none;
     font-size: 10pt;
     line-height: normal;
@@ -54,30 +163,98 @@ body {
     text-align: start;
     cursor: auto;
     padding: 6px;
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
 }
-.chat_input {
-    height: 100%;
-    resize: none;
-    font-size: 10pt;
-    line-height: normal;
-    text-indent: 0px;
-    text-shadow: none;
-    text-align: start;
-    cursor: auto;
-    padding: 6px;
+
+@media (max-width: 1199px) {
+    .side-content {
+        padding-left: 0 0 0 4px;
+        display: none;
+    }
+
+    .side-content .chat-input-wrapper {
+        height: 120px;
+    }
+
+    .side-content .chat-content-wrapper {
+        height: 120px;
+        padding-top: 0;
+        padding-left: 0;
+        padding-right: 4px;
+    }
 }
-.room_head {
+
+@media (max-width: 767px) {
+    .navbar .nav {
+        float: left !important;
+        margin-top: 8px;
+    }
+
+    .navbar .control-icon-text {
+        display: block;
+        text-align: left;
+    }
+
+    .navbar .navbar-nav>li {
+        width: 200px;
+    }
+
+    .navbar .control-icon {
+        width: 40px;
+        text-align: center;
+        padding-right: 10px;
+    }
+
+    .main-content .large-videos {
+        padding-bottom: 120px;
+    }
+
+    .main-content .small-videos {
+        height: 120px;
+        bottom: 120px;
+    }
+
+    .main-content .largeVideo {
+        max-width: none;
+        max-height: none;
+    }
+}
+
+@media (max-height: 767px) {
+    .main-content .large-videos {
+        padding-bottom: 80px;
+    }
+
+    .main-content .small-videos {
+        height: 80px;
+        bottom: 80px;
+    }
+}
+
+/*@media (max-height: 480px) {*/
+/*    .main-content .large-videos {*/
+/*        padding-bottom: 80px;*/
+/*    }*/
+
+/*    .main-content .small-videos {*/
+/*        height: 80px;*/
+/*        bottom: 80px;*/
+/*    }*/
+/*}*/
+
+/*
+.room-head {
     height: 8.53%;
 }
-.room_info {
+
+.room-info {
     margin-top: 12px;
     font-weight: bold;
 }
-.room_title_wrapper {
-}
-.room_description_wrapper {
-}
-#room_title {
+
+#room-title {
     font-size: 15pt;
     padding: 0 0 0 0;
     min-height: 25px;
@@ -85,201 +262,65 @@ body {
     font-weight: bold;
     box-shadow: none;
 }
-#room_description {
+
+#room-description {
     font-size: 10pt;
     padding: 0 0 0 1px;
     min-height: 25px;
     border: none;
     box-shadow: none;
 }
-.room_invite {
+
+.room-invite {
     padding: 18px 0 0 0;
     text-align: right;
 }
-.invite_control {
+
+.invite-control {
     margin-bottom: 6px;
 }
-.invite_open_status {
+
+.invite-open-status {
 }
-.invite_label {
+
+.invite-label {
     font-size: 10pt;
     font-weight: bold;
 }
-.invite_label_right {
+
+.invite-label-right {
     margin-left: 8px;
 }
-.invite_icons_wrapper {
+
+.invite-icons-wrapper {
     padding-left: 5px;
 }
-.invite_icon {
+
+.invite-icon {
     padding-left: 3px;
     padding-right: 3px;
     font-size: 16px;
 }
-.invite_icons_wrapper > a {
+
+.invite-icons-wrapper > a {
     text-decoration:none;
     -webkit-transition: all .2s linear;
     -moz-transition: all .2s linear;
     transition: all .2s linear;
 }
-.invite_icons_wrapper > a:link { color:gray; }
-.invite_icons_wrapper > a:visited { color:gray; }
-.invite_icons_wrapper > a:hover { color:black; }
-.invite_icons_wrapper > a:active { color:gray; }
 
-.room_videos {
-    height: 91.47%;
-}
-#largeVideoContainer {
-    padding: 10px;
-    height: 77%;
-    text-align: center;
-}
-#smallVideoContainer {
-    padding: 10px 0 30px 0;
-    height: 23%;
-    text-align: center;
-}
-.largeVideo {
-    height: 99%;  
-    max-width: 99%;
-    max-width: 99%;
-    opacity: 1;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 2s;
-}
-.smallVideo {
-    height: 140px;
-    max-height: 99%;
-    max-width: 99%;
-    margin-left: 10px;
-    margin-right: 10px;
-    opacity: 1;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 2s;
-}
-.chat-form {
-    padding-top:11px;
-}
-.form-field {
-    vertical-align:middle;
-}
-#container {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    padding: 60px 10px 10px 10px;
-    text-align: center;
-    -webkit-perspective: 1000;
-}
-#card {
-    -webkit-transition-property: rotation;
-    -webkit-transition-duration: 2s;
-    -webkit-transform-style: preserve-3d;
-}
-#local {
-    position: absolute;
-    width: 100%;
-    -webkit-transform: scale(-1, 1);
-    -webkit-backface-visibility: hidden;
-}
+.invite-icons-wrapper > a:link { color:gray; }
+
+.invite-icons-wrapper > a:visited { color:gray; }
+
+.invite-icons-wrapper > a:hover { color:black; }
+
+.invite-icons-wrapper > a:active { color:gray; }
+
 #remote {
     position: absolute;
     width: 100%;
     -webkit-transform: rotateY(180deg);
     -webkit-backface-visibility: hidden;
 }
-#inviteModalForm{
-    width:50%;
-    margin-left: -25%;
-}
-#mini {
-    position: absolute;
-    height: 30%;
-    width: 30%;
-    bottom: 32px;
-    right: 4px;
-    -webkit-transform: scale(-1, 1);
-    opacity: 1.0;
-}
-#footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 28px;
-    background-color: #3F3F3F;
-    color: rgb(255, 255, 255);
-    font-size: 13px; font-weight: bold;
-    line-height: 28px;
-    text-align: center;
-}
-#hangup {
-    font-size: 13px; font-weight: bold;
-    color: #FFFFFF;
-    width: 128px;
-    height: 24px;
-    background-color: #808080;
-    border-style: solid;
-    border-color: #FFFFFF;
-    margin: 2px;
-}
-#logo {
-    display: block;
-    top: 4;
-    right: 4;
-    position: absolute;
-    float: right;
-    opacity: 0.5;
-}
-.open_status_modal_body {
-    height: 220px;
-}
-
-.access_control_btn {
-    margin-bottom: 14px;
-}
-
-.open_status_save {
-    margin-top: 14px;
-}
-.open_status_save_btn {
-    width: 100px;
-}
-#open_status_private_extra {
-}
-
-.spinner {
-      display: inline-block;
-        opacity: 0;
-          width: 0;
-
-            -webkit-transition: opacity 0.25s, width 0.25s;
-              -moz-transition: opacity 0.25s, width 0.25s;
-                -o-transition: opacity 0.25s, width 0.25s;
-                  transition: opacity 0.25s, width 0.25s;
-              }
-
-              .has-spinner.active {
-                    cursor:progress;
-                }
-
-                .has-spinner.active .spinner {
-                      opacity: 1;
-                        width: auto; /* This doesn't work, just fix for unkown width elements */
-                    }
-
-                    .has-spinner.btn-mini.active .spinner {
-                            width: 10px;
-                        }
-
-                        .has-spinner.btn-small.active .spinner {
-                                width: 13px;
-                            }
-
-                            .has-spinner.btn.active .spinner {
-                                    width: 16px;
-                                }
-
-                                .has-spinner.btn-large.active .spinner {
-                                        width: 19px;
-                                    }
+*/
