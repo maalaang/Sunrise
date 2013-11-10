@@ -296,4 +296,18 @@ function room_message_pswd() {
     }
 }
 
+/**
+ * Send chat invitation emails.
+ */
+
+function room_invite_email() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $result['result'] = 0;
+        echo json_encode($result);
+
+    } else {
+        sr_response_error(404);
+    }
+}
+
 ?>

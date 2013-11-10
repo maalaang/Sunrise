@@ -15,6 +15,7 @@ var isAudioMuted = false;
 var isVideoMuted = false;
 var focusedVideoId = null;
 var isPasswordHidden = true;
+var emailRegex = new RegExp(/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/);
 
 var v = null;
 var c = null;
@@ -23,7 +24,7 @@ var c1 = null;
 function onChannelMessage(msg) {
     if (!(msg.sender in connections)) {
         // create a new connection
-        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'small-videos', 'small-video', 'focused-video');
+        connections[msg.sender] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, msg.sender, false, true, 'remote-videos', 'small-video', 'focused-video');
         setParticipantName(msg.sender, msg.name);
         appendChatMessage(null, msg.name + ' has joined the room.');
     }
@@ -36,7 +37,7 @@ function onChannelOpened(msg) {
     participantNames = [];
 
     for (p in msg.participant_list) {
-        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'small-videos', 'small-video', 'focused-video');
+        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'remote-videos', 'small-video', 'focused-video');
         connections[p].maybeStart();
 
         setParticipantName(p, msg.participant_list[p].name);
@@ -376,6 +377,48 @@ function onResize() {
     }
 }
 
+function addEmail() {
+    var email = $('#invite-email').val();
+    if (emailRegex.test(email)) {
+        $('#invite-email-set').append('<button class="btn btn-inverse btn-added-email" onclick="removeEmail(this)"><div class="added-email pull-left">' + email + '</div> <div class="close">&times;</span></div>');
+        $('#invite-email').val('');
+        $('.invite-email-info').css('display', 'none');
+    } else {
+        $('.invite-email-info').html('Invalid email address.');
+        $('.invite-email-info').css('display', 'block');
+    }
+}
+
+function removeEmail(email) {
+    $(email).remove();
+}
+
+function sendEmail() {
+    var list = [];
+    $.each($('.added-email'), function (index, email) {
+        list.push(email.innerHTML.trim());
+    });
+
+    if (list.length == 0) {
+        return;
+    }
+
+    var params = {}
+    params.emails = JSON.stringify(list);
+    $.post(roomApi + '/d/room/invite/email/', params, function (data) {
+        var json = $.parseJSON(data);
+        if (json.result === 0) {
+            console.log('invitation sent');
+            $('#invite-email-set').html('');
+            $('.invite-email-info').html('Invitation sent.');
+            $('.invite-email-info').css('display', 'block');
+        } else {
+            console.log('failed to send invitation emails');
+        }
+    });
+    return list;
+}
+
 $(document).ready(function() {
     // text message send
     $('#chat-input').bind('keypress', function(e) {
@@ -583,8 +626,18 @@ $(document).ready(function() {
 
     v.bind('play', function() {
         onResize();
+        $('.btn-invite').css('visibility', 'visible');
     });
 
+
+    $('.btn-invite').click();
+
+    $('#invite-email').bind('keypress', function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            addEmail();
+        }
+    });
 
 });
 

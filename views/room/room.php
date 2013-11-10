@@ -117,9 +117,18 @@
                     <video id="focused-video" class="large-video" autoplay="autoplay" muted="true"></video>
                 </div>
                 <div class="small-videos">
-                    <video id="local-video" class="small-video" autoplay="autoplay" muted="true"/>
-                    <video id="local-video" class="small-video" autoplay="autoplay" muted="true"/>
-                    <video id="local-video" class="small-video" autoplay="autoplay" muted="true"/>
+                    <span>
+                        <video id="local-video" class="small-video" autoplay="autoplay" muted="true"/>
+                    </span>
+                    <span class="remote-videos">
+                    </span>
+   
+                    <span class="btn-invite">
+                        <a id="invite-url" data-toggle="modal" href="#invite-modal">
+                            <i class="icon icon-user"></i>
+                            <i class="icon icon-plus-sign"></i>
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>
@@ -137,34 +146,30 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Invite People</h4>
+                        <h4 class="modal-title">Invite friends</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <ul class="nav nav-pills nav-stacked col-lg-2" id="inviteTab" style="text-align:left;">
-                                <li><a href="#tab-email" data-toggle="tab">Email</a></li>                                           
-                                <li><a href="#tab-facebook" data-toggle="tab">Facebook</a></li>  
-                                <li><a href="#tab-twitter" data-toggle="tab">Twitter</a></li>   
-                                <li><a href="#tab-url" data-toggle="tab">URL</a></li>   
+                            <ul class="nav nav-pills nav-stacked col-sm-3" id="inviteTab" style="text-align:left;">
+                                <li class="active"><a href="#tab-email" data-toggle="tab"><i class="icon icon-envelope-alt"></i> Email</a></li>                                           
+                                <li><a href="#tab-facebook" data-toggle="tab"><i class="icon icon-facebook"></i> Facebook</a></li>  
+                                <li><a href="#tab-twitter" data-toggle="tab"><i class="icon icon-twitter"></i> Twitter</a></li>   
+                                <li><a href="#tab-url" data-toggle="tab"><i class="icon icon-external-link"></i> URL</a></li>   
                             </ul>
-                            <div class="tab-content col-lg-8">
-                                <div class="tab-pane" id="tab-email">
-                                    <table>
-                                        <tr>
-                                            <td>Send invitation by E-mail</td>
-                                        </tr>
-                                        <tr>
-                                            <div id="email-set">
-                                            </div> 
-                                        </tr>
-                                        <tr>
-                                            <td><input type="text" id="email" class="form-control"></td>
-                                            <td><button type="button" class="btn btn-default" id="btn-addemail" onclick="alert('hi');">Add</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn-email">Send Invitation</button></td>
-                                        </tr>
-                                    </table>
+                            <div class="tab-content col-sm-9">
+                                <div class="tab-pane active" id="tab-email">
+                                    <div class="title">Send invitation email</div>
+                                    <div>
+                                        <input type="text" id="invite-email" class="form-control"/>
+                                        <button type="button" class="btn btn-default" id="btn-add-email" onclick="addEmail()">Add</button>
+                                    </div>
+                                    <div id="invite-email-set">
+                                    </div>
+                                    <div class="invite-email-info alert alert-warning">
+                                    </div>
+                                    <div class="sep" colspan="2">
+                                        <button type="button" class="btn btn-primary" id="btn-email" onclick="sendEmail()">Send Invitation</button>
+                                    </div>
                                 </div>
                                 <div class="tab-pane" id="tab-facebook">
                                     <table width="100%">
@@ -185,7 +190,7 @@
                                             <td><textarea class="form-control" id="face-message" rows="3"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn-facebook">Send Message</button></td>
+                                            <td class="sep"><button type="button" class="btn btn-primary" id="btn-facebook">Send Message</button></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -208,7 +213,7 @@
                                             <td><textarea class="form-control" id="twitter-message" rows="3"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn-twitter">Send Message</button></td>
+                                            <td class="sep"><button type="button" class="btn btn-primary" id="btn-twitter">Send Message</button></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -224,7 +229,7 @@
                                             <td><textarea class="form-control" id="url-message" rows="3"></textarea></td>
                                         </tr>
                                         <tr>
-                                            <td><button type="button" class="btn btn-primary" id="btn-url">Send Message</button></td>
+                                            <td class="sep"><button type="button" class="btn btn-primary" id="btn-url">Send Message</button></td>
                                         </tr>
                                     </table>
                                 </div>            
@@ -245,8 +250,8 @@
                     <div class="modal-body open-status-modal-body">
                         <div>
                             <div>
-                                <label for="input-access-control" class="col-lg-4 control-label">Access Control</label>
-                                <div class="col-lg-8">
+                                <label for="input-access-control" class="col-sm-4 control-label">Access Control</label>
+                                <div class="col-sm-8">
                                     <div class="btn-group access-control-btn" id="input-access-control">
                                         <button type="button" class="btn btn-default btn-small" id="btn-public">Public</button>
                                         <button type="button" class="btn btn-default btn-small" id="btn-private">Private</button>
@@ -255,13 +260,13 @@
                             </div>
                             <div>
                                 <div>
-                                    <label for="room-password" class="col-lg-4 control-label">Password</label>
-                                    <div class="col-lg-8">
+                                    <label for="room-password" class="col-sm-4 control-label">Password</label>
+                                    <div class="col-sm-8">
                                         <input type="password" class="form-control" id="room-password" placeholder="Password" value="<?= $context['room']->password ?>">
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-lg-8 col-offset-4">
+                                    <div class="col-sm-8 col-offset-4">
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" id="room-password-hide" checked> Hide Password
@@ -271,7 +276,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="col-lg-8 col-offset-4 open-status-save">
+                                <div class="col-sm-8 col-offset-4 open-status-save">
                                     <button id="open-status-save" type="submit" class="btn btn-default btn-small open-status-save-btn has-spinner">
                                         <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
                                         <span id="open-status-save-text">Save</span>
