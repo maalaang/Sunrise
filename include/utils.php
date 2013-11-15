@@ -2,6 +2,8 @@
 
 require_once (dirname(__FILE__) . '/../models/room.php');
 require_once (dirname(__FILE__) . '/../settings/config.php');
+require_once ("Mail.php");
+require_once ("Mail/mime.php");
 
 /**
  * Send response with the specified view and the context.
@@ -35,6 +37,28 @@ function sr_response_error($error) {
 function sr_home_path() {
     global $sr_root;
     return $sr_root;
+}
+
+function sr_server_url() {
+    $url = 'http';
+    if ($_SERVER["HTTPS"] == "on") {
+        $url .= "s";
+    }
+    $url .= "://";
+    if ($_SERVER["SERVER_PORT"] != "80") {
+        $url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"];
+    } else {
+        $url .= $_SERVER["SERVER_NAME"];
+    }
+    return $url;
+}
+
+function sr_home_url() {
+    return sr_server_url() . sr_home_path();
+}
+
+function sr_current_url() {
+    return sr_server_url() . $_SERVER["REQUEST_URI"];
 }
 
 function sr_redirect($path) {
@@ -148,23 +172,6 @@ function sr_pdo() {
     return $db;
 }
 
-function sr_current_url() {
-    $url = 'http';
-
-    if ($_SERVER["HTTPS"] == "on") {
-        $url .= "s";
-    }
-
-    $url .= "://";
-
-    if ($_SERVER["SERVER_PORT"] != "80") {
-        $url .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
-    } else {
-        $url .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
-    }
-    return $url;
-}
-
 /**
  * Return regular expression for validation.
  * @param type  the type of the form 
@@ -201,4 +208,52 @@ function sr_signout() {
     session_destroy();
 }
 
+function sr_facebook_app_id() {
+    global $sr_facebook_app_id;
+    return $sr_facebook_app_id;
+}
+
+function sr_logo() {
+    global $sr_logo;
+    return sr_home_path() . $sr_logo;
+}
+
+function sr_logo_lg() {
+    global $sr_logo_lg;
+    return sr_home_path() . $sr_logo_lg;
+}
+
+function sr_logo_url() {
+    global $sr_logo;
+    return sr_home_url() . $sr_logo();
+}
+
+function sr_logo_lg_url() {
+    global $sr_logo_lg;
+    return sr_home_url() . $sr_logo_lg;
+}
+
+function sr_send_mail($to, $content) {
+    global $sr_email_addr;
+    global $sr_email_smtp;
+
+    $headers = array(
+        'From' => $sr_email_addr,
+        'To' => $to,
+        'Subject' => $content['subject']
+    );
+
+    $mime = new Mail_mime("\n");
+    $mime->setHTMLBody($content['body']);
+
+    $smtp = Mail::factory('smtp', $sr_email_smtp);
+
+    $mail = $smtp->send($to, $mime->headers($headers), $mime->get());
+
+    if (PEAR::isError($mail)) {
+        return $mail->getMessage();
+    } else {
+        return null;
+    }
+}
 ?>

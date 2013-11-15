@@ -1,0 +1,5 @@
+# Mail-1.2.0
+pear install Mail
+
+# Mail_Mime-1.8.8
+pear install Mail_Mime

@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset='utf-8'> 
-
+        <? include("views/meta.php"); ?>
         <title><?= $context['room_ui_title'] ?></title>
     
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
@@ -11,6 +9,7 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/adapter.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-channel.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/sunrise-connection.js"></script>
+
 
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.1.min.css">
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css">
@@ -37,6 +36,17 @@
     </head>
 
     <body>
+        <!-- facebook social plugin -->
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=<?= sr_facebook_app_id() ?>";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+        <!-- facebook social plugin -->
+
         <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
             <div class="navbar-header">
                 <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
@@ -153,6 +163,7 @@
                             <ul class="nav nav-pills nav-stacked col-sm-3" id="inviteTab" style="text-align:left;">
                                 <li class="active"><a href="#tab-email" data-toggle="tab"><i class="icon icon-envelope-alt"></i> Email</a></li>                                           
                                 <li><a href="#tab-facebook" data-toggle="tab"><i class="icon icon-facebook"></i> Facebook</a></li>  
+    
                                 <li><a href="#tab-twitter" data-toggle="tab"><i class="icon icon-twitter"></i> Twitter</a></li>   
                                 <li><a href="#tab-url" data-toggle="tab"><i class="icon icon-external-link"></i> URL</a></li>   
                             </ul>
@@ -172,66 +183,30 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tab-facebook">
-                                    <table width="100%">
-                                        <tr>
-                                            <td>Invite Facebook friends</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Friends:</td>
-                                        </tr>
-                                        <tr>
-                                            <div id="facebook-set">
-                                            </div> 
-                                        </tr>
-                                        <tr>
-                                            <td>Message:</td>
-                                        </tr>
-                                        <tr>
-                                            <td><textarea class="form-control" id="face-message" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sep"><button type="button" class="btn btn-primary" id="btn-facebook">Send Message</button></td>
-                                        </tr>
-                                    </table>
+                                    <div class="title">
+                                        Invite Facebook friends
+                                    </div>
+                                    <div class="invite-facebook">
+                                        Click the button below to send an invitation message to your friends.
+                                    </div>
+                                    <div class="fb-send" data-href="<?= sr_current_url() ?>" data-colorscheme="light"></div>
                                 </div>
                                 <div class="tab-pane" id="tab-twitter">
-                                    <table width="100%">
-                                        <tr>
-                                            <td>Send a direct message to Twitter Friends</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Friends:</td>
-                                        </tr>
-                                        <tr>
-                                            <div id="twitter-set">
-                                            </div> 
-                                        </tr>
-                                        <tr>    
-                                            <td>Message:</td>
-                                        </tr>
-                                        <tr>
-                                            <td><textarea class="form-control" id="twitter-message" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sep"><button type="button" class="btn btn-primary" id="btn-twitter">Send Message</button></td>
-                                        </tr>
-                                    </table>
+                                    <div class="title">
+                                        Invite Twitter friends
+                                    </div>
+                                    <div class="invite-twitter">
+                                        Click the button below to write a tweet to invite your twitter followers.
+                                    </div>
+                                    <a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-text="Talk with me on Sunrise." data-hashtags="SunriseVC">Tweet</a>
                                 </div>
                                 <div class="tab-pane" id="tab-url">
-                                    <table width="100%">
-                                        <tr>
-                                            <td>Copy the following URL and share it to invite people</td>
-                                        </tr>
-                                        <tr>
-                                            <td>URL:</td>
-                                        </tr>
-                                        <tr>
-                                            <td><textarea class="form-control" id="url-message" rows="3"></textarea></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="sep"><button type="button" class="btn btn-primary" id="btn-url">Send Message</button></td>
-                                        </tr>
-                                    </table>
+                                    <div class="title">
+                                        Copy the URL below and share it with your friends
+                                    </div>
+                                    <div class="invite-url">
+                                        <?= sr_current_url() ?>
+                                    </div>
                                 </div>            
                             </div>
                         </div>
@@ -292,5 +267,16 @@
     </body>
 
     <script src="<?= $GLOBALS['sr_root'] ?>/js/room.js"></script>
+    <script>
+        !function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "https://platform.twitter.com/widgets.js";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+        }(document, "script", "twitter-wjs");
+    </script>
 
 </html>

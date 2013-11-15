@@ -247,6 +247,7 @@ function main_signout() {
 
 function main_goto_room() {
     global $sr_root;
+    global $sr_default_chat_name;
 
     if ($room_name = $_GET['room_name']) {
         $room_name = str_replace(' ', '_', $room_name);
@@ -261,7 +262,7 @@ function main_goto_room() {
         if (isset($_SESSION['user_name'])) {
             $_SESSION['chat_name'] = $_SESSION['user_name'];
         } else {
-            $_SESSION['chat_name'] = 'Anonymous';
+            $_SESSION['chat_name'] = $sr_default_chat_name;
         }
     }
 

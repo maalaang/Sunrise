@@ -16,16 +16,27 @@ $sr_root        = '/workspace/blackhat/Sunrise';
 
 $sr_room_ui_title   = 'Sunrise - Video Conference Room';
 
+$sr_logo = "/img/sunrise-logo.png";
+$sr_logo_lg = "/img/sunrise-logo-lg.png";
+
 $sr_admin_name = 'Sunrise Administrator';
 $sr_admin_email = 'face@maalaang.com';
 
+$sr_email_addr = 'Sunrise VC <xxx@xxx.xxx>';
+$sr_email_smtp = array(
+    'host' => ''
+    'port' => '',
+    'auth' => true,
+    'username' => '',
+    'password' => ''
+);
 
 /**
  * User authorization configuration
  */
 $sr_default_authority   = 1;
-$sr_join_anonymous      = 0;
-$sr_join_non_authorized = 0;
+$sr_join_anonymous      = 1;
+$sr_join_non_authorized = 1;
 
 /**
  * Channel server configuration.
@@ -105,5 +116,9 @@ $sr_main_content = array(
                     ',
 
 );
+
+$sr_facebook_app_id = '541700329256457';
+
+$sr_default_chat_name = 'Anonymous';
 
 ?>

@@ -11,6 +11,7 @@ function room() {
     global $sr_room_ui_title;
     global $sr_join_anonymous;
     global $sr_join_non_authorized;
+    global $sr_default_chat_name;
     
     $db = sr_pdo();
 
@@ -85,8 +86,10 @@ function room() {
             $context['chat_name'] = $_SESSION['chat_name'];
         } else if ($_SESSION['user_name']) {
             $context['chat_name'] = $_SESSION['user_name'];
+            $_SESSION['chat_name'] = $_SESSION['user_name'];
         } else {
-            $context['chat_name'] = 'Anonymous';
+            $context['chat_name'] = $sr_default_chat_name;
+            $_SESSION['chat_name'] = $sr_default_chat_name;
         }
 
         if ($room->is_open == 1) {
@@ -301,13 +304,78 @@ function room_message_pswd() {
  */
 
 function room_invite_email() {
+    global $sr_regex_email;
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $result['result'] = 0;
+        $failed = array();
+
+        if (isset($_POST['emails'])) {
+            $email_list = json_decode(stripslashes($_POST['emails']));
+            $room_link = $_POST['room'];
+            if (count($email_list) > 0) {
+                foreach ($email_list as $email) {
+                    if (preg_match($sr_regex_email, $email)) {
+                        if (($r = sr_send_mail($email, room_invite_email_content())) !== null) {
+                            $failed[] = array(
+                                'email' => $email,
+                                'error' => $r
+                            );
+                        }
+                    } else {
+                        $failed[] = array(
+                            'email' => $email,
+                            'error' => 'Invalid email address format'
+                        );
+                    }
+                }
+                $failed_cnt = count($failed);
+                if ($failed_cnt === 0) {
+                    $result['result'] = 0;
+                } else {
+                    $result['result'] = 2;
+                    if ($failed_cnt == 1) {
+                        $result['msg'] = "Failed to send an invitation email to 1 person.";
+                    } else {
+                        $result['msg'] = "Failed to send invitation emails to $failed_cnt people.";
+                    }
+                    $result['failed'] = $failed;
+                }
+            } else {
+                $result['result'] = 1;
+                $result['msg'] = 'No email address was specified';
+            }
+        } else {
+            sr_response_error(400);
+        }
+
         echo json_encode($result);
 
     } else {
         sr_response_error(404);
     }
+}
+
+function room_invite_email_content () {
+    global $sr_default_chat_name;
+
+    $content = array();
+    $room_link = $_SERVER['HTTP_REFERER'];
+
+    if (($user_name = sr_user_first_name()) === null) {
+        if (($user_name = sr_user_name()) === null) {
+            $user_name = $_SESSION['chat_name'];
+        }
+    }
+
+    if ($user_name != $sr_default_chat_name) {
+        $content['subject'] = $user_name . ' is inviting you to join the Sunrise video conference room';
+        $content['body'] = 'Hi,<br/><br/>' . $user_name . ' is waiting for you in the Sunrise video conference room.<br/>Click the link below to join.<br/><br/><a href="' . $room_link . '">' . $room_link . '</a><br/><br/>Best,<br/><br/>Sunrise VC';
+    } else {
+        $content['subject'] = 'You were invited to join the Sunrise video conference room';
+        $content['body'] = 'Hi,<br/><br/>You were invited to join the Sunrise video conference room.<br/>Click the link below to join.<br/><br/><a href="' . $room_link .'">' . $room_link . '</a><br/><br/>Best,<br/><br/>Sunrise VC';
+    }
+
+    return $content;
 }
 
 ?>

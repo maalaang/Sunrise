@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="X-UA-Compatible" content="chrome=1"/>
-        <meta charset='utf-8'> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <? include("views/meta.php"); ?>
 
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.2.3.2.min.css" rel="stylesheet" media="screen">
         <link href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
