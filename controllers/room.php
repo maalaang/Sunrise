@@ -313,11 +313,13 @@ function room_invite_email() {
 
         if (isset($_POST['emails'])) {
             $email_list = json_decode(stripslashes($_POST['emails']));
-            $room_link = $_POST['room'];
+
             if (count($email_list) > 0) {
+                $content = room_invite_email_content();
+
                 foreach ($email_list as $email) {
                     if (preg_match($sr_regex_email, $email)) {
-                        if (($r = sr_send_mail($email, room_invite_email_content())) !== null) {
+                        if (($r = sr_send_mail($email, $content)) !== null) {
                             $failed[] = array(
                                 'email' => $email,
                                 'error' => $r
