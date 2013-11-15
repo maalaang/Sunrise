@@ -230,7 +230,7 @@ function admin_rooms() {
 
         $db = sr_pdo();
 
-        $stmt = $db->prepare('SELECT * FROM room LIMIT 10');
+        $stmt = $db->prepare('SELECT * FROM room ORDER BY start_time DESC LIMIT 10');
         $stmt->execute();
 
         $room_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
@@ -243,7 +243,7 @@ function admin_rooms() {
             $a_room->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
         }
 
-        $stmt = $db->prepare('SELECT * FROM room_log LIMIT 10');
+        $stmt = $db->prepare('SELECT * FROM room_log ORDER BY id DESC LIMIT 10');
         $stmt->execute();
 
         $room_log_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'RoomLog');
@@ -298,7 +298,7 @@ function admin_rooms() {
                 }
 
                 if ($_POST['table'] == 't1') {
-                    $stmt = $db->prepare("SELECT * FROM room $where LIMIT $beginRecordNum, 10");
+                    $stmt = $db->prepare("SELECT * FROM room $where ORDER BY start_time DESC LIMIT $beginRecordNum, 10");
                     $stmt->execute();
 
                     $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'Room');
@@ -311,7 +311,7 @@ function admin_rooms() {
                         $a_room->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
                     }
                 } else {
-                    $stmt = $db->prepare("SELECT * FROM room_log $where LIMIT $beginRecordNum, 10");
+                    $stmt = $db->prepare("SELECT * FROM room_log $where ORDER BY id DESC LIMIT $beginRecordNum, 10");
                     $stmt->execute();
 
                     $record_list = $stmt->fetchAll(PDO::FETCH_CLASS, 'RoomLog');
