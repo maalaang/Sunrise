@@ -47,7 +47,7 @@
                     return false;
                 }
 
-                document.signup_form.submit();
+                return true;
             }
 
             function showMessage(str) {
@@ -66,7 +66,7 @@
         ?>
 
         <div class="container signup" id="signup-div">
-            <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post">
+            <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signup/" name="signup_form" id="signup_form" method="post" onsubmit="return whenSignup()">
                 <fieldset>
                     <legend>Create a new account</legend>
                     <table>
@@ -84,7 +84,7 @@
                             <td colspan="2" class="sep"><input type="password" class="form-control"id="repeat_password" name="repeat_password" placeholder="Repeat Password" /></td>
                         </tr>
                         <tr>
-                            <td colspan="2"><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign up" onclick="whenSignup()" /></td>
+                            <td colspan="2"><input type="submit" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Sign up" /></td>
                         </tr>
                     </table>
                 </fieldset>
