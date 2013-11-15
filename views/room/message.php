@@ -14,7 +14,7 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
     </head>
     <script>
-        function passwordCheck(e) {
+        function passwordCheck() {
             $.ajax({
                 url: "<?= sr_home_path() ?>/d/room/message/pswd/",
                 type: 'POST',
@@ -61,11 +61,11 @@
                     </div>
                     <?  } else if ($context['type'] == 2) { ?>
                     <div>
-                        <form class="form-inline" role="form">
+                        <form class="form-inline" role="form" action="passwordCheck()">
                             <div class="form-group">
                                 <input type="password" class="form-control" id="room_pw" placeholder="Password">
                             </div>
-                            <button type="button" class="btn btn-default" onClick="passwordCheck(this)">Go to the room</button>
+                            <button type="submit" class="btn btn-default">Go to the room</button>
                         </form>
                     </div>
                     <? } else { ?>

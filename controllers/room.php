@@ -74,6 +74,8 @@ function room() {
                 $context['is_registered_user'] = 'false';
             //IF server not allow anonymous user to join
             } else {
+                $_SESSION['next_page'] = 1;
+                $_SESSION['room_name'] = $_GET['name'];
                 $context['info'] = 'Only registered users can join the room.';
                 sr_response('views/main/signin.php', $context);
             }

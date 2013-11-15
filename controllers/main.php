@@ -67,7 +67,14 @@ function main_signin() {
         }
 
         if ($context['result'] === 0) {
-            sr_redirect('/d/');
+            if (isset($_SESSION['next_page']) && isset($_SESSION['room_name'])) {
+                $room_name = $_SESSION['room_name'];
+                unset($_SESSION['next_page']);
+                unset($_SESSION['room_name']);
+                sr_redirect('/d/room/?name=' . $room_name);
+            } else {
+                sr_redirect('/d/');
+            }
         } else {
             sr_response('views/main/signin.php', $context);
         }
@@ -143,7 +150,14 @@ function main_signup() {
 
         if ($context['result'] === 0) {
             sr_signin($user);
-            sr_redirect('/d/');
+            if (isset($_SESSION['next_page']) && isset($_SESSION['room_name'])) {
+                $room_name = $_SESSION['room_name'];
+                unset($_SESSION['next_page']);
+                unset($_SESSION['room_name']);
+                sr_redirect('/d/room/?name=' . $room_name);
+            } else {
+                sr_redirect('/d/');
+            }
         } else {
             sr_response('views/main/signup.php', $context);
         }

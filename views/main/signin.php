@@ -26,11 +26,11 @@
                     return false;
                 }
                 if(!passwordRegex.test(password)) {
-                    showMessage('Please enter a valid password. (Password should be alphanumeric)');
+                    showMessage('Please enter a valid password.<br />(Password should be alphanumeric)');
                     return false;
                 }
 
-                document.signin_form.submit();
+                return true;
             }
 
             function whenClickSignup() {
@@ -38,8 +38,8 @@
             }
 
             function showMessage(str) {
-                $('.alert').html(str);
-                $('.alert').addClass('alert-visible');
+                $('.alert-danger').html(str);
+                $('.alert-danger').addClass('alert-visible');
             }
         </script>
     </head>
@@ -53,7 +53,7 @@
         ?>
 
         <div class="container signin">
-            <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post">
+            <form action="<?= $GLOBALS['sr_root'] ?>/d/main/signin/" name="signin_form" id="signin_form" method="post" onsubmit="return whenSignin()">
                 <fieldset>
                     <legend>Sign In</legend>
                     <table>
@@ -64,7 +64,7 @@
                             <td class="sep"><input type="password" class="form-control" id="signin_password" name="signin_password" placeholder="Password" /></td>
                         </tr>
                         <tr>
-                            <td><input type="button" class="btn btn-primary" id="btn_signin" name="btn_signin" value="Sign in" onclick="whenSignin()" /></td>
+                            <td><input type="submit" class="btn btn-primary" id="btn_signin" name="btn_signin" value="Sign in" /></td>
                         </tr>
                         <tr>
                             <td><input type="button" class="btn btn-primary" id="btn_signup" name="btn_signup" value="Create a new account" onclick="whenClickSignup()" /></td>

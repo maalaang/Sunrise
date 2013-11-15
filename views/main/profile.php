@@ -13,7 +13,7 @@
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
         <script>
             function whenBack() {
-                window.location='<?= $GLOBALS['sr_root'] ?>';
+                window.location='<?= sr_home_path() ?>';
             }
             function whenSave() {
                 var first_name = document.getElementById('first_name').value;
