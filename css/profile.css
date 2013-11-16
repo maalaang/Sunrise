@@ -1,5 +1,7 @@
 div.sidebar {
-   margin: 100px auto;
+    margin: 100px auto;
+    border-radius: 6px;
+    box-shadow: 0 0px 1px;
 }  
 
 .nav-pills > li.active > a,
@@ -12,9 +14,13 @@ div.sidebar {
     color: rgb(150, 50, 50);
 }
 
+.arrow {
+    float: right;
+}
+
 div.profile {
     height: 300px;
-    width: 330px;
+    width: 300px;
     margin: 100px auto;
     text-align:left;
 }
@@ -37,15 +43,15 @@ div.well {
 }
 
 input.btn {
-    width: 330px;
+    width: 300px;
 }
 
 @media (max-width: 767px) {
     div.profile {
-        width: 300px;
+        width: 270px;
     }
 
     input.btn {
-        width: 300px;
+        width: 270px;
     }
 }

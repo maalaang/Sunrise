@@ -101,9 +101,9 @@
             <div class="col-sm-2">
                 <div class="sidebar" id="sidebar-div">
                     <ul class="nav nav-pills nav-stacked">
-                        <li <? if ($context['which'] == 'basic') echo 'class="active"'; ?>><a href="#basic-div" data-toggle="tab">Basic Information</a></li>
-                        <li <? if ($context['which'] == 'password') echo 'class="active"'; ?>><a href="#password-div" data-toggle="tab">Change Password</a></li>
-                        <li><a href="#delete-div" data-toggle="tab">Delete Account</a></li>
+                        <li <? if ($context['which'] == 'basic') echo 'class="active"'; ?>><a href="#basic-div" data-toggle="tab">Basic Information<span class="arrow"><b>></b></span></a></li>
+                        <li <? if ($context['which'] == 'password') echo 'class="active"'; ?>><a href="#password-div" data-toggle="tab">Change Password<span class="arrow"><b>></b></span></a></li>
+                        <li><a href="#delete-div" data-toggle="tab">Delete Account<span class="arrow"><b>></b></span></a></li>
                     </ul>
                 </div>
             </div>
