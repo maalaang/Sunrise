@@ -42,7 +42,7 @@ body {
 .large-videos {
     text-align: center;
     height: 100%;
-    padding-bottom: 120px;
+/*    padding-bottom: 120px;*/
     overflow: hidden;
 }
 
@@ -61,7 +61,8 @@ body {
     padding: 0;
     text-align: center;
     position: relative;
-    background-color: #000;
+    background-color: rgba(50, 50, 50);
+    background-color: rgba(50, 50, 50, .25);
 }
 
 .small-video {
@@ -320,6 +321,8 @@ body {
     box-shadow: none;
     resize: none;
     font-family: sans-serif;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .side-content .chat-input {
@@ -378,7 +381,7 @@ body {
     }
 
     .main-content .large-videos {
-        padding-bottom: 120px;
+/*        padding-bottom: 120px;*/
     }
 
     .main-content .small-videos {
@@ -417,7 +420,7 @@ body {
 
 @media (max-height: 767px) {
     .main-content .large-videos {
-        padding-bottom: 80px;
+/*        padding-bottom: 80px;*/
     }
 
     .main-content .small-videos {

@@ -149,7 +149,7 @@
                     <input class="room-description" id="room-description" type="text" placeholder="Room description" value="<?= $context['room']->description ?>"/>
                 </div>
                 <div class="chat-content-wrapper">
-                    <textarea class="form-control chat-content" id="chat-content" readonly="readonly"></textarea>
+                    <div class="form-control chat-content" id="chat-content"></div>
                 </div>
             </div>
             <div class="side-bottom">

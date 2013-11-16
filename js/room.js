@@ -107,9 +107,9 @@ function onChannelChat(msg) {
 
 function appendChatMessage(sender, msg) {
     if (sender) {
-        $('#chat-content').append(sender + ': ' + msg + '\n');
+        $('#chat-content').append(sender + ': ' + msg + '<br/>');
     } else {
-        $('#chat-content').append(msg + '\n');
+        $('#chat-content').append(msg + '<br/>');
     }
     $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
 }
