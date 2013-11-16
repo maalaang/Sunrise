@@ -84,14 +84,14 @@ function onChannelChat(msg) {
             break;
         case 'open-status':
             if (msg.open) {
-                appendChatMessage(null, getParticipantName(msg.sender) + ' has unlocked the room.');
-                $('#invite-open-status i').removeClass('icon-lock');
-                $('#invite-open-status i').addClass('icon-unlock');
+                appendChatMessage(null, getParticipantName(msg.sender) + ' has made this room public.');
+                $('#menu-public-private i').removeClass('icon-lock');
+                $('#menu-public-private i').addClass('icon-unlock');
             } else {
                 if (roomIsOpen) {
-                    appendChatMessage(null, getParticipantName(msg.sender) + ' has locked this room with a password.');
-                    $('#invite-open-status i').removeClass('icon-unlock');
-                    $('#invite-open-status i').addClass('icon-lock');
+                    appendChatMessage(null, getParticipantName(msg.sender) + ' has made this room private.');
+                    $('#menu-public-private i').removeClass('icon-unlock');
+                    $('#menu-public-private i').addClass('icon-lock');
                 } else {
                     appendChatMessage(null, getParticipantName(msg.sender) + ' has changed the password.');
                 }
@@ -339,17 +339,24 @@ function onSmallVideoClicked() {
 }
 
 function changeOpenStatus(open) {
-    $('#btn-public').prop('disabled', !open);
-    $('#btn-private').prop('disabled', open);
+    if (open) {
+        $('#btn-public').addClass('active');
+        $('#btn-private').removeClass('active');
+        $('#menu-public-private span').html('Public Room');
+    } else {
+        $('#btn-public').removeClass('active');
+        $('#btn-private').addClass('active');
+        $('#menu-public-private span').html('Private Room');
+    }
     $('#room-password').prop('disabled', open);
     $('#room-password-hide').prop('disabled', open);
 
-    if (open == roomIsOpen && $('#room-password').val() == roomPassword) {
-        $('#open-status-save-text').html('Save');
-        $('#open-status-save').prop('disabled', true);
-    } else {
-        $('#open-status-save-text').html('Save');
+
+    $('#open-status-save-text').html('Save');
+    if (open != roomIsOpen || (!open && $('#room-password').val() != roomPassword)) {
         $('#open-status-save').prop('disabled', false);
+    } else {
+        $('#open-status-save').prop('disabled', true);
     }
 }
 
@@ -520,11 +527,11 @@ $(document).ready(function() {
     $('.small-video').click(onSmallVideoClicked);
 
     $('#btn-public').click(function() {
-        changeOpenStatus(false);
+        changeOpenStatus(true);
     });
 
     $('#btn-private').click(function() {
-        changeOpenStatus(true);
+        changeOpenStatus(false);
     });
 
     $('#room-password-hide').change(function() {
@@ -537,14 +544,13 @@ $(document).ready(function() {
     });
 
     $('#room-password').bind('change paste keyup', function() {
-        if (roomIsOpen == !$('#btn-public').prop('disabled') && $(this).val() == roomPassword) {
-            $('#open-status-save-text').html('Save');
-            $('#open-status-save').prop('disabled', true);
-        } else {
+        if (roomIsOpen != $('#btn-public').hasClass('active') || (!roomIsOpen && $(this).val() != roomPassword)) {
             $('#open-status-save-text').html('Save');
             $('#open-status-save').prop('disabled', false);
+        } else {
+            $('#open-status-save-text').html('Save');
+            $('#open-status-save').prop('disabled', true);
         }
-        console.log('hi');
     });
 
     $('#open-status-save').click(function() {
@@ -559,7 +565,7 @@ $(document).ready(function() {
 
         var params = {};
         params.id = roomId;
-        params.open = !$('#btn-public').prop('disabled');
+        params.open = $('#btn-public').hasClass('active');
         params.password = $('#room-password').val();
 
         $.post(roomApi + '/d/room/open-status/save/', params, function (data) {
@@ -568,11 +574,11 @@ $(document).ready(function() {
                 console.log('done: room open status save');
 
                 // show notification on the chat box
-                if (!$('#btn-public').prop('disabled')) {
-                    appendChatMessage(null, 'You have unlocked the room.');
+                if ($('#btn-public').hasClass('active')) {
+                    appendChatMessage(null, 'You have made this room public.');
                 } else {
                     if (roomIsOpen) {
-                        appendChatMessage(null, 'You have locked this room with a password.');
+                        appendChatMessage(null, 'You made this room private.');
                     } else {
                         appendChatMessage(null, 'You have changed the password.');
                     }
@@ -580,18 +586,18 @@ $(document).ready(function() {
 
                 // accept the changes
                 roomPassword = $('#room-password').val();
-                roomIsOpen = !$('#btn-public').prop('disabled');
+                roomIsOpen = $('#btn-public').hasClass('active');
 
                 // change the ui components
                 $('#open-status-save').removeClass('active');
                 $('#open-status-save-text').html('Saved');
 
                 if (roomIsOpen) {
-                    $('#invite-open-status i').removeClass('icon-lock');
-                    $('#invite-open-status i').addClass('icon-unlock');
+                    $('#menu-public-private i').removeClass('icon-lock');
+                    $('#menu-public-private i').addClass('icon-unlock');
                 } else {
-                    $('#invite-open-status i').removeClass('icon-unlock');
-                    $('#invite-open-status i').addClass('icon-lock');
+                    $('#menu-public-private i').removeClass('icon-unlock');
+                    $('#menu-public-private i').addClass('icon-lock');
                 }
 
                 // send message to the participants in the room
@@ -613,7 +619,7 @@ $(document).ready(function() {
     $('#open-status-cancel').click(function() {
         $('#room-password').val(roomPassword);
         changeOpenStatus(roomIsOpen);
-        $('#openStatusModal').modal('hide');
+        $('#open-status-modal').modal('hide');
     });
 
     changeOpenStatus(roomIsOpen);

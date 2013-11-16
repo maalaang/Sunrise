@@ -69,6 +69,11 @@
                             <i class="control-icon icon-large icon-microphone pull-left"></i><span class="control-icon-text">Microphone On</span>
                         </a>
                     </li>
+                    <li>
+                        <a id="menu-public-private" data-toggle="modal" href="#open-status-modal">
+                            <i class="control-icon invite-icon icon-large <?= $context['room']->is_open ? 'icon-unlock' : 'icon-lock' ?>"></i><span class="control-icon-text">Public Room</span>
+                        </a>
+                    </li>
                     <!--li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" id="menu-sns" href="#">
                         <i class="control-icon icon-large icon-share-sign"></i>
@@ -223,33 +228,33 @@
             </div>
         </div>
 
-        <div class="modal fade">
+        <div class="modal fade" id="open-status-modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Open Status</h4>
+                        <h4 class="modal-title">Public / Private Room</h4>
                     </div>
                     <div class="modal-body open-status-modal-body">
                         <div>
                             <div>
-                                <label for="input-access-control" class="col-sm-4 control-label">Access Control</label>
+                                <label for="input-access-control" class="col-sm-3 control-label">Access Control</label>
                                 <div class="col-sm-8">
                                     <div class="btn-group access-control-btn" id="input-access-control">
-                                        <button type="button" class="btn btn-default btn-small" id="btn-public">Public</button>
-                                        <button type="button" class="btn btn-default btn-small" id="btn-private">Private</button>
+                                        <button type="button" name="access" class="btn btn-default btn-small" id="btn-public">Public</button>
+                                        <button type="button" name="access" class="btn btn-default btn-small" id="btn-private">Private</button>
                                     </div>
                                 </div>
                             </div>
                             <div>
                                 <div>
-                                    <label for="room-password" class="col-sm-4 control-label">Password</label>
+                                    <label for="room-password" class="col-sm-3 control-label">Password</label>
                                     <div class="col-sm-8">
                                         <input type="password" class="form-control" id="room-password" placeholder="Password" value="<?= $context['room']->password ?>">
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col-sm-8 col-offset-4">
+                                    <div class="col-sm-8 col-sm-offset-3">
                                         <div class="checkbox">
                                             <label>
                                                 <input type="checkbox" id="room-password-hide" checked> Hide Password
@@ -259,7 +264,7 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="col-sm-8 col-offset-4 open-status-save">
+                                <div class="col-sm-8 col-sm-offset-3 open-status-save">
                                     <button id="open-status-save" type="submit" class="btn btn-default btn-small open-status-save-btn has-spinner">
                                         <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
                                         <span id="open-status-save-text">Save</span>

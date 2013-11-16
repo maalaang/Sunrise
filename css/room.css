@@ -71,22 +71,22 @@ body {
 
 
 .btn-invite {
-    color: #f1f1f1;
+    color: rgba(200,200,200,.4);
     padding-left: 20px;
     visibility: hidden;
 }
 
 .btn-invite a {
     text-decoration: none;
-    color: #f1f1f1;
+    color: rgba(200,200,200,.4);
 }
 
 .btn-invite a:visited {
-    color: #f1f1f1;
+    color: rgba(200,200,200,.4);
 }
 
 .btn-invite a:hover, .btn-invite a:focus {
-    color: #fff;
+    color: rgba(200,200,200,.4);
 }
 
 .btn-invite .icon-user {
@@ -205,6 +205,10 @@ body {
 
 .open-status-modal-body {
     height: 220px;
+}
+
+.open-status-modal-body label {
+    line-height: 33px;
 }
 
 .access-control-btn {
@@ -414,6 +418,10 @@ body {
 
     .modal-body table td .btn {
         width: 100%;
+    }
+
+    #open-status-modal .modal-content {
+        min-height: 330px;
     }
 
 }
