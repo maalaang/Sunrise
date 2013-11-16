@@ -25,6 +25,7 @@ $url_patterns = array (
     "#^/room/open-status/save/$#" => room_open_status_save,
     "#^/room/message/auth/$#"     => room_message_auth,
     "#^/room/message/pswd/$#"     => room_message_pswd,
+    "#^/room/message/browser/$#"  => room_message_browser,
     "#^/room/invite/email/$#"     => room_invite_email,
     "#^/channel/$#"         => channel_event,
     "#^/admin/$#"           => admin_dashboard,
