@@ -14,6 +14,11 @@ function room() {
     global $sr_default_chat_name;
     
     $db = sr_pdo();
+    $browser = getBrowser();
+
+    if ($browser['name'] != 'Mozilla Firefox' && $browser['name'] != 'Google Chrome') {
+        sr_redirect('/d/room/message/browser/');
+    }
 
     if (isset($_GET['name']) && strlen($_GET['name']) > 0) {
         try {
@@ -28,7 +33,7 @@ function room() {
             $room = $stmt->fetch();
 
             if ($room === False) {
-                // room doesn't exist. create a room using the requested name
+                // Room doesn't exist. Create a room using the requested name
                 $room = new Room();
                 $room->name = $_GET['name'];
                 $room->title = '';
@@ -302,9 +307,22 @@ function room_message_pswd() {
 }
 
 /**
+ * Show browser download guide page.
+ */
+function room_message_browser() {
+    $context = array();
+
+    $context['type'] = 1;
+    $context['msg']  = '<h2>Sorry,</h2>
+                        Sunrise VC works on <a href="http://chrome.google.com" target="_blank">Chrome</a> and <a href="http://www.mozilla.org/en-US/firefox" target="_blank">Firefox</a> supporting WebRTC.
+                        Download and install either <a href="http://chrome.google.com" target="_blank">Chrome</a> or <a href="http://www.mozilla.org/en-US/firefox" target="_blank">Firefox</a> to have vido chat on Sunrise VC.';
+
+    sr_response('views/room/message.php', $context);
+}
+
+/**
  * Send chat invitation emails.
  */
-
 function room_invite_email() {
     global $sr_regex_email;
 
@@ -381,5 +399,62 @@ function room_invite_email_content () {
 
     return $content;
 }
+
+/**
+ * Get informations about a user's browser.
+ */
+function getBrowser() 
+{ 
+    $u_agent = $_SERVER['HTTP_USER_AGENT']; 
+
+    $bname    = 'Unknown';
+    $version  = '';
+
+    if(preg_match('/MSIE/i',$u_agent) && !preg_match('/Opera/i',$u_agent)) { 
+        $bname = 'Internet Explorer'; 
+        $ub = 'MSIE'; 
+    } else if(preg_match('/Firefox/i',$u_agent)) { 
+        $bname = 'Mozilla Firefox'; 
+        $ub = 'Firefox'; 
+    } else if(preg_match('/Chrome/i',$u_agent)) { 
+        $bname = 'Google Chrome'; 
+        $ub = 'Chrome'; 
+    } else if(preg_match('/Safari/i',$u_agent)) { 
+        $bname = 'Apple Safari'; 
+        $ub = 'Safari'; 
+    } else if(preg_match('/Opera/i',$u_agent)) { 
+        $bname = 'Opera'; 
+        $ub = 'Opera'; 
+    } else if(preg_match('/Netscape/i',$u_agent)) { 
+        $bname = 'Netscape'; 
+        $ub = 'Netscape'; 
+    }
+
+    $known   = array('Version', $ub, 'other');
+    $pattern = '#(?<browser>' . join('|', $known) . ')[/ ]+(?<version>[0-9.|a-zA-Z.]*)#';
+
+    preg_match_all($pattern, $u_agent, $matches);
+
+    $i = count($matches['browser']);
+
+    if ($i != 1) {
+        if (strripos($u_agent, 'Version') < strripos($u_agent,$ub)) {
+            $version= $matches['version'][0];
+        } else {
+            $version= $matches['version'][1];
+        }
+    } else {
+        $version= $matches['version'][0];
+    }
+
+    if ($version == null || $version == '') {
+        $version = '?';
+    }
+
+    return array(
+        'name'      => $bname,
+        'version'   => $version,
+    );
+} 
 
 ?>

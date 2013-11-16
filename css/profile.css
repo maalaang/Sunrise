@@ -1,5 +1,26 @@
+div.sidebar {
+    margin: 100px auto;
+    border-radius: 6px;
+    box-shadow: 0 0px 1px;
+}  
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+    background-color: #B3343B;
+}
+
+.nav-pills a {
+    color: rgb(150, 50, 50);
+}
+
+.arrow {
+    float: right;
+}
+
 div.profile {
-    width: 330px;
+    height: 300px;
+    width: 300px;
     margin: 100px auto;
     text-align:left;
 }
@@ -22,15 +43,15 @@ div.well {
 }
 
 input.btn {
-    width: 150px;
+    width: 300px;
 }
 
 @media (max-width: 767px) {
     div.profile {
-        width: 300px;
+        width: 270px;
     }
 
     input.btn {
-        width: 140px;
+        width: 270px;
     }
 }
