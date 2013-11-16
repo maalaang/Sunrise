@@ -4,11 +4,13 @@
         <? include("views/meta.php"); ?>
 
         <title>Sunrise</title>
+
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/bootstrap.3.0.1.min.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/font-awesome.min.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/sunrise.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/header.css" rel="stylesheet">
         <link type="text/css" href="<?= $GLOBALS['sr_root'] ?>/css/profile.css" rel="stylesheet">
+
         <script src="<?= $GLOBALS['sr_root'] ?>/js/jquery-1.9.1.min.js"></script>
         <script src="<?= $GLOBALS['sr_root'] ?>/js/bootstrap.3.0.1.min.js"></script>
         <script>
@@ -81,6 +83,7 @@
             }
 
             function showMessage(which, str) {
+                $('#' + which + '-div .alert').attr('class', 'alert alert-danger');
                 $('#' + which + '-div .alert').html(str);
                 $('#' + which + '-div .alert').addClass('alert-visible');
             }
