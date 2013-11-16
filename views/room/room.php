@@ -143,11 +143,19 @@
             </div>
         </div>
         <div class="side-content col-lg-3">
-            <div class="chat-content-wrapper col-xs-8 col-lg-12">
-                <textarea class="form-control chat-content" id="chat-content" readonly="readonly"></textarea>
+            <div class="side-top">
+                <div class="room-info-wrapper">
+                    <input class="room-title" id="room-title" type="text" placeholder="Room title" value="<?= $context['room']->title ?>"/>
+                    <input class="room-description" id="room-description" type="text" placeholder="Room description" value="<?= $context['room']->description ?>"/>
+                </div>
+                <div class="chat-content-wrapper">
+                    <div class="form-control chat-content" id="chat-content"></div>
+                </div>
             </div>
-            <div class="chat-input-wrapper col-xs-4 col-lg-12">
-                <textarea class="form-control chat-input" id="chat-input" placeholder=""></textarea>
+            <div class="side-bottom">
+                <div class="chat-input-wrapper">
+                    <textarea class="form-control chat-input" id="chat-input" placeholder=""></textarea>
+                </div>
             </div>
         </div>
 
