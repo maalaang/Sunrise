@@ -35,11 +35,6 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     }
 
     this.maybeRequestTurn = function() {
-        console.log('skip turn request');
-
-        this.turnDone = true;
-        return;
-
         // Skipping TURN Http request for Firefox version <=22.
         // Firefox does not support TURN for version <=22.
         if (webrtcDetectedBrowser === 'firefox' && webrtcDetectedVersion <=22) {
@@ -58,38 +53,27 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
 
         var currentDomain = document.domain;
         if (currentDomain.search('localhost') === -1 &&
-                currentDomain.search('apprtc') === -1) {
+                currentDomain.search('maalaang') === -1) {
             console.log('maybeRequestTurn - 3');
             // Not authorized domain. Try with default STUN instead.
             turnDone = true;
             return;
         }
 
-        // No TURN server. Get one from computeengineondemand.appspot.com.
-        xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = onTurnResult;
-        xmlhttp.open('GET', turnUrl, true);
-        xmlhttp.send();
-    }
 
-    this.onTurnResult = function() {
-        if (xmlhttp.readyState !== 4)
-            return;
+        var iceServer = createIceServer(
+                "turn:14.63.224.178:3478?transport=udp",
+                "whale",
+                "whale88"
+                );
 
-        if (xmlhttp.status === 200) {
-            var turnServer = JSON.parse(xmlhttp.responseText);
-            // Create a turnUri using the polyfill (adapter.js).
-            var iceServer = createIceServer(turnServer.uris[0], turnServer.username,
-                    turnServer.password);
-            if (iceServer !== null) {
-                this.pcConfig.iceServers.push(iceServer);
-            }
-        } else {
-            console.log('Request for TURN server failed.');
+        if(iceServer !== null){
+            this.pcConfig.iceServers.push(iceServer);
         }
-        // If TURN request failed, continue the call with default STUN.
-        turnDone = true;
+        console.log('Complete to make turn information.');
+        this.turnDone = true;
         this.maybeStart();
+
     }
 
     this.resetStatus = function() {
