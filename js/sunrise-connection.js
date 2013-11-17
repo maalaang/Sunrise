@@ -65,31 +65,20 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
             return;
         }
 
-        // No TURN server. Get one from computeengineondemand.appspot.com.
-        xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = onTurnResult;
-        xmlhttp.open('GET', turnUrl, true);
-        xmlhttp.send();
-    }
 
-    this.onTurnResult = function() {
-        if (xmlhttp.readyState !== 4)
-            return;
+        var iceServer = createIceServer(
+                "turn:14.63.224.178:3478?transport=udp",
+                "username",
+                "password"
+                );
 
-        if (xmlhttp.status === 200) {
-            var turnServer = JSON.parse(xmlhttp.responseText);
-            // Create a turnUri using the polyfill (adapter.js).
-            var iceServer = createIceServer(turnServer.uris[0], turnServer.username,
-                    turnServer.password);
-            if (iceServer !== null) {
-                this.pcConfig.iceServers.push(iceServer);
-            }
-        } else {
-            console.log('Request for TURN server failed.');
+        if(iceServer !== null){
+            this.pcConfig.iceServers.push(iceServer);
         }
-        // If TURN request failed, continue the call with default STUN.
-        turnDone = true;
+        console.log('Complete to make turn information.');
+        this.turnDone = true;
         this.maybeStart();
+
     }
 
     this.resetStatus = function() {
