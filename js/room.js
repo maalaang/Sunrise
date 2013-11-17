@@ -43,21 +43,21 @@ function onChannelOpened(msg) {
         setParticipantName(p, msg.participant_list[p].name);
     }
 
-    participantId = msg.participantId;
+    participantId = msg.participant_id;
     roomJoin();
 }
 
 function onChannelBye(msg) {
-    videoFocusOut(msg.participantId);
+    videoFocusOut(msg.participant_id);
 
-    connections[msg.participantId].onRemoteHangup();
-    delete connections[msg.participantId];
+    connections[msg.participant_id].onRemoteHangup();
+    delete connections[msg.participant_id];
 
     // show message a participant left the room
-    appendChatMessage(null, getParticipantName(msg.participantId) + ' has left the room.');
+    appendChatMessage(null, getParticipantName(msg.participant_id) + ' has left the room.');
 
     // for debugging
-    console.log('removed ' + msg.participantId + ' from connection list');
+    console.log('removed ' + msg.participant_id + ' from connection list');
     printObject('connections', connections);
 }
 
@@ -175,7 +175,7 @@ function initializeChannel() {
 
 function roomJoin() {
     var params = {};
-    params.participantId = participantId;
+    params.participant_id = participantId;
     params.room_id = roomId;
     params.is_registered_user = isRegisteredUser;
     params.user_name = chatName;
@@ -223,8 +223,6 @@ function videoFocusOut(connectionId) {
         return;
     }
 
-    var connection = connections[connectionId];
-
     for (var i in connections) {
         if (i !== connectionId) {
             // focus to another video
@@ -233,9 +231,15 @@ function videoFocusOut(connectionId) {
             return;
         }
     }
+
     // there is no video to be focused
-    focusedVideo.style.opacity = '0';
     focusedVideoId = null;
+    if (localStream != null) {
+        attachMediaStream(focusedVideo, localStream);
+        console.log('focused - local video');
+    } else {
+        focusedVideo.style.opacity = '0';
+    }
 }
 
 function micToggle() {
@@ -614,6 +618,7 @@ $(document).ready(function() {
             }
         });
 
+        $('#open-status-modal').modal('hide');
     });
 
     $('#open-status-cancel').click(function() {

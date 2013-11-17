@@ -144,5 +144,4 @@ function channel_destroyed_log($room) {
     }
 }
 
-
 ?>
