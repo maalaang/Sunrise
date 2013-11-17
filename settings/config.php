@@ -5,15 +5,15 @@
 $sr_db_type         = 'mysql';
 $sr_db_host         = 'dev.maalaang.com';
 $sr_db_port         = 3306;
-$sr_db_name         = 'sunrise_blackhat';
-$sr_db_user         = 'sunrise_blackhat';
-$sr_db_password     = 'blackhat8888';
+$sr_db_name         = 'sunrise_whale';
+$sr_db_user         = 'sunrise_whale';
+$sr_db_password     = 'whale8888';
 $sr_db_charset      = 'utf8';
 
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/blackhat/Sunrise';
+$sr_root        = '/workspace/whale/Sunrise';
 
 $sr_room_ui_title   = 'Sunrise - Video Conference Room';
 

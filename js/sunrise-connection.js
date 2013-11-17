@@ -35,8 +35,6 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     }
 
     this.maybeRequestTurn = function() {
-        console.log('skip turn request');
-
         // Skipping TURN Http request for Firefox version <=22.
         // Firefox does not support TURN for version <=22.
         if (webrtcDetectedBrowser === 'firefox' && webrtcDetectedVersion <=22) {
@@ -55,7 +53,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
 
         var currentDomain = document.domain;
         if (currentDomain.search('localhost') === -1 &&
-                currentDomain.search('apprtc') === -1) {
+                currentDomain.search('maalaang') === -1) {
             console.log('maybeRequestTurn - 3');
             // Not authorized domain. Try with default STUN instead.
             turnDone = true;
