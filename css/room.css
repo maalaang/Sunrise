@@ -384,7 +384,7 @@ body {
     }
 
     .navbar .navbar-nav>li {
-        width: 200px;
+        width: 250px;
     }
 
     .navbar .control-icon {
@@ -431,6 +431,10 @@ body {
 
     #open-status-modal .modal-content {
         min-height: 330px;
+    }
+
+    #chat-name-modal #chat-name {
+        margin-bottom: 10px;
     }
 
 }

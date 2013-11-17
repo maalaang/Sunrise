@@ -76,7 +76,7 @@
                     </li>
                     <li>
                         <a id="menu-chat-name" data-toggle="modal" href="#chat-name-modal">
-                            <i class="control-icon icon-large icon-user pull-left"></i><span class="control-icon-text">Chat Name</span>
+                            <i class="control-icon icon-large icon-user pull-left"></i><span class="control-icon-text">My profile in this room</span>
                         </a>
                     </li>
                     <!--li class="dropdown">
