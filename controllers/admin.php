@@ -219,6 +219,8 @@ function admin_dashboard() {
 
 
 function admin_rooms() {
+    global $sr_default_chat_name;
+    
     // Show Rooms Page
     if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         if (!sr_is_signed_in()) {
@@ -240,7 +242,16 @@ function admin_rooms() {
             $stmt = $db->prepare("SELECT name FROM participant WHERE room_id='$room_id'");
             $stmt->execute();
 
-            $a_room->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            $a_room->participants = '';
+
+            foreach ($participants as $a_participant) {
+                if ($a_participant == '') {
+                    $a_participant = $sr_default_chat_name;
+                }
+                $a_room->participants .= $a_participant . '<br />';
+            }
         }
 
         $stmt = $db->prepare('SELECT * FROM room_log ORDER BY id DESC LIMIT 10');
@@ -253,7 +264,16 @@ function admin_rooms() {
             $stmt = $db->prepare("SELECT participant_name FROM participant_log WHERE type=2 AND room_id='$room_id'");
             $stmt->execute();
 
-            $a_room_log->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            $participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            $a_room_log->participants = '';
+
+            foreach ($participants as $a_participant) {
+                if ($a_participant == '') {
+                    $a_participant = $sr_default_chat_name;
+                }
+                $a_room_log->participants .= $a_participant . '<br />';
+            }
         }
 
         $context = array(
@@ -308,7 +328,16 @@ function admin_rooms() {
                         $stmt = $db->prepare("SELECT name FROM participant WHERE room_id='$room_id'");
                         $stmt->execute();
 
-                        $a_room->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                        $participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+                        $a_room->participants = '';
+
+                        foreach ($participants as $a_participant) {
+                            if ($a_participant == '') {
+                                $a_participant = $sr_default_chat_name;
+                            }
+                            $a_room->participants .= $a_participant . '<br />';
+                        }
                     }
                 } else {
                     $stmt = $db->prepare("SELECT * FROM room_log $where ORDER BY id DESC LIMIT $beginRecordNum, 10");
@@ -321,7 +350,16 @@ function admin_rooms() {
                         $stmt = $db->prepare("SELECT participant_name FROM participant_log WHERE type=2 AND room_id='$room_id'");
                         $stmt->execute();
 
-                        $a_room_log->participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                        $participants = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+                        $a_room_log->participants = '';
+
+                        foreach ($participants as $a_participant) {
+                            if ($a_participant == '') {
+                                $a_participant = $sr_default_chat_name;
+                            }
+                            $a_room_log->participants .= $a_participant . '<br />';
+                        }
                     }
                 }
 
@@ -488,6 +526,7 @@ function admin_settings() {
     global $sr_root;
     global $sr_db_type;
     global $sr_db_host;
+    global $sr_db_port;
     global $sr_db_name;
     global $sr_db_user;
     global $sr_db_password;
@@ -500,7 +539,7 @@ function admin_settings() {
     $context = array(
         'db_type'       => $sr_db_type,
         'db_host'       => $sr_db_host,
-        'db_port'       => 'TODO',
+        'db_port'       => $sr_db_port,
         'db_database'   => $sr_db_name,
         'db_username'   => $sr_db_user,
         'db_password'   => $sr_db_password,

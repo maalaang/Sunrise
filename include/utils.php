@@ -161,12 +161,13 @@ function sr_set_authorized($is_authorized) {
 function sr_pdo() {
     global $sr_db_type;
     global $sr_db_host;
+    global $sr_db_port;
     global $sr_db_name;
     global $sr_db_charset;
     global $sr_db_user;
     global $sr_db_password;
 
-    $db = new PDO("$sr_db_type:host=$sr_db_host; dbname=$sr_db_name; charset=$sr_db_charset", $sr_db_user, $sr_db_password);
+    $db = new PDO("$sr_db_type:host=$sr_db_host; port=$sr_db_port; dbname=$sr_db_name; charset=$sr_db_charset", $sr_db_user, $sr_db_password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     return $db;
