@@ -69,6 +69,10 @@ function setParticipantName(senderId, name) {
     participantNames[senderId] = name;
 }
 
+function setParticipantName(senderId, name) {
+    participantNames[senderId] = name;
+}
+
 function onChannelChat(msg) {
     switch (msg.subtype) {
         case 'normal':
@@ -101,6 +105,10 @@ function onChannelChat(msg) {
             roomPassword = msg.password;
             $('#room-password').val(roomPassword);
             changeOpenStatus(roomIsOpen);
+            break;
+        case 'chat-name':
+            appendChatMessage(null, getParticipantName(msg.sender) + ' changed his name with "' + msg.chat_name + '"');
+            setParticipantName(msg.sender, msg.chat_name);
             break;
     }
 }
@@ -611,6 +619,8 @@ $(document).ready(function() {
                     open: roomIsOpen,
                     password: roomPassword
                 });
+
+                $('#open-status-modal').modal('hide');
             } else {
                 console.log('error on saving room open status: ' + json.msg);
                 $('#open-status-save').prop('disabled', false);
@@ -618,7 +628,6 @@ $(document).ready(function() {
             }
         });
 
-        $('#open-status-modal').modal('hide');
     });
 
     $('#open-status-cancel').click(function() {
@@ -628,6 +637,70 @@ $(document).ready(function() {
     });
 
     changeOpenStatus(roomIsOpen);
+
+    $('#chat-name-save').click(function() {
+        if (!channel.isReady) {
+            console.log("Cannot update chat name before the channel is ready");
+            alert('You are not allowed to change your display name before joining the room');
+            return;
+        }
+
+        var params = {};
+        params.id = participantId;
+        params.chat_name = $('#chat-name').val();
+
+        $.post(roomApi + '/d/room/chat-name/save/', params, function (data) {
+            var json = $.parseJSON(data);
+            if (json.result === 0) {
+                console.log('done: change chat name');
+
+                // show notification on the chat box
+                appendChatMessage(null, 'You updated your chat name.');
+
+                // accept the changes
+                chatName = $('#chat-name').val();
+
+                $('#chat-name-save').removeClass('active');
+                $('#chat-name-save-text').html('Saved');
+
+                // send message to the participants in the room
+                channel.sendMessage({ type: 'chat',
+                    subtype: 'chat-name',
+                    recipient: 'ns',
+                    chat_name: chatName,
+                });
+
+                $('#chat-name-modal').modal('hide');
+            } else {
+                console.log('error on updating your chat name: ' + json.msg);
+                $('#chat-name-save').prop('disabled', false);
+                $('#chat-name-save').removeClass('active');
+                $('#chat-name-modal .msg .alert').html(json.msg);
+                $('#chat-name-modal .msg').css('display', 'block');
+            }
+        });
+    });
+
+    $('#chat-name-cancel').click(function() {
+        $('#chat-name').val(chatName);
+        $('#chat-name-modal').modal('hide');
+        $('#chat-name-save').prop('disabled', true);
+        $('#chat-name-save-text').html('Saved');
+        $('#chat-name-modal .msg').css('display', 'none');
+    });
+
+    $('#chat-name').bind('change paste keyup', function() {
+        if (chatName != $('#chat-name').val()) {
+            $('#chat-name-save').prop('disabled', false);
+            $('#chat-name-save-text').html('Save');
+        } else {
+            $('#chat-name-save').prop('disabled', true);
+            $('#chat-name-save-text').html('Saved');
+        }
+        $('#chat-name-modal .msg').css('display', 'none');
+    });
+
+    $('#chat-name-save').prop('disabled', true);
 
     $(window).resize(onResize);
 

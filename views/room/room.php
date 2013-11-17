@@ -74,6 +74,11 @@
                             <i class="control-icon invite-icon icon-large pull-left <?= $context['room']->is_open ? 'icon-unlock' : 'icon-lock' ?>"></i><span class="control-icon-text">Public Room</span>
                         </a>
                     </li>
+                    <li>
+                        <a id="menu-chat-name" data-toggle="modal" href="#chat-name-modal">
+                            <i class="control-icon icon-large icon-user pull-left"></i><span class="control-icon-text">Chat Name</span>
+                        </a>
+                    </li>
                     <!--li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" id="menu-sns" href="#">
                         <i class="control-icon icon-large icon-share-sign"></i>
@@ -270,6 +275,41 @@
                                         <span id="open-status-save-text">Save</span>
                                      </button>
                                     <button id="open-status-cancel" type="submit" class="btn btn-default btn-small open-status-save-btn">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="chat-name-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">My profile in this room</h4>
+                    </div>
+                    <div class="modal-body open-status-modal-body">
+                        <div>
+                            <div>
+                                <label for="chat-name-wrapper" class="col-sm-3 control-label">Chat Name</label>
+                                <div class="col-sm-8" id="chat-name-wrapper">
+                                    <input type="text" id="chat-name" class="chat-name form-control" placeholer="Chat Name" value="<?= $context['chat_name'] ?>">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col-sm-8 col-sm-offset-3 chat-name-save">
+                                    <button id="chat-name-save" type="submit" class="btn btn-default btn-small chat-name-save-btn has-spinner">
+                                        <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+                                        <span id="chat-name-save-text">Saved</span>
+                                     </button>
+                                    <button id="chat-name-cancel" type="submit" class="btn btn-default btn-small chat-name-save-btn">Cancel</button>
+                                </div>
+                            </div>
+                            <div class="msg">
+                                <div class="col-sm-8 col-sm-offset-3 alert alert-warning">
+hi
                                 </div>
                             </div>
                         </div>

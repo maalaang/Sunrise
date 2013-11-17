@@ -249,6 +249,37 @@ function room_open_status_save() {
 }
 
 /**
+ * Save user's chat name.
+ */
+function room_chat_name_save() {
+    $res = array();
+
+    if ($_POST['id'] && isset($_POST['chat_name'])) {
+        if (strlen($_POST['chat_name']) > 1) {
+            $db = sr_pdo();
+            if ($room = Participant::get($db, $_POST['id'])) {
+                $room->name = $_POST['chat_name'];
+                $room->save($db);
+                $res['result'] = 0;
+
+                $_SESSION['chat_name'] = $_POST['chat_name'];
+            } else {
+                $res['result'] = 2;
+                $res['msg'] = "Couldn't find the participant";
+            }
+        } else {
+            $res['result'] = 3;
+            $res['msg'] = "Chat name should be longer than 2 characters.";
+        }
+    } else {
+        $res['result'] = 1;
+        $res['msg'] = "Invalid request";
+    }
+
+    echo json_encode($res);
+}
+
+/**
  * Show message page for non-authorized user.
  */
 function room_message_auth() {

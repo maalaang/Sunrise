@@ -23,6 +23,7 @@ $url_patterns = array (
     "#^/room/title/save/$#" => room_title_save,
     "#^/room/description/save/$#" => room_description_save,
     "#^/room/open-status/save/$#" => room_open_status_save,
+    "#^/room/chat-name/save/$#" => room_chat_name_save,
     "#^/room/message/auth/$#"     => room_message_auth,
     "#^/room/message/pswd/$#"     => room_message_pswd,
     "#^/room/message/browser/$#"  => room_message_browser,
