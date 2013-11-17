@@ -379,16 +379,16 @@ function onResize() {
         return;
     }
 
-    // console.log('video width=' + v.width() + ' height=' + v.height());
+//    console.log('video width=' + v.width() + ' height=' + v.height());
 
     if (c.height() / c.width() >= v.height() / v.width()) {
-        // console.log('+++++++++++++');
+//        console.log('+++++++++++++');
         v.css('width', 'auto');
         v.css('height', '100%');
         v.css('bottom', '0');
         v.css('right', ((v.width()-c.width())/2) + 'px');
     } else {
-        // console.log('--------------');
+//        console.log('--------------');
         v.css('height', 'auto');
         v.css('width', '100%');
         v.css('bottom', ((v.height()-c.height())/2) + 'px');
@@ -436,6 +436,12 @@ function sendEmail() {
         }
     });
     return list;
+}
+
+function firefoxStart() {
+    onResize();
+    $('.large-videos').css('visibility', 'visible');
+    $('.btn-invite').css('visibility', 'visible');
 }
 
 $(document).ready(function() {
@@ -710,9 +716,13 @@ $(document).ready(function() {
 
     v.bind('play', function() {
         onResize();
-        $('.btn-invite').css('visibility', 'visible');
+        if (webrtcDetectedBrowser === 'firefox') {
+            setTimeout(firefoxStart, 2000);
+        } else {
+            $('.btn-invite').css('visibility', 'visible');
+            $('.large-videos').css('visibility', 'visible');
+        }
     });
-
 
     $('.btn-invite').click();
 

@@ -44,6 +44,7 @@ body {
     height: 100%;
 /*    padding-bottom: 120px;*/
     overflow: hidden;
+    visibility: hidden;
 }
 
 .large-video {
