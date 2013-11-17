@@ -538,6 +538,8 @@ function admin_settings() {
     global $sr_join_non_authorized;
     global $sr_main_content;
 
+    $sr_email_addr = htmlentities($sr_email_addr);
+
     $context = array(
         'db_type'       => $sr_db_type,
         'db_host'       => $sr_db_host,
