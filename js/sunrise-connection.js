@@ -37,9 +37,6 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     this.maybeRequestTurn = function() {
         console.log('skip turn request');
 
-        this.turnDone = true;
-        return;
-
         // Skipping TURN Http request for Firefox version <=22.
         // Firefox does not support TURN for version <=22.
         if (webrtcDetectedBrowser === 'firefox' && webrtcDetectedVersion <=22) {
@@ -68,8 +65,8 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
 
         var iceServer = createIceServer(
                 "turn:14.63.224.178:3478?transport=udp",
-                "username",
-                "password"
+                "whale",
+                "whale88"
                 );
 
         if(iceServer !== null){
