@@ -87,10 +87,10 @@
                             <div class="block-content collapse in">
                                 <table class="table table-striped">
                                     <col width="150px" />
+                                    <tr> <td class="type">Email Address</td>  <td><?= $context['smtp_email_addr'] ?></td>    </tr>
                                     <tr> <td class="type">SMTP Server</td>  <td><?= $context['smtp_server'] ?></td>    </tr>
                                     <tr> <td class="type">Port</td>         <td><?= $context['smtp_port'] ?></td>      </tr>
                                     <tr> <td class="type">Username</td>     <td><?= $context['smtp_username'] ?></td>  </tr>
-                                    <tr> <td class="type">Password</td>     <td><?= $context['smtp_password'] ?></td>  </tr>
                                 </table>
                             </div>
                         </div>

@@ -531,6 +531,8 @@ function admin_settings() {
     global $sr_db_user;
     global $sr_db_password;
     global $sr_db_charset;
+    global $sr_email_addr;
+    global $sr_email_smtp;
     global $sr_default_authority;
     global $sr_join_anonymous;
     global $sr_join_non_authorized;
@@ -549,10 +551,10 @@ function admin_settings() {
         'join_anonymous'        => $sr_join_anonymous ? 'Yes' : 'No',
         'join_non_authorized'   => $sr_join_non_authorized ? 'Yes' : 'No',
 
-        'smtp_server'       => 'TODO',
-        'smtp_port'         => 'TODO',
-        'smtp_username'     => 'TODO',
-        'smtp_password'     => 'TODO',
+        'smtp_email_addr'   => $sr_email_addr,
+        'smtp_server'       => $sr_email_smtp['host'],
+        'smtp_port'         => $sr_email_smtp['port'],
+        'smtp_username'     => $sr_email_smtp['username'],
 
         'installation_path' => $sr_root,
 
