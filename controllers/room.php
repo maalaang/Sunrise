@@ -42,6 +42,9 @@ function room() {
                 $room->is_open = 1;
 
                 $room->open($db);
+            } else {
+                $room->title = stripslashes($room->title);
+                $room->description = stripslashes($room->description);
             }
 
         } catch (PDOException $e) {
