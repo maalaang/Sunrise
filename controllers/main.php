@@ -57,6 +57,9 @@ function main_signin() {
                     $context['result'] = 0;
                     $context['msg'] = 'Successfully signed in';
 
+                    $user->last_active_date = Model::getCurrentTime();
+                    $user->save($db);
+
                     sr_signin($user);
                 }
 

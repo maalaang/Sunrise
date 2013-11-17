@@ -61,11 +61,11 @@
                     </div>
                     <?  } else if ($context['type'] == 2) { ?>
                     <div>
-                        <form class="form-inline" role="form" action="passwordCheck()">
+                        <form class="form-inline" role="form" onsubmit="passwordCheck(); return false;">
                             <div class="form-group">
-                                <input type="password" class="form-control" id="room_pw" placeholder="Password">
+                                <input type="password" class="form-control" id="room_pw" placeholder="Password" />
                             </div>
-                            <button type="submit" class="btn btn-default">Go to the room</button>
+                            <input type="button" class="btn btn-default" value="Go to the room" onclick="passwordCheck()"/>
                         </form>
                     </div>
                     <? } else { ?>
