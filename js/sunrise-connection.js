@@ -256,11 +256,11 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
 
     this.addRemoteVideo = function() {
         $('.' + conn.remoteVideoContainer).append('<video id="' + conn.getRemoteVideoId() + '" class="' + conn.remoteVideoClass + ' " autoplay="autoplay" />');
-        $('.' + conn.getRemoteVideoId()).click(onSmallVideoClicked);
+        $('#' + conn.getRemoteVideoId()).click(onSmallVideoClicked);
     }
 
     this.removeRemoteVideo = function() {
-        $('.' + conn.getRemoteVideoId()).remove();
+        $('#' + conn.getRemoteVideoId()).remove();
         conn.remoteStream = null;
         conn.remoteVideo = null;
     }
@@ -467,7 +467,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     }
 
     this.getRemoteVideoId = function() {
-        return 'remoteVideo-' + this.opponent;
+        return 'remote-video-' + this.opponent;
     }
 
     this.initialize();

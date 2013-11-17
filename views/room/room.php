@@ -71,7 +71,7 @@
                     </li>
                     <li>
                         <a id="menu-public-private" data-toggle="modal" href="#open-status-modal">
-                            <i class="control-icon invite-icon icon-large <?= $context['room']->is_open ? 'icon-unlock' : 'icon-lock' ?>"></i><span class="control-icon-text">Public Room</span>
+                            <i class="control-icon invite-icon icon-large pull-left <?= $context['room']->is_open ? 'icon-unlock' : 'icon-lock' ?>"></i><span class="control-icon-text">Public Room</span>
                         </a>
                     </li>
                     <!--li class="dropdown">
