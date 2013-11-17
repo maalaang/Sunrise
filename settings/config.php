@@ -4,6 +4,7 @@
  */
 $sr_db_type         = 'mysql';
 $sr_db_host         = 'dev.maalaang.com';
+$sr_db_port         = 3306;
 $sr_db_name         = 'sunrise_blackhat';
 $sr_db_user         = 'sunrise_blackhat';
 $sr_db_password     = 'blackhat8888';
@@ -24,7 +25,7 @@ $sr_admin_email = 'face@maalaang.com';
 
 $sr_email_addr = 'Sunrise VC <xxx@xxx.xxx>';
 $sr_email_smtp = array(
-    'host' => ''
+    'host' => '',
     'port' => '',
     'auth' => true,
     'username' => '',
@@ -35,8 +36,8 @@ $sr_email_smtp = array(
  * User authorization configuration
  */
 $sr_default_authority   = 1;
-$sr_join_anonymous      = 1;
-$sr_join_non_authorized = 1;
+$sr_join_anonymous      = 0;
+$sr_join_non_authorized = 0;
 
 /**
  * Channel server configuration.

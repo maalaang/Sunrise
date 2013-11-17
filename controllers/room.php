@@ -14,7 +14,7 @@ function room() {
     global $sr_default_chat_name;
     
     $db = sr_pdo();
-    $browser = getBrowser();
+    $browser = room_get_browser();
 
     if ($browser['name'] != 'Mozilla Firefox' && $browser['name'] != 'Google Chrome') {
         sr_redirect('/d/room/message/browser/');
@@ -403,7 +403,7 @@ function room_invite_email_content () {
 /**
  * Get informations about a user's browser.
  */
-function getBrowser() 
+function room_get_browser() 
 { 
     $u_agent = $_SERVER['HTTP_USER_AGENT']; 
 

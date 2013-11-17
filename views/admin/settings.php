@@ -126,8 +126,10 @@
                                     <col width="250px" />
                                     <tr> <td class="type">Maximum number of users</td>  <td><?= $context['maximum_users'] ?></td>   </tr>
                                     <tr> <td class="type">STUN Server</td>              <td><?= $context['stun_server'] ?></td>     </tr>
+                                    <!--
                                     <tr> <td class="type">Use XMPP</td>                 <td><?= $context['xmpp_server_use'] ?></td> </tr>
                                     <tr> <td class="type">XMPP Server</td>              <td><?= $context['xmpp_server'] ?></td>     </tr>
+                                    <-->
                                 </table>
                             </div>
                         </div>
