@@ -110,6 +110,9 @@ function onChannelChat(msg) {
             appendChatMessage(null, getParticipantName(msg.sender) + ' changed his name with "' + msg.chat_name + '"');
             setParticipantName(msg.sender, msg.chat_name);
             break;
+        case 'focus':
+            videoFocusIn(msg.sender);
+            break;
     }
 }
 
@@ -201,6 +204,10 @@ function roomJoin() {
 }
 
 function videoFocusIn(connectionId) {
+    if (connectionId === focusedVideoId) {
+        return;
+    }
+
     if (connectionId == null) {
         attachMediaStream(focusedVideo, localStream);
         focusedVideoId = null;
@@ -315,7 +322,8 @@ function chatSend() {
     channel.sendMessage({type: 'chat',
         subtype: 'normal',
         recipient: 'ns',
-        content: msg});
+        content: msg
+    });
 
     appendChatMessage(chatName, msg);
 
@@ -424,6 +432,10 @@ function sendEmail() {
 
     var params = {}
     params.emails = JSON.stringify(list);
+    params.is_open = roomIsOpen;
+    if (!roomIsOpen) {
+        params.password = roomPassword;
+    }
     $.post(roomApi + '/d/room/invite/email/', params, function (data) {
         var json = $.parseJSON(data);
         if (json.result === 0) {
@@ -442,6 +454,13 @@ function firefoxStart() {
     onResize();
     $('.large-videos').css('visibility', 'visible');
     $('.btn-invite').css('visibility', 'visible');
+}
+
+function requestFocus() {
+    channel.sendMessage({type: 'chat',
+        subtype: 'focus',
+        recipient: 'ns',
+    });
 }
 
 $(document).ready(function() {
@@ -500,7 +519,8 @@ $(document).ready(function() {
             channel.sendMessage({ type: 'chat',
                 subtype: 'title',
                 recipient: 'ns',
-                content: value });
+                content: value
+            });
 
             appendChatMessage(null, 'You have changed the room title - "' + value + '"');
         }
@@ -536,7 +556,8 @@ $(document).ready(function() {
             channel.sendMessage({ type: 'chat',
                 subtype: 'description',
                 recipient: 'ns',
-                content: value });
+                content: value
+            });
 
             appendChatMessage(null, 'You have changed the room description - "' + value + '"');
         }
@@ -723,6 +744,9 @@ $(document).ready(function() {
             $('.large-videos').css('visibility', 'visible');
         }
     });
+
+    $('.large-videos').dblclick(requestFocus);
+    $('.large-videos').click(requestFocus);
 
     $('.btn-invite').click();
 

@@ -371,7 +371,7 @@ function room_invite_email() {
             $email_list = json_decode(stripslashes($_POST['emails']));
 
             if (count($email_list) > 0) {
-                $content = room_invite_email_content();
+                $content = room_invite_email_content($_POST);
 
                 foreach ($email_list as $email) {
                     if (preg_match($sr_regex_email, $email)) {
@@ -415,7 +415,7 @@ function room_invite_email() {
     }
 }
 
-function room_invite_email_content () {
+function room_invite_email_content ($request) {
     global $sr_default_chat_name;
 
     $content = array();
@@ -429,10 +429,18 @@ function room_invite_email_content () {
 
     if ($user_name != $sr_default_chat_name) {
         $content['subject'] = $user_name . ' is inviting you to join the Sunrise video conference room';
-        $content['body'] = 'Hi,<br/><br/>' . $user_name . ' is waiting for you in the Sunrise video conference room.<br/>Click the link below to join.<br/><br/><a href="' . $room_link . '">' . $room_link . '</a><br/><br/>Best,<br/><br/>Sunrise VC';
+        $content['body'] = 'Hi,<br/><br/>' . $user_name . ' is waiting for you in the Sunrise video conference room.<br/>Click the link below to join.<br/><br/><a href="' . $room_link . '">' . $room_link . '</a>';
+        if (!$request['is_open']) {
+            $content['body'] .= '<br/>Password: ' . $request['password'];
+        }
+        $content['body'] .= '<br/><br/>Best,<br/><br/>Sunrise VC';
     } else {
         $content['subject'] = 'You were invited to join the Sunrise video conference room';
-        $content['body'] = 'Hi,<br/><br/>You were invited to join the Sunrise video conference room.<br/>Click the link below to join.<br/><br/><a href="' . $room_link .'">' . $room_link . '</a><br/><br/>Best,<br/><br/>Sunrise VC';
+        $content['body'] = 'Hi,<br/><br/>You were invited to join the Sunrise video conference room.<br/>Click the link below to join.<br/><br/><a href="' . $room_link .'">' . $room_link . '</a>';
+        if (!$request['is_open']) {
+            $content['body'] .= '<br/>Password: ' . $request['password'];
+        }
+        $content['body'] .= '<br/><br/>Best,<br/><br/>Sunrise VC';
     }
 
     return $content;
