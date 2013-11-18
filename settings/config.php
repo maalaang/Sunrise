@@ -42,12 +42,13 @@ $sr_join_non_authorized = 1;
  * Channel server configuration.
  */
 $sr_channel_server_key = 'sunrise/channel/';
-$sr_channel_server_ip = '';
+$sr_channel_server_addr = '';
+$sr_channel_server_addr_internal = '';
 $sr_channel_server_port = '';
-$sr_channel_server_uri  = 'ws://dev.maalaang.com:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
-$sr_channel_server_uri_internal = 'ws://' . $sr_channel_server_ip . ':' . $sr_channel_server_port .'/' . $sr_channel_server_key;
+$sr_channel_server_uri  = 'ws://' . $sr_channel_server_addr . ':' . $sr_channel_server_port .'/' . $sr_channel_server_key;
+$sr_channel_server_uri_internal = 'ws://' . $sr_channel_server_addr_internal . ':' . $sr_channel_server_port .'/' . $sr_channel_server_key;
 
-$sr_channel_event_rest          = 'http://' . $sr_channel_server_ip . $sr_root . '/d/channel/';
+$sr_channel_event_rest          = 'http://' . $sr_channel_server_addr_internal . $sr_root . '/d/channel/';
 
 $sr_channel_local_installation  = true;
 $sr_channel_run_script          = '/run/sunrise_channel_server.php';
