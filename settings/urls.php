@@ -4,7 +4,6 @@ require_once (dirname(__FILE__) . '/../controllers/room.php');
 require_once (dirname(__FILE__) . '/../controllers/message.php');
 require_once (dirname(__FILE__) . '/../controllers/admin.php');
 require_once (dirname(__FILE__) . '/../controllers/main.php');
-require_once (dirname(__FILE__) . '/../controllers/sns.php');
 require_once (dirname(__FILE__) . '/../controllers/channel.php');
 
 /**
@@ -39,7 +38,6 @@ $url_patterns = array (
     "#^/admin/channel/stop/$#" => admin_channel_stop,
     "#^/admin/channel/restart/$#" => admin_channel_restart,
     "#^/message/demo/$#"    => message_demo,
-    "#^/sns/test/$#"        => sns_test,
 );
 
 ?>
