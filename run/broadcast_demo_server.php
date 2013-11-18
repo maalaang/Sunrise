@@ -15,7 +15,10 @@ require(__DIR__ . '/../include/lib/SplClassLoader.php');
 $classLoader = new SplClassLoader('Wrench', __DIR__ . '/../message');
 $classLoader->register();
 
-$server = new \Wrench\Server('ws://172.27.254.4:8890/', array(
+$server_ip = '';
+$server_port = '';
+
+$server = new \Wrench\Server('ws://' . $server_ip . ':' . $server_port . '/', array(
      'check_origin'               => false,
 ));
 
