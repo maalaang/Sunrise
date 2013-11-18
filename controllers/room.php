@@ -130,7 +130,11 @@ function room_join() {
     $p = new Participant();
     $p->id = $_POST['participant_id'];
     $p->room_id = $_POST['room_id'];
-    $p->is_registered_user = $_POST['is_registered_user'];
+    if ($_POST['is_registered_user'] == 'true') {
+        $p->is_registered_user = 1;
+    } else {
+        $p->is_registered_user = 0;
+    }
     $p->name = $_POST['user_name'];
     $p->user_id = $_POST['user_id'];
     $p->ip_address = $_SERVER['REMOTE_ADDR'];

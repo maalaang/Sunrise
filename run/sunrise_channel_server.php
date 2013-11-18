@@ -27,6 +27,8 @@ $config = array();
 $config['rest_server'] = $sr_channel_event_rest;
 $config['logger'] = $logger;
 
+$logger->info($sr_channel_event_rest);
+
 $logger->info('Start channel server - ' . $sr_channel_server_uri);
 $server->registerApplication($sr_channel_server_key, new \Wrench\Application\SunriseChannelServer($config));
 $server->run();

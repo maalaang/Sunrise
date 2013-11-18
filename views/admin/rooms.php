@@ -76,7 +76,7 @@
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
                                 <div class="muted pull-left">
-                                    <h4>Currently Opened Rooms</h4>
+                                    <h4>Active Rooms</h4>
                                 </div>
                                 <div class="pull-right">
                                     <div class="btn-group" data-toggle="buttons-radio" id="t1_sr_filter">

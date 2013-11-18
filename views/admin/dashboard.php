@@ -116,7 +116,7 @@
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
                                 <div class="muted">
-                                    <h4>Room Opened</h4>
+                                    <h4>Room Statistics</h4>
                                 </div>
                             </div>
                             <div class="block-content collapse in">
@@ -144,7 +144,7 @@
                         <div class="block">
                             <div class="navbar navbar-inner block-header">
                                 <div class="muted">
-                                    <h4>Participants</h4>
+                                    <h4>Participant Statistics</h4>
                                 </div>
                             </div>
                             <div class="block-content collapse in">

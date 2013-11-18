@@ -2,18 +2,17 @@
 /**
  * The base configuration of the Sunrise VC.
  */
-$sr_db_type         = 'mysql';
-$sr_db_host         = 'dev.maalaang.com';
-$sr_db_port         = 3306;
-$sr_db_name         = 'sunrise_whale';
-$sr_db_user         = 'sunrise_whale';
-$sr_db_password     = 'whale8888';
-$sr_db_charset      = 'utf8';
+$sr_db_type         = '';
+$sr_db_host         = '';
+$sr_db_name         = '';
+$sr_db_user         = '';
+$sr_db_password     = '';
+$sr_db_charset      = '';
 
 /**
  * Sunrise VC home directory from the web server root.
  */
-$sr_root        = '/workspace/whale/Sunrise';
+$sr_root        = '';
 
 $sr_room_ui_title   = 'Sunrise - Video Conference Room';
 
@@ -21,9 +20,9 @@ $sr_logo = "/img/sunrise-logo.png";
 $sr_logo_lg = "/img/sunrise-logo-lg.png";
 
 $sr_admin_name = 'Sunrise Administrator';
-$sr_admin_email = 'face@maalaang.com';
+$sr_admin_email = '';
 
-$sr_email_addr = 'Sunrise VC <xxx@xxx.xxx>';
+$sr_email_addr = '';
 $sr_email_smtp = array(
     'host' => '',
     'port' => '',
@@ -36,21 +35,29 @@ $sr_email_smtp = array(
  * User authorization configuration
  */
 $sr_default_authority   = 1;
-$sr_join_anonymous      = 0;
-$sr_join_non_authorized = 0;
+$sr_join_anonymous      = 1;
+$sr_join_non_authorized = 1;
 
 /**
  * Channel server configuration.
  */
 $sr_channel_server_key = 'sunrise/channel/';
-$sr_channel_server_port = '9000';
+$sr_channel_server_ip = '';
+$sr_channel_server_port = '';
 $sr_channel_server_uri  = 'ws://dev.maalaang.com:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
-$sr_channel_server_uri_internal = 'ws://172.27.254.4:' . $sr_channel_server_port .'/' . $sr_channel_server_key;
+$sr_channel_server_uri_internal = 'ws://' . $sr_channel_server_ip . ':' . $sr_channel_server_port .'/' . $sr_channel_server_key;
 
-$sr_channel_event_rest          = 'http://localhost' . $sr_root . '/d/channel/';
+$sr_channel_event_rest          = 'http://' . $sr_channel_server_ip . $sr_root . '/d/channel/';
 
 $sr_channel_local_installation  = true;
 $sr_channel_run_script          = '/run/sunrise_channel_server.php';
+
+$sr_default_chat_name = 'Anonymous';
+
+/**
+ * Facebook configuration.
+ */
+$sr_facebook_app_id = '';
 
 /**
  * Regular expressions for validation.
@@ -62,7 +69,7 @@ $sr_regex_password  = '/^[a-zA-Z0-9]+$/';
 /**
  * Logger configuration - Apache log4php
  */
-$sr_channel_log_file = '/var/log/sunrise/sunrise-channel-blackhat.log';
+$sr_channel_log_file = '/var/log/sunrise/sunrise-channel.log';
 $sr_channel_logger_config = array(
     'appenders' => array(
         'default' => array(
@@ -117,9 +124,5 @@ $sr_main_content = array(
                     ',
 
 );
-
-$sr_facebook_app_id = '541700329256457';
-
-$sr_default_chat_name = 'Anonymous';
 
 ?>

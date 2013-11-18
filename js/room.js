@@ -660,11 +660,11 @@ $(document).ready(function() {
             if (json.result === 0) {
                 console.log('done: change chat name');
 
-                // show notification on the chat box
-                appendChatMessage(null, 'You updated your chat name.');
-
                 // accept the changes
                 chatName = $('#chat-name').val();
+
+                // show notification on the chat box
+                appendChatMessage(null, 'You changed your chat name - ' + chatName);
 
                 $('#chat-name-save').removeClass('active');
                 $('#chat-name-save-text').html('Saved');
