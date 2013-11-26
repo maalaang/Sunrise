@@ -305,9 +305,9 @@ abstract class Socket extends Configurable implements Resource
             }
             $this->firstRead = false;
 
-            if (strlen($result) == $length) {
-                $continue = true;
-            }
+//            if (strlen($result) == $length) {
+//                $continue = true;
+//            }
 
             // Continue if more data to be read
             $metadata = stream_get_meta_data($this->socket);
