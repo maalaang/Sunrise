@@ -163,6 +163,12 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
         // Set Opus as the preferred codec in SDP if Opus is present.
         // sessionDescription.sdp = conn.preferOpus(sessionDescription.sdp);
         conn.pc.setLocalDescription(sessionDescription);
+
+//        var msg = {};
+//        msg.type = sessionDescription.type;
+//        msg.sdp = sessionDescription.sdp;
+
+//        channel.sendMessage(msg, conn.opponent);
         channel.sendMessage(sessionDescription, conn.opponent);
     }
 
@@ -348,11 +354,12 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     // Set Opus as the default audio codec if it's present.
     this.preferOpus = function(sdp) {
         var sdpLines = sdp.split('\r\n');
+        var mLineIndex = null;
 
         // Search for m line.
         for (var i = 0; i < sdpLines.length; i++) {
             if (sdpLines[i].search('m=audio') !== -1) {
-                var mLineIndex = i;
+                mLineIndex = i;
                 break;
             }
         }
@@ -363,9 +370,9 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
         for (var i = 0; i < sdpLines.length; i++) {
             if (sdpLines[i].search('opus/48000') !== -1) {
                 var opusPayload = this.extractSdp(sdpLines[i], /:(\d+) opus\/48000/i);
-                if (opusPayload)
-                    sdpLines[mLineIndex] = this.setDefaultCodec(sdpLines[mLineIndex],
-                            opusPayload);
+                if (opusPayload) {
+                    sdpLines[mLineIndex] = this.setDefaultCodec(sdpLines[mLineIndex], opusPayload);
+                }
                 break;
             }
         }
@@ -380,6 +387,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
     // Set Opus in stereo if stereo is enabled.
     this.addStereo = function(sdp) {
         var sdpLines = sdp.split('\r\n');
+        var fmtpLineIndex = null;
 
         // Find opus payload.
         for (var i = 0; i < sdpLines.length; i++) {
@@ -394,7 +402,7 @@ function SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConst
             if (sdpLines[i].search('a=fmtp') !== -1) {
                 var payload = this.extractSdp(sdpLines[i], /a=fmtp:(\d+)/ );
                 if (payload === opusPayload) {
-                    var fmtpLineIndex = i;
+                    fmtpLineIndex = i;
                     break;
                 }
             }

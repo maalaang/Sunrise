@@ -144,7 +144,7 @@
                     </span>
    
                     <span class="btn-invite">
-                        <a id="invite-url" data-toggle="modal" href="#invite-modal">
+                        <a id="invite-url" data-toggle="modal" href="#invite-modal" onclick="onInviteModal();">
                             <i class="icon icon-user"></i>
                             <i class="icon icon-plus-sign"></i>
                         </a>
@@ -179,9 +179,8 @@
                     <div class="modal-body">
                         <div class="row">
                             <ul class="nav nav-pills nav-stacked col-sm-3" id="inviteTab" style="text-align:left;">
-                                <li class="active"><a href="#tab-email" data-toggle="tab"><i class="icon icon-envelope-alt"></i> Email</a></li>                                           
-                                <li><a href="#tab-facebook" data-toggle="tab"><i class="icon icon-facebook"></i> Facebook</a></li>  
-    
+                                <li class="active"><a href="#tab-email" data-toggle="tab"><i class="icon icon-envelope-alt"></i> Email</a></li>
+                                <li><a href="#tab-facebook" data-toggle="tab"><i class="icon icon-facebook"></i> Facebook</a></li>
                                 <li><a href="#tab-twitter" data-toggle="tab"><i class="icon icon-twitter"></i> Twitter</a></li>   
                                 <li><a href="#tab-url" data-toggle="tab"><i class="icon icon-external-link"></i> URL</a></li>   
                             </ul>

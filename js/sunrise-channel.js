@@ -40,15 +40,31 @@ function SunriseChannel(_channelServer, _channelToken, _userName) {
     }
 
     this.sendMessage = function(message, recipient) {
-        if (recipient === undefined || recipient === null) {
-            // not specified
-            message.recipient = 'ns';
-        } else {
-            // specify the recipient of this message
-            message.recipient = recipient;
-        }
+//        console.log('$$$$$$$$$$$$$ ' + recipient);
+//        if (recipient === undefined || recipient === null) {
+//             not specified
+//            message.recipient = 'ns';
+//        } else {
+//             specify the recipient of this message
+//            message.recipient = recipient;
+//        }
+//        console.log(message);
 
-        var messageString = JSON.stringify(message);
+//        var messageString = JSON.stringify(message);
+//        console.log('C->S: ' + messageString);
+//        socket.send(messageString);
+
+        if (recipient === undefined || recipient === null) {
+//            message.recipient = 'ns';
+            var messageString = JSON.stringify(message);
+            messageString = messageString.replace(/}$/, ',"recipient": "ns"}');
+        } else {
+//            message.recipient = recipient;
+            var messageString = JSON.stringify(message);
+            messageString = messageString.replace(/}$/, ',"recipient": "' + recipient + '"}');
+        }
+        console.log(message);
+
         console.log('C->S: ' + messageString);
         socket.send(messageString);
     }

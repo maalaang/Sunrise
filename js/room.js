@@ -37,9 +37,9 @@ function onChannelOpened(msg) {
     participantNames = [];
 
     for (p in msg.participant_list) {
-        connections[p] = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'remote-videos', 'small-video', 'focused-video');
+        var a = new SunriseConnection(pcConfig, pcConstraints, offerConstraints, mediaConstraints, sdpConstraints, p, true, true, 'remote-videos', 'small-video', 'focused-video');
+        connections[p] = a;
         connections[p].maybeStart();
-
         setParticipantName(p, msg.participant_list[p].name);
     }
 
@@ -56,9 +56,7 @@ function onChannelBye(msg) {
     // show message a participant left the room
     appendChatMessage(null, getParticipantName(msg.participant_id) + ' has left the room.');
 
-    // for debugging
     console.log('removed ' + msg.participant_id + ' from connection list');
-    printObject('connections', connections);
 }
 
 function getParticipantName(senderId) {
@@ -142,16 +140,6 @@ function onHangup() {
     videoFocusOut(null);
 }
 
-// for debuging
-function printObject(name, obj) {
-    console.log(name + '=');
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            console.log(name + '.' + key + '=' + obj[key]);
-        }
-    }
-}
-
 function onUserMediaSuccess(stream) {
     console.log('got access to local media');
     localStream = stream;
@@ -209,7 +197,7 @@ function videoFocusIn(connectionId) {
     }
 
     if (connectionId == null) {
-        attachMediaStream(focusedVideo, localStream);
+        reattachMediaStream(focusedVideo, localVideo);
         focusedVideoId = null;
         console.log('focused - local video');
 
@@ -217,10 +205,8 @@ function videoFocusIn(connectionId) {
         var connection = connections[connectionId];
         if (connection) {
             var remoteVideo = document.getElementById(connection.getRemoteVideoId());
-            attachMediaStream(focusedVideo, connection.remoteStream);
-            attachMediaStream(remoteVideo, connection.remoteStream);
+            reattachMediaStream(focusedVideo, remoteVideo);
             focusedVideoId = connectionId;
-
             console.log('focused - ' + connectionId);
         }
     }
@@ -250,7 +236,7 @@ function videoFocusOut(connectionId) {
     // there is no video to be focused
     focusedVideoId = null;
     if (localStream != null) {
-        attachMediaStream(focusedVideo, localStream);
+        reattachMediaStream(focusedVideo, localVideo);
         console.log('focused - local video');
     } else {
         focusedVideo.style.opacity = '0';
@@ -330,23 +316,6 @@ function chatSend() {
     $('#chat-input').val('');
 }
 
-function invite(obj) {
-    switch (obj.id) {
-        case 'invite-email':
-            $('#tab-email').addClass('active');
-            break;
-        case 'invite-facebook':
-            $('#tab-facebook').addClass('active');
-            break;
-        case 'invite-twitter':
-            $('#tab-twitter').addClass('active');
-            break;
-        case 'invite-url':
-            $('#tab-url').addClass('active');
-            break;
-    }
-}
-
 function onSmallVideoClicked() {
     var id = $(this).attr('id');
     var idTokens = id.split('-');
@@ -388,6 +357,7 @@ function onResize() {
     }
 
 //    console.log('video width=' + v.width() + ' height=' + v.height());
+//    console.log('container width=' + c.width() + ' height=' + c.height());
 
     if (c.height() / c.width() >= v.height() / v.width()) {
 //        console.log('+++++++++++++');
@@ -450,17 +420,22 @@ function sendEmail() {
     return list;
 }
 
-function firefoxStart() {
-    onResize();
-    $('.large-videos').css('visibility', 'visible');
-    $('.btn-invite').css('visibility', 'visible');
-}
-
 function requestFocus() {
     channel.sendMessage({type: 'chat',
         subtype: 'focus',
         recipient: 'ns',
     });
+}
+
+function onInviteModal() {
+    /* facebook social plugin doesn't show up on firefox because the modal box was hidden on initialization */
+    var b = $('.fb-send span');
+    b.css('width', '51px');
+    b.css('height', '20px');
+
+    var i = $('.fb-send span iframe');
+    i.css('width', '51px');
+    i.css('height', '20px');
 }
 
 $(document).ready(function() {
@@ -735,15 +710,17 @@ $(document).ready(function() {
     c = $('.large-videos');
     c1 = $('.small-videos');
 
-    v.bind('play', function() {
+    if (webrtcDetectedBrowser === 'firefox') {
         onResize();
-        if (webrtcDetectedBrowser === 'firefox') {
-            setTimeout(firefoxStart, 2000);
-        } else {
+        $('.large-video').css('opacity', 1);
+        $('.btn-invite').css('visibility', 'visible');
+    } else {
+        v.bind('play', function() {
+            onResize();
             $('.btn-invite').css('visibility', 'visible');
-            $('.large-videos').css('visibility', 'visible');
-        }
-    });
+            $('.large-video').css('opacity', 1);
+        });
+    }
 
     $('.large-videos').dblclick(requestFocus);
     $('.large-videos').click(requestFocus);

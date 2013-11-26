@@ -42,18 +42,20 @@ body {
 .large-videos {
     text-align: center;
     height: 100%;
-/*    padding-bottom: 120px;*/
     overflow: hidden;
-    visibility: hidden;
 }
 
 .large-video {
     width: 100%;
     height: auto;
-    opacity: 1;
+    opacity: 0;
     position: relative;
-    -webkit-transition-property: opacity;
-    -webkit-transition-duration: 2s;
+    -webkit-transition: opacity 1s ease-out;
+    -moz-transition: opacity 1s ease-out;
+    transition: opacity 1s ease-out;
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 .small-videos {
@@ -68,6 +70,9 @@ body {
 
 .small-video {
     height: 100%; 
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    transform: rotateY(180deg);
 }
 
 
