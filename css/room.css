@@ -54,10 +54,9 @@ body {
     height: auto;
     opacity: 0;
     position: relative;
-    /* don't transform on chrome because of a strange depth bug */
-/*    -webkit-transition: opacity 1s ease-out;*/
+    -webkit-transition: opacity 1s ease-out;
     -moz-transition: opacity 1s ease-out;
-/*    transition: opacity 1s ease-out;*/
+    transition: opacity 1s ease-out;
 }
 
 .small-videos {
@@ -72,8 +71,9 @@ body {
 
 .small-video {
     height: 100%; 
+    /* don't transform on chrome because of a strange depth bug */
 /*    -webkit-transform: rotateY(180deg);*/
-/*    -moz-transform: rotateY(180deg);*/
+    -moz-transform: rotateY(180deg);
 /*    transform: rotateY(180deg);*/
 }
 
