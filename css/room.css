@@ -43,6 +43,10 @@ body {
     text-align: center;
     height: 100%;
     overflow: hidden;
+    /* don't transform on chrome because of a strange depth bug */
+/*    -webkit-transform: rotateY(180deg);*/
+    -moz-transform: rotateY(180deg);
+/*    transform: rotateY(180deg);*/
 }
 
 .large-video {
@@ -50,12 +54,10 @@ body {
     height: auto;
     opacity: 0;
     position: relative;
-    -webkit-transition: opacity 1s ease-out;
+    /* don't transform on chrome because of a strange depth bug */
+/*    -webkit-transition: opacity 1s ease-out;*/
     -moz-transition: opacity 1s ease-out;
-    transition: opacity 1s ease-out;
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+/*    transition: opacity 1s ease-out;*/
 }
 
 .small-videos {
@@ -70,9 +72,9 @@ body {
 
 .small-video {
     height: 100%; 
-    -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
-    transform: rotateY(180deg);
+/*    -webkit-transform: rotateY(180deg);*/
+/*    -moz-transform: rotateY(180deg);*/
+/*    transform: rotateY(180deg);*/
 }
 
 
