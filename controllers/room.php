@@ -51,6 +51,7 @@ function room() {
             sr_response_error(500);
         }
 
+        $context['sunrise_main'] = $sr_root;
         $context['channel_server'] = $sr_channel_server_uri;
         $context['room'] = $room;
         $context['room_link'] = sr_current_url();

@@ -16,6 +16,7 @@ var isVideoMuted = false;
 var focusedVideoId = null;
 var isPasswordHidden = true;
 var emailRegex = new RegExp(/^([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/);
+var exited = false;
 
 var v = null;
 var c = null;
@@ -57,6 +58,22 @@ function onChannelBye(msg) {
     appendChatMessage(null, getParticipantName(msg.participant_id) + ' has left the room.');
 
     console.log('removed ' + msg.participant_id + ' from connection list');
+}
+
+function onChannelDisconnected() {
+    console.log('onChannelDisconnected()');
+    console.log('ready=' + channel.isReady);
+
+    if (!exited) {
+        if (channel.isReady) {
+            channel = null;
+            appendChatMessage(null, 'You are disconnected from the room. <a href="#" onclick="location.reload();">Click this to rejoin the room.</a>');
+            disableControls();
+        } else {
+            channel = null;
+            roomJoinFailed();
+        }
+    }
 }
 
 function getParticipantName(senderId) {
@@ -123,8 +140,14 @@ function appendChatMessage(sender, msg) {
     $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
 }
 
+function appendChatMessageConcat(msg) {
+    $('#chat-content').append(msg);
+    $('#chat-content').scrollTop($('#chat-content')[0].scrollHeight);
+}
+
 function onHangup() {
     console.log('hang up');
+    exited = true;
 
     for (p in connections) {
         connections[p].onHangup();
@@ -135,9 +158,49 @@ function onHangup() {
         channel.close();
     }
 
-    appendChatMessage(null, 'You have left from the room.');
+    disableControls();
+
+    $(window).off('beforeunload');
 
     videoFocusOut(null);
+
+    appendChatMessage(null, 'You have left from the room.');
+}
+
+function disableControls() {
+    $('#menu-public-private').unbind('click');
+    $('#menu-chat-name').unbind('click');
+    $('#invite-url').unbind('click');
+    $('#menu-exit').unbind('click');
+    $('#invite-url').unbind('lick');
+    $('.large-videos').unbind('dblclick');
+    $('.large-videos').unbind('click');
+    $('#chat-input').unbind('keypress');
+
+    $('#menu-public-private').attr('href', '#');
+    $('#menu-public-private').click(afterHangup);
+
+    $('#menu-chat-name').attr('href', '#');
+    $('#menu-chat-name').click(afterHangup);
+
+    $('#menu-exit').click(function() {
+        appendChatMessage(null, 'You are already out of the room.');
+    });
+
+    $('#invite-url').attr('href', '#');
+    $('#invite-url').click(afterHangup);
+
+    $('#chat-input').bind('keypress', function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            afterHangup();
+            $(this).val('');
+        }
+    });
+}
+
+function afterHangup() {
+    appendChatMessage(null, 'You are out of the room. <a href="#" onclick="location.reload();">Rejoin this room</a> or <a href="' + sunriseMain + '"> create a new room</a>.');
 }
 
 function onUserMediaSuccess(stream) {
@@ -160,16 +223,26 @@ function onUserMediaError(error) {
 function initializeChannel() {
     channel = new SunriseChannel(channelServer, channelToken, chatName);
 
+    appendChatMessageConcat('Connecting.');
+    channelOpeningStatus();
+
     channel.onChannelConnected = null;
     channel.onChannelOpened = onChannelOpened;
     channel.onChannelClosed = null;
     channel.onChannelBye = onChannelBye;
     channel.onChannelMessage = onChannelMessage;
-    channel.onChannelDisconnected = null;
+    channel.onChannelDisconnected = onChannelDisconnected;
     channel.onChannelError = null;
     channel.onChannelChat = onChannelChat;
 
     channel.open();
+}
+
+function channelOpeningStatus() {
+    if (channel != null && channel.isReady == false) {
+        appendChatMessageConcat('.');
+        setTimeout(channelOpeningStatus, 1000);
+    }
 }
 
 function roomJoin() {
@@ -183,12 +256,33 @@ function roomJoin() {
     $.post(roomApi + '/d/room/join/', params, function (data) {
         var json = $.parseJSON(data);
         if (json.result === 0) {
-            console.log('done: room-join');
-            appendChatMessage(null, 'You have joined the room.');
+            roomJoinSuccess();
         } else {
-            console.log('error on room-join: failed to get participantId');
+            roomJoinFailed();
         }
     });
+}
+
+function roomJoinSuccess() {
+    $('#menu-public-private').unbind('click');
+    $('#menu-chat-name').unbind('click');
+    $('#invite-url').unbind('click');
+
+    $('#menu-public-private').attr('href', '#open-status-modal');
+    $('#menu-chat-name').attr('href', '#chat-name-modal');
+    $('#invite-url').attr('href', '#invite-modal');
+    $('#invite-url').click(onInviteModal);
+
+    $('.large-videos').dblclick(requestFocus);
+    $('.large-videos').click(requestFocus);
+
+    appendChatMessage(null, '<br/>You have joined the room.');
+}
+
+function roomJoinFailed() {
+    disableControls();
+    $(window).off('beforeunload');
+    appendChatMessage(null, '<br/>Cannot join the room. <a href="#" onclick="location.reload();">Retry to join this room</a> or <a href="' + sunriseMain + '">create a new room</a>.');
 }
 
 function videoFocusIn(connectionId) {
@@ -303,16 +397,17 @@ function roomExit() {
 }
 
 function chatSend() {
-    var msg = $('#chat-input').val();
-
-    channel.sendMessage({type: 'chat',
-        subtype: 'normal',
-        recipient: 'ns',
-        content: msg
-    });
-
-    appendChatMessage(chatName, msg);
-
+    if (channel && channel.isReady) {
+        var msg = $('#chat-input').val();
+        channel.sendMessage({type: 'chat',
+            subtype: 'normal',
+            recipient: 'ns',
+            content: msg
+        });
+        appendChatMessage(chatName, msg);
+    } else {
+        appendChatMessage(null, 'You are out of the room now. Cannot send a chat message.');
+    }
     $('#chat-input').val('');
 }
 
@@ -468,9 +563,9 @@ $(document).ready(function() {
         $(this).val(value);
 
         if (value !== roomTitle) {
-            if (!channel.isReady) {
-                console.log("Cannot update room information before the channel is ready");
-                alert('You are not allowed to change the room information before joining the room.');
+            if (channel == null || !channel.isReady) {
+                appendChatMessage(null, 'You are out of the room. Cannot change the room title now.');
+                $(this).val('');
                 return;
             }
 
@@ -505,9 +600,9 @@ $(document).ready(function() {
         var value = $(this).val().trim();
         $(this).val(value);
         if (value !== roomDescription) {
-            if (!channel.isReady) {
-                console.log("Cannot update room information before the channel is ready");
-                alert('You are not allowed to change the room information before joining the room');
+            if (channel == null || !channel.isReady) {
+                appendChatMessage(null, 'You are out of the room. Cannot change the room description now.');
+                $(this).val('');
                 return;
             }
 
@@ -540,6 +635,24 @@ $(document).ready(function() {
 
     $('.small-video').click(onSmallVideoClicked);
 
+    $('#menu-screen').click(screenToggle);
+
+    $('#menu-mic').click(micToggle);
+
+    $('#menu-public-private').click(function() {
+        appendChatMessage(null, 'You can update public / private setting after you join the room.');
+    });
+    
+    $('#menu-chat-name').click(function() {
+        appendChatMessage(null, 'You can change your chat name after you join the room.');
+    });
+
+    $('#menu-exit').click(roomExit);
+
+    $('#invite-url').click(function() {
+        appendChatMessage(null, 'You can invite others after you join the room');
+    });
+
     $('#btn-public').click(function() {
         changeOpenStatus(true);
     });
@@ -568,7 +681,7 @@ $(document).ready(function() {
     });
 
     $('#open-status-save').click(function() {
-        if (!channel.isReady) {
+        if (channel == null || !channel.isReady) {
             console.log("Cannot update room information before the channel is ready");
             alert('You are not allowed to change the room information before joining the room');
             return;
@@ -641,9 +754,9 @@ $(document).ready(function() {
     changeOpenStatus(roomIsOpen);
 
     $('#chat-name-save').click(function() {
-        if (!channel.isReady) {
+        if (channel == null || !channel.isReady) {
             console.log("Cannot update chat name before the channel is ready");
-            alert('You are not allowed to change your display name before joining the room');
+            appendChatMessage(null, 'You are not allowed to change your display name before joining the room');
             return;
         }
 
@@ -721,9 +834,6 @@ $(document).ready(function() {
             $('.large-video').css('opacity', 1);
         });
     }
-
-    $('.large-videos').dblclick(requestFocus);
-    $('.large-videos').click(requestFocus);
 
     $('.btn-invite').click();
 

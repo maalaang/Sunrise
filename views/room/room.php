@@ -18,6 +18,7 @@
         <link type="text/css" rel="stylesheet" href="<?= $GLOBALS['sr_root'] ?>/css/room.css">
 
         <script type="text/javascript">
+            var sunriseMain = '<?= $context['sunrise_main'] ?>';
             var channelServer = '<?= $context['channel_server'] ?>';
             var channelToken = '<?= $context['room']->channel_token ?>';
             var roomId = '<?= $context['room']->id ?>';
@@ -60,38 +61,27 @@
             <nav class="collapse navbar-collapse bs-navbar-collapse " role="navigation">
                 <ul class="nav navbar-nav pull-right">
                     <li>
-                        <a id="menu-screen" href="#" onclick="screenToggle()">
+                        <a id="menu-screen" href="#">
                             <i class="control-icon icon-large icon-eye-open pull-left"></i><span class="control-icon-text">Camera On</span>
                         </a>
                     </li>
                     <li>
-                        <a id="menu-mic" href="#" onclick="micToggle()">
+                        <a id="menu-mic" href="#">
                             <i class="control-icon icon-large icon-microphone pull-left"></i><span class="control-icon-text">Microphone On</span>
                         </a>
                     </li>
                     <li>
-                        <a id="menu-public-private" data-toggle="modal" href="#open-status-modal">
+                        <a id="menu-public-private" data-toggle="modal" href="#">
                             <i class="control-icon invite-icon icon-large pull-left <?= $context['room']->is_open ? 'icon-unlock' : 'icon-lock' ?>"></i><span class="control-icon-text">Public Room</span>
                         </a>
                     </li>
                     <li>
-                        <a id="menu-chat-name" data-toggle="modal" href="#chat-name-modal">
+                        <a id="menu-chat-name" data-toggle="modal" href="#">
                             <i class="control-icon icon-large icon-user pull-left"></i><span class="control-icon-text">My profile in this room</span>
                         </a>
                     </li>
-                    <!--li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" id="menu-sns" href="#">
-                        <i class="control-icon icon-large icon-share-sign"></i>
-                        <span class="caret"></span>
-                    </a> 
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Google+</a></li>
-                    </ul>
-                    </li-->
                     <li>
-                        <a id="menu-exit" href="#" onclick="roomExit()">
+                        <a id="menu-exit" href="#">
                             <i class="control-icon icon-large icon-remove pull-left"></i><span class="control-icon-text">Hang Up</span>
                         </a>
                     </li>
@@ -144,7 +134,7 @@
                     </span>
    
                     <span class="btn-invite">
-                        <a id="invite-url" data-toggle="modal" href="#invite-modal" onclick="onInviteModal();">
+                        <a id="invite-url" data-toggle="modal" href="#">
                             <i class="icon icon-user"></i>
                             <i class="icon icon-plus-sign"></i>
                         </a>

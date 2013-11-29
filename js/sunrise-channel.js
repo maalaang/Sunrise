@@ -34,7 +34,6 @@ function SunriseChannel(_channelServer, _channelToken, _userName) {
     }
 
     this.close = function() {
-        this.isReady = false;
         socket.close();
         socket = null;
     }
@@ -140,11 +139,12 @@ function SunriseChannel(_channelServer, _channelToken, _userName) {
 
     this._onChannelDisconnected = function() {
         console.log('Channel disconnected.');
-        channel.isReady = false;
 
         if (typeof channel.onChannelDisconnected === 'function') {
             channel.onChannelDisconnected();
         }
+
+        channel.isReady = false;
     }
 
     this._onChannelError = function() {
