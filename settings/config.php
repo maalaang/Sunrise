@@ -2,12 +2,13 @@
 /**
  * The base configuration of the Sunrise VC.
  */
-$sr_db_type         = '';
+$sr_db_type         = 'mysql';
+$sr_db_port         = '3306';
+$sr_db_charset      = 'utf8';
 $sr_db_host         = '';
 $sr_db_name         = '';
 $sr_db_user         = '';
 $sr_db_password     = '';
-$sr_db_charset      = '';
 
 /**
  * Sunrise VC home directory from the web server root.
